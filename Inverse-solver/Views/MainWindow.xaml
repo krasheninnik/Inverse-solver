@@ -1,0 +1,22 @@
+﻿<Window x:Class="Inverse_solver.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inverse_solver" 
+        xmlns:viewmodel="clr-namespace:Inverse_solver.ViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+
+    <Window.DataContext>
+        <viewmodel:TaskViewModel />
+    </Window.DataContext>
+    
+    <Grid>
+        <StackPanel Margin="50">
+            <TextBox Width="30" Text="{Binding Number1, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox Width="30" Text="{Binding Number2, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox Width="30" Text="{Binding Number3, Mode=OneWay}" IsReadOnly="True"></TextBox>
+        </StackPanel>
+    </Grid>
+</Window>
