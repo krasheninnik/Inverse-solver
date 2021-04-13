@@ -1,5 +1,4 @@
 ﻿using Inverse_solver.ViewModel;
-using Inverse_solver.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +11,16 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Inverse_solver
+namespace Inverse_solver.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SettingsForm.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class SettingsForm : Window
     {
-        public MainWindow()
+        public SettingsForm()
         {
             InitializeComponent();
         }

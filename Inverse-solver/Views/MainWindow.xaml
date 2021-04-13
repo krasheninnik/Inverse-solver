@@ -17,7 +17,7 @@
             <TextBox Width="30" Text="{Binding Number1, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <TextBox Width="30" Text="{Binding Number2, UpdateSourceTrigger=PropertyChanged}"></TextBox>
             <TextBox Width="30" Text="{Binding Number3, Mode=OneWay}" IsReadOnly="True"></TextBox>
-            <Button Content = "simple command" Command="{Binding SimpleCommand}"></Button>
+            <Button Content = "simple command" Command="{Binding OpenSettingsFormCommand}"></Button>
         </StackPanel>
     </Grid>
 </Window>

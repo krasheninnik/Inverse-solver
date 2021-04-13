@@ -1,0 +1,107 @@
+﻿<Window x:Class="Inverse_solver.Views.SettingsForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Inverse_solver.Views"
+        mc:Ignorable="d"
+        Title="SettingsForm" Height="527.709" Width="952.307">
+    <Grid Margin="0,0,12,-11">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="211*"/>
+            <ColumnDefinition Width="198*"/>
+            <ColumnDefinition Width="47*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.ColumnSpan="3" Margin="0,43,0,35">
+            <!--<TextBox Width="30" Text="{Binding Number1, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox Width="30" Text="{Binding Number2, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <TextBox Width="30" Text="{Binding Number3, Mode=OneWay}" IsReadOnly="True"></TextBox>-->
+
+            <Label HorizontalAlignment="Left" Content="Grid For Measured Values:"/>
+            <Grid Margin="10,10,73,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="40*"/>
+                    <ColumnDefinition Width="40*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0"  Grid.Column="0" HorizontalAlignment="Right" Width="25">hx:</Label>
+                <TextBox Grid.Column="1" Margin="0,0,0,10"  Text="{Binding Hx}"/>
+
+                <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Width="25">hy:</Label>
+                <TextBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,10" Text="{Binding Hy}" />
+
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Width="25">x0:</Label>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding X0}"/>
+
+                <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Y0}"/>
+
+                <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
+                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding Z0}"/>
+            </Grid>
+            <Label HorizontalAlignment="Left" Content="Measured Values:"/>
+            <!--<ScrollViewer>
+                <TextBox AcceptsReturn="True"/>
+            </ScrollViewer>-->
+            <TextBox TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True" />
+            <Label HorizontalAlignment="Left" Content="Space Grid:"/>
+            <Grid Margin="10,10,73,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                    <ColumnDefinition Width="20*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">xStart:</Label>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Xstart}"/>
+
+                <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">xEnd:</Label>
+                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Xend}"/>
+
+                <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right">xStepsAmount:</Label>
+                <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding XstepsAmount}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">yStart:</Label>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Ystart}"/>
+
+                <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">yEnd:</Label>
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Yend}"/>
+
+                <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right">yStepsAmount:</Label>
+                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding YstepsAmount}"/>
+
+                <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">zStart:</Label>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Zstart}"/>
+
+                <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right">zEnd:</Label>
+                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Zend}"/>
+
+                <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right">zStepsAmount:</Label>
+                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding ZstepsAmount}"/>
+            </Grid>
+            <Button  VerticalAlignment="Bottom"
+                     HorizontalAlignment="Center"
+                     Margin="20" Width="200" Height="30" 
+                     Content = "simple command" 
+                     Command="{Binding InitTaskCommand}">
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

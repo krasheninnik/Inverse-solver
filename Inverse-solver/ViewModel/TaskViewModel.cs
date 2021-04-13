@@ -8,20 +8,34 @@ using System.Text;
 using System.Threading.Tasks;
 using Inverse_solver.Model;
 using Inverse_solver.ViewModel.Commands;
+using Inverse_solver.Views;
 
 namespace Inverse_solver.ViewModel
 {
     public class TaskViewModel : INotifyPropertyChanged
     {
-        public SimpleCommand SimpleCommand { get; set; }
         public TaskViewModel()
         {
-            this.SimpleCommand = new SimpleCommand(this);
+            this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
+            this.InitTaskCommand = new InitTaskCommand(this);
         }
-         
-        public void SimpleMethod()
+
+        // Commands
+        public OpenSettingsFormCommand OpenSettingsFormCommand { get; set; }
+
+        public InitTaskCommand InitTaskCommand { get; set; }
+
+        public void OpenSettingsForm()
         {
-            Debug.WriteLine("Hello");
+            SettingsForm sf = new SettingsForm();
+            sf.DataContext = this;
+            sf.Show();
+        }
+
+        public void InitTask()
+        {
+            // this should call Model function and init Task with parameters
+            Debug.WriteLine($"Hello, Hx {Hx}, Hy {Hy}... Xstart {Xstart}... You get it)0).");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -32,6 +46,9 @@ namespace Inverse_solver.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
+
+        // Proooooops: 
+        // Test developming props, need delete latter
         private int _number1;
         public int Number1
         {
@@ -47,6 +64,26 @@ namespace Inverse_solver.ViewModel
         }
 
         public int Number3 { get => CalculatingTask.GetSumOf(Number1, Number2); }
+
+        // Task settings props:
+        // For measures grid:
+        public int Hx { get; set; }
+        public int Hy { get; set; }
+        public double X0 { get; set; }
+        public double Y0 { get; set; }
+        public double Z0 { get; set; }
+        // For Measures:
+        public List<int> MeasuredValues { get; set; }
+        // For space grid:
+        public double Xstart { get; set; }
+        public double Xend { get; set; }
+        public double XstepsAmount { get; set; }
+        public double Ystart { get; set; }
+        public double Yend { get; set; }
+        public double YstepsAmount { get; set; }
+        public double Zstart { get; set; }
+        public double Zend { get; set; }
+        public double ZstepsAmount { get; set; }
 
     }
 }
