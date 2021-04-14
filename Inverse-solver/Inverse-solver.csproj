@@ -55,6 +55,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\InitParameters.cs" />
+    <Compile Include="Model\Value.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenSettingsFormCommand.cs" />
     <Compile Include="ViewModel\Converters\MeasuredValuesConverter.cs" />

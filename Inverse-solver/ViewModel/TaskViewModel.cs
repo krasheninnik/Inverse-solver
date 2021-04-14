@@ -14,23 +14,6 @@ using Inverse_solver.Views;
 
 namespace Inverse_solver.ViewModel
 {
-    public class Value
-    {
-        public Value()
-        {
-
-        }
-        public Value(double x, double y, double z)
-        {
-            X = x;
-            Y = y;
-            Z = z;
-        }
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
-    }
-
     public class TaskViewModel : INotifyPropertyChanged
     {
         public TaskViewModel()
@@ -96,13 +79,19 @@ namespace Inverse_solver.ViewModel
         // For space grid:
         public double Xstart { get; set; }
         public double Xend { get; set; }
-        public double XstepsAmount { get; set; }
+        public int XstepsAmount { get; set; }
         public double Ystart { get; set; }
         public double Yend { get; set; }
-        public double YstepsAmount { get; set; }
+        public int YstepsAmount { get; set; }
         public double Zstart { get; set; }
         public double Zend { get; set; }
-        public double ZstepsAmount { get; set; }
+        public int ZstepsAmount { get; set; }
+
+        public InitParameters InitParameters
+        {
+            get { return new InitParameters(Hx, Hy, X0, Y0, Z0, MeasuredValues, Xstart, Xend, XstepsAmount, Ystart, Yend, YstepsAmount, Zstart, Zend,ZstepsAmount); }
+        }
+
 
     }
 }
