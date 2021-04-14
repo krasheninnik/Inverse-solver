@@ -18,9 +18,12 @@ namespace Inverse_solver.ViewModel
     {
         public TaskViewModel()
         {
+            this.task = new CalculatingTask();
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.InitTaskCommand = new InitTaskCommand(this);
         }
+
+        CalculatingTask task { get; set; }
 
         // Commands
         public OpenSettingsFormCommand OpenSettingsFormCommand { get; set; }
@@ -38,6 +41,7 @@ namespace Inverse_solver.ViewModel
         {
             // this should call Model function and init Task with parameters
             Debug.WriteLine($"Hello, Hx {Hx}, Hy {Hy}... Xstart {Xstart}... You get it)0).");
+            task.Test3(this.InitParameters);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

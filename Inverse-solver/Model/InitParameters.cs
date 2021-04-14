@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Inverse_solver.Model
 {
-    public class InitParameters
+    [StructLayout(LayoutKind.Sequential)]
+    public struct InitParameters
     {
-        public InitParameters()
-        {
-
-        }
         public InitParameters(int hx, int hy, double x0, double y0,
             double z0, List<Value> measuredValues,
             double xStart, double xEnd, int xStepsAmount,
@@ -24,7 +22,9 @@ namespace Inverse_solver.Model
             Y0 = y0; 
             Z0 = z0; 
             // For Measures:
-            List<Value> MeasuredValues = measuredValues; 
+            //MeasuredValues = measuredValues.ToArray();
+            //MeasuredValuesCount = measuredValues.Count();
+            
             // For space grid:
             Xstart = xStart; 
             Xend = xEnd; 
@@ -43,7 +43,8 @@ namespace Inverse_solver.Model
         public double Y0 { get; set; }
         public double Z0 { get; set; }
         // For Measures:
-        public List<Value> MeasuredValues { get; set; }
+        //public Value[] MeasuredValues { get; set; }
+        //public int MeasuredValuesCount { get; set; }
         // For space grid:
         public double Xstart { get; set; }
         public double Xend { get; set; }
