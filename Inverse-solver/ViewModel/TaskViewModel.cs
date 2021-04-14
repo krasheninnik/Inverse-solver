@@ -6,12 +6,31 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Inverse_solver.Model;
 using Inverse_solver.ViewModel.Commands;
+using Inverse_solver.ViewModel.Converters;
 using Inverse_solver.Views;
 
 namespace Inverse_solver.ViewModel
 {
+    public class Value
+    {
+        public Value()
+        {
+
+        }
+        public Value(double x, double y, double z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+    }
+
     public class TaskViewModel : INotifyPropertyChanged
     {
         public TaskViewModel()
@@ -73,7 +92,7 @@ namespace Inverse_solver.ViewModel
         public double Y0 { get; set; }
         public double Z0 { get; set; }
         // For Measures:
-        public List<int> MeasuredValues { get; set; }
+        public List<Value> MeasuredValues { get; set; }
         // For space grid:
         public double Xstart { get; set; }
         public double Xend { get; set; }
