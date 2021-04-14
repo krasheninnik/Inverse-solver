@@ -38,8 +38,20 @@ namespace Inverse_solver.ViewModel
         }
 
         public void InitTask()
-        {
-            task.InitInverseTask(Hx, Hy, X0, Y0, Z0, MeasuredValues.ToArray(), MeasuredValues.Count, Xstart, Xend, XstepsAmount, Ystart, Yend, YstepsAmount, Zstart, Zend, ZstepsAmount);
+        { 
+            task.InitInverseTask(Hx, Hy, X0, Y0, Z0,
+                MeasuredValues.ToArray(), MeasuredValues.Count,
+                Xstart, Xend, XstepsAmount,
+                Ystart, Yend, YstepsAmount,
+                Zstart, Zend, ZstepsAmount,
+                out int nodesSize, out int elemsSize
+                );
+
+            NodesSize = nodesSize;
+            ElemsSize = elemsSize;
+
+            //Nodes = new Value[NodesSize];
+            task.GetNodes(Nodes, NodesSize);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -69,6 +81,11 @@ namespace Inverse_solver.ViewModel
 
         public int Number3 { get => CalculatingTask.GetSumOf(Number1, Number2); }
 
+        public int ElemsSize { get; set; }
+
+        public int NodesSize { get; set; }
+        public Value[] Nodes { get; set; }
+
         // Task settings props:
         // For measures grid:
         public int Hx { get; set; }
@@ -88,13 +105,6 @@ namespace Inverse_solver.ViewModel
         public double Zstart { get; set; }
         public double Zend { get; set; }
         public int ZstepsAmount { get; set; }
-
-        public InitParameters InitParameters
-        {
-            get { return new InitParameters(Hx, Hy, X0, Y0, Z0, MeasuredValues, Xstart, Xend, XstepsAmount, Ystart, Yend, YstepsAmount, Zstart, Zend,ZstepsAmount); }
-        }
-
-
     }
 }
 
