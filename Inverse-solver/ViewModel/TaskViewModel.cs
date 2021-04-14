@@ -39,9 +39,7 @@ namespace Inverse_solver.ViewModel
 
         public void InitTask()
         {
-            // this should call Model function and init Task with parameters
-            Debug.WriteLine($"Hello, Hx {Hx}, Hy {Hy}... Xstart {Xstart}... You get it)0).");
-            task.Test3(this.InitParameters);
+            task.InitInverseTask(Hx, Hy, X0, Y0, Z0, MeasuredValues.ToArray(), MeasuredValues.Count, Xstart, Xend, XstepsAmount, Ystart, Yend, YstepsAmount, Zstart, Zend, ZstepsAmount);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
