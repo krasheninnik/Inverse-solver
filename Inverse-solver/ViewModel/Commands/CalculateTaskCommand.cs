@@ -7,13 +7,14 @@ using System.Windows.Input;
 
 namespace Inverse_solver.ViewModel.Commands
 {
-    public class OpenSettingsFormCommand : ICommand
+    public class CalculateTaskCommand : ICommand
     {
         public TaskViewModel ViewModel { get; set; }
-        public OpenSettingsFormCommand(TaskViewModel viewModel)
+        public CalculateTaskCommand(TaskViewModel viewModel)
         {
             ViewModel = viewModel;
         }
+
 
         public event EventHandler CanExecuteChanged;
 
@@ -25,7 +26,7 @@ namespace Inverse_solver.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            this.ViewModel.OpenSettingsForm();
+            this.ViewModel.CalculateTask();
         }
     }
 }

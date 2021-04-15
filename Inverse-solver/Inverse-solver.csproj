@@ -77,10 +77,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\FiniteElem.cs" />
     <Compile Include="Model\Value.cs" />
+    <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenSettingsFormCommand.cs" />
     <Compile Include="ViewModel\Converters\MeasuredValuesConverter.cs" />
+    <Compile Include="ViewModel\HeatmapBuilder.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="Views\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
