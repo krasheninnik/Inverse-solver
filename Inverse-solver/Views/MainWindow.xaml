@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Inverse_solver" 
         xmlns:viewmodel="clr-namespace:Inverse_solver.ViewModel"
         xmlns:converter="clr-namespace:Inverse_solver.ViewModel.Converters"
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
@@ -14,11 +15,19 @@
     </Window.DataContext>
 
     <Grid>
-        <StackPanel Margin="50">
-            <TextBox Width="30" Text="{Binding Number1, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox Width="30" Text="{Binding Number2, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox Width="30" Text="{Binding Number3, Mode=OneWay}" IsReadOnly="True"></TextBox>
-            <Button Content = "simple command" Command="{Binding OpenSettingsFormCommand}"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*"></ColumnDefinition>
+            <ColumnDefinition Width="20*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0" Grid.Row="0">
+            <oxy:PlotView Model="{Binding MyModel}"></oxy:PlotView>
+        </Grid>
+        <StackPanel Grid.Column="1" Grid.Row="0" Margin="15">
+            <Button Margin="0,40,0,0" Content = "Task Settings" Command="{Binding OpenSettingsFormCommand}"></Button>
         </StackPanel>
     </Grid>
 </Window>
