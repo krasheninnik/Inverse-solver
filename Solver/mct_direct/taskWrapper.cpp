@@ -31,7 +31,7 @@ void getGridInformation(Task* task, GridInformation& gridInfo) {
     task->getGridInformation(gridInfo);
 }
 
-void solve(Task* task, FiniteElemProxy* felemsProxy) {
+void solveTask(Task* task, FiniteElemProxy* felemsProxy) {
     std::vector<FiniteElem> felems;
     task->solve(felems);
    

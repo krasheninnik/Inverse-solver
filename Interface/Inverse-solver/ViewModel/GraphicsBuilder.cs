@@ -31,10 +31,10 @@ namespace Inverse_solver.ViewModel
 
             var heatMapSeries = new HeatMapSeries
             {
-                X0 = gridInformation.xStart + gridInformation.dx,
-                X1 = gridInformation.xEnd - gridInformation.dx,
-                Y0 = gridInformation.zStart + gridInformation.dz,
-                Y1 = gridInformation.zEnd - gridInformation.dz,
+                X0 = gridInformation.xStart + gridInformation.dx / 2,
+                X1 = gridInformation.xEnd - gridInformation.dx / 2,
+                Y0 = gridInformation.zStart + gridInformation.dz / 2,
+                Y1 = gridInformation.zEnd - gridInformation.dz / 2,
                 RenderMethod = HeatMapRenderMethod.Rectangles,
                 LabelFontSize = 0.2, // neccessary to display the label
                 Data = data,

@@ -175,8 +175,9 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	// save grid info:
 	gridInfo.elemsInX = pointsInX - 1;
 	gridInfo.elemsInY = pointsInY - 1;
-	gridInfo.elemsInZ = pointsInY - 1;
+	gridInfo.elemsInZ = pointsInZ - 1; 
 	gridInfo.elemsSize = gridInfo.elemsInX * gridInfo.elemsInY * gridInfo.elemsInZ;
+	gridInfo.pointsSize = nodes.size();
 	gridInfo.yResultsLayersSize = yAxisGrid.size() - 1;
 	gridInfo.yMeasureLayersSize = yAxisMeasures.size() - 1;
 	gridInfo.xMeasureLayersSize = xAxisMeasures.size() - 1;

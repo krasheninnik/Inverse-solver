@@ -40,7 +40,7 @@ public:
 
 extern "C" INVERSESOLVERLIB Task* createTask();
 
-extern "C" INVERSESOLVERLIB void solve(Task*, FiniteElemProxy*);
+extern "C" INVERSESOLVERLIB void solveTask(Task*, FiniteElemProxy*);
 
 extern "C" INVERSESOLVERLIB void deleteTask(Task * task);
 
