@@ -36,23 +36,33 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
 
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0"  Grid.Column="0" HorizontalAlignment="Right" Width="25">hx:</Label>
                 <TextBox Grid.Column="1" Margin="0,0,0,10"  Text="{Binding Hx, Mode=OneWayToSource}"/>
 
-                <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" Width="25">hy:</Label>
-                <TextBox Grid.Row="0" Grid.Column="3" Margin="0,0,0,10" Text="{Binding Hy, Mode=OneWayToSource}" />
+                <Label Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Right" Width="25">nx:</Label>
+                <TextBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding Nx, Mode=OneWayToSource}"/>
 
-                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Width="25">x0:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding X0, Mode=OneWayToSource}"/>
+                <Label Grid.Row="0"  Grid.Column="4" HorizontalAlignment="Right" Width="25">α:</Label>
+                <TextBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10"  Text="{Binding Alpha, Mode=OneWayToSource}"/>
 
-                <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Y0, Mode=OneWayToSource}"/>
+                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Width="25">hy:</Label>
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Text="{Binding Hy, Mode=OneWayToSource}" />
 
-                <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
-                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding Z0, Mode=OneWayToSource}"/>
+                <Label Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Right" Width="25">ny:</Label>
+                <TextBox Grid.Row="1"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding Ny, Mode=OneWayToSource}"/>
+
+                <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Width="25">x0:</Label>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding X0, Mode=OneWayToSource}"/>
+
+                <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
+                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Y0, Mode=OneWayToSource}"/>
+
+                <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
+                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding Z0, Mode=OneWayToSource}"/>
             </Grid>
             <Label HorizontalAlignment="Left" Content="Measured Values:"/>
             <!--<ScrollViewer>
