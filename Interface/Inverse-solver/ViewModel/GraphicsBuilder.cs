@@ -1,4 +1,5 @@
-﻿using OxyPlot;
+﻿using Inverse_solver.Model;
+using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using System;
@@ -8,7 +9,7 @@ namespace Inverse_solver.ViewModel
 {
     public class GraphicsBuilder
     {
-        public PlotModel buildHeatmap(List<double> xGrid, List<double> zGrid, List<List<double>> resultsValues)
+        public PlotModel buildHeatmap(GridInformation gridInformation, List<List<double>> resultsValues)
         {
             var model = new PlotModel { Title = "Results" };
 
@@ -19,24 +20,21 @@ namespace Inverse_solver.ViewModel
             });
 
             // Display values source:
-            var data = new double[xGrid.Count - 1, zGrid.Count - 1];
-            for (int z = 0; z < zGrid.Count - 1; z++)
+            var data = new double[gridInformation.elemsInX, gridInformation.elemsInZ];
+            for (int z = 0; z < gridInformation.elemsInZ; z++)
             {
-                for (int x = 0; x < xGrid.Count - 1; x++)
+                for (int x = 0; x < gridInformation.elemsInX; x++)
                 {
                     data[x, z] = resultsValues[z][x];
                 }
             }
 
-            double dx = xGrid[1] - xGrid[0];
-            double dz = zGrid[1] - zGrid[0];
-
             var heatMapSeries = new HeatMapSeries
             {
-                X0 = xGrid[0] + dx,
-                X1 = xGrid[xGrid.Count - 1] - dx,
-                Y0 = zGrid[0] + dz,
-                Y1 = zGrid[zGrid.Count - 1] - dz,
+                X0 = gridInformation.xStart + gridInformation.dx,
+                X1 = gridInformation.xEnd - gridInformation.dx,
+                Y0 = gridInformation.zStart + gridInformation.dz,
+                Y1 = gridInformation.zEnd - gridInformation.dz,
                 RenderMethod = HeatMapRenderMethod.Rectangles,
                 LabelFontSize = 0.2, // neccessary to display the label
                 Data = data,
@@ -46,7 +44,7 @@ namespace Inverse_solver.ViewModel
             return model;
         }
 
-        public PlotModel buildDiscrepancyGraph(List<double> x, List<double> fx)
+        public PlotModel buildDiscrepancyGraph(double[] x, double[]  fx)
         {
             // create the model and add the lines to it
             var model = new OxyPlot.PlotModel
@@ -61,7 +59,7 @@ namespace Inverse_solver.ViewModel
                 StrokeThickness = 1,
             };
 
-            for (int i = 0; i < x.Count; i++)
+            for (int i = 0; i < x.Length; i++)
             {
                 line1.Points.Add(new OxyPlot.DataPoint(x[i], fx[i]));
             }

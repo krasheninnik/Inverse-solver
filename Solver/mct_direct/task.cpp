@@ -66,11 +66,35 @@ void Task::init() {
 //	}
 //}
 
-void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure, Point p0Measure, std::vector<Point> B,
+
+
+void Task::getGridInformation(GridInformation& _gridInfo) {
+	_gridInfo = gridInfo;
+}
+
+void Task::getResultGrids(std::vector<Point>& _nodes, std::vector<double>& _yLayers) {
+	_nodes = nodes;
+	_yLayers.resize(yAxisGrid.size() - 1);
+	for (int i = 1; i < yAxisGrid.size(); i++) {
+		_yLayers[i - 1] = (yAxisGrid[i] + yAxisGrid[i - 1]) / 2;
+	}
+}
+
+void Task::getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid) {
+	xGrid = xAxisMeasures;
+	yGrid = yAxisMeasures;
+}
+
+void Task::getDiscrepancy(int yLayer, std::vector<double> fx) {
+	calcResidual(yLayer, fx);
+}
+
+void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure,
+	Point p0Measure, std::vector<Point> B,
 	double x0Grid, double x1Grid, int xStepsGrid,
 	double y0Grid, double y1Grid, int yStepsGrid,
 	double z0Grid, double z1Grid, int zStepsGrid,
-	double _alpha, int _yResidual) {
+	double _alpha) {
 
 	fillAxisGrid(xAxisGrid, x0Grid, x1Grid, xStepsGrid);
 	fillAxisGrid(yAxisGrid, y0Grid, y1Grid, yStepsGrid);
@@ -133,10 +157,11 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 		}
 	}
 
-	yResidual = _yResidual;
-
 	gaussPoints = { -0.774596669, 0.0 , 0.774596669 };
 	gaussWeights = { 0.555555556, 0.888888889, 0.555555556 };
+
+	// just be:
+	yResidual = 0;
 
 	//инициализация структур СЛАУ
 	double dim = TASK_DIM * elems.size();
@@ -146,6 +171,22 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	for (int i = 0; i < matrix.size(); i++) {
 		matrix[i].resize(dim);
 	}
+
+	// save grid info:
+	gridInfo.elemsInX = pointsInX - 1;
+	gridInfo.elemsInY = pointsInY - 1;
+	gridInfo.elemsInZ = pointsInY - 1;
+	gridInfo.elemsSize = gridInfo.elemsInX * gridInfo.elemsInY * gridInfo.elemsInZ;
+	gridInfo.yResultsLayersSize = yAxisGrid.size() - 1;
+	gridInfo.yMeasureLayersSize = yAxisMeasures.size() - 1;
+	gridInfo.xMeasureLayersSize = xAxisMeasures.size() - 1;
+
+	gridInfo.dx = xAxisGrid[1] - xAxisGrid[0];
+	gridInfo.xStart = xAxisGrid.front();
+	gridInfo.xEnd = xAxisGrid.back();
+	gridInfo.dz  = zAxisGrid[1] - zAxisGrid[0];
+	gridInfo.zStart = zAxisGrid.front();
+	gridInfo.zEndl = zAxisGrid.back();
 }
 
 Point Task::calculateB(int i) {
@@ -361,7 +402,7 @@ std::vector<double> Task::B(Measure m) {
 	return B;
 }
 
-void Task::solve(std::vector<FiniteElem>& _elems, std::vector<double>& _f) {
+void Task::solve(std::vector<FiniteElem>& _elems) {
 	for (int q = 0; q < matrix.size(); q++) {
 		for (int s = 0; s < matrix[q].size(); s++) {
 			for (Measure m : measures) {
@@ -380,7 +421,8 @@ void Task::solve(std::vector<FiniteElem>& _elems, std::vector<double>& _f) {
 		elems[j].p.z = p[i + 2];
 	}
 	_elems = elems;
-	calcResidual(yResidual, _f);
+
+	//calcResidual(yResidual, _f);
 }
 
 void Task::calcResidual(int y, std::vector<double>& residual) {

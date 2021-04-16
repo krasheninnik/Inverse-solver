@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -141,11 +141,13 @@
   <ItemGroup>
     <ClInclude Include="Gauss.h" />
     <ClInclude Include="task.h" />
+    <ClInclude Include="taskWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Gauss.cpp" />
     <ClCompile Include="task.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="taskWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="elems.txt" />

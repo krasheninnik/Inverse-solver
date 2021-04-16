@@ -7,6 +7,25 @@
 #include "Gauss.h"
 
 
+class GridInformation
+{
+public:
+	int elemsInX;
+	int elemsInY;
+	int elemsInZ;
+	int elemsSize;
+	int pointsSize;
+	int yResultsLayersSize;
+	int yMeasureLayersSize;
+	int xMeasureLayersSize;
+	double dx;
+	double xStart;
+	double xEnd;
+	double dz;
+	double zStart;
+	double zEndl;
+};
+
 
 class Point {
 public:
@@ -54,10 +73,16 @@ public:
 		double x0Grid, double x1Grid, int xStepsGrid,
 		double y0Grid, double y1Grid, int yStepsGrid,
 		double z0Grid, double z1Grid, int zStepsGrid,
-		double alpha, int yResidual);
+		double alpha);
 	void init();
-	void solve(std::vector<FiniteElem>&_elems, std::vector<double>& _f);
+	void solve(std::vector<FiniteElem>&_elems);
 	void getB(std::vector<Point> parameters, std::vector<Point>& B);
+
+	void getGridInformation(GridInformation& gridInfo);
+	void getResultGrids(std::vector<Point>& nodes, std::vector<double>& yLayers);
+	void getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid);
+	void getDiscrepancy(int yLayer, std::vector<double> fx);
+
 private:
 	double alpha;
 
@@ -66,6 +91,9 @@ private:
 	std::vector<FiniteElem> elems;
 	std::vector<double> gaussWeights;
 	std::vector<double> gaussPoints;
+
+	// grid parameters:
+	GridInformation gridInfo;
 
 	std::vector<double> xAxisGrid;
 	std::vector<double> yAxisGrid;
