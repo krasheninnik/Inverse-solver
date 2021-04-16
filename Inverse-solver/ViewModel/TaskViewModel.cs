@@ -37,7 +37,8 @@ namespace Inverse_solver.ViewModel
         public PlotModel HeatmapModel
         {
             get { return heatmapModel; }
-            set { heatmapModel = value; OnPropertyChanged(); }
+            set { heatmapModel = value;
+                OnPropertyChanged(); }
         }
 
         // Model to show discrepancy graph
@@ -73,31 +74,33 @@ namespace Inverse_solver.ViewModel
         {
             DiscrepancyView dv = new DiscrepancyView();
             dv.DataContext = this;
-            this.discrepancyModel = this.GraphicsBuilder.buildDiscrepancyGraph(
-                new List<double> { 0, 10, 20, 30, 40, 50, 60, 70, 80, 80, 90, 100 },
-                new List<double> { 0, 10, 20, 30, 40, 50, 60, 50, 40, 30, 20, 10 }
-                );
+            MeasuredX = new List<double> { 0, 10, 20, 30, 40, 50, 60, 70, 80, 80, 90, 100 };
+            DiscrepancyValues = new List<double> { 0, 10, 20, 30, 40, 50, 60, 50, 40, 30, 20, 10 };
+            YMeasureGridLayers = new List<double> { -200, -100, 0 };
+            DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(MeasuredX, DiscrepancyValues);
             dv.Show();
         }
 
 
+        private List<double> xGrid = new List<double> { 0, 10, 20, 30, 40, 50, 60 };
+        private List<double> yGrid = new List<double> { 0, 3, 6, 9, 12, 15 };
+        private List<double> zGrid = new List<double> { 0, 10, 20, 30, 40 };
         public void CalculateTask()
         {
             // this part for modeling test case
             // kiddna mock from dll...
-
-
-            List<double> xGrid = new List<double> { 0, 10, 20, 30, 40, 50, 60 };
-            List<double> yGrid = new List<double> { 0, 3, 6, 0, 10, 20, 30, 40, 50, 60, 0, 10, 20, 30, 40, 50, 60, 0, 10, 20, 30, 40, 50, 60 };
-            List<double> zGrid = new List<double> { 0, 10, 20, 30, 40};
-            YGrid = yGrid;
+            var yGridLayersTemp = new List<double>();
+            for(int i = 1; i < yGrid.Count; i++)
+            {
+                yGridLayersTemp.Add((yGrid[i] + yGrid[i - 1])/2);
+            }
+            YResultGridLayers = yGridLayersTemp;
 
             int pointsInXY = xGrid.Count() * yGrid.Count();
             int pointsInX = xGrid.Count();
             int pointsInY = yGrid.Count();
             int pointsInZ = zGrid.Count();
 
-            Ylevel = 0;
             elemsInX = pointsInX - 1;
             elemsInY = pointsInY - 1;
             elemsInZ = pointsInZ - 1;
@@ -146,17 +149,13 @@ namespace Inverse_solver.ViewModel
                 }
             }
 
-
-
-
-
-            resultsValues = new List<List<double>>();
+            ResultsValues = new List<List<double>>();
             for (int zi = 0; zi < zGrid.Count() - 1; zi++)
             {
                 var values = new List<double>();
                 for (int xi = 0; xi < xGrid.Count() - 1; xi++)
                 {
-                    values.Add(FiniteElems[zi * elemsInXY + Ylevel * elemsInX + xi].P.Z);
+                    values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * elemsInX + xi].P.Z);
                 }
 
                 resultsValues.Add(values);
@@ -165,6 +164,28 @@ namespace Inverse_solver.ViewModel
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(xGrid, zGrid, resultsValues);
             this.IsTaskCalculated = true;
         }
+
+        private List<List<double>> resultsValues;
+
+        public List<List<double>> ResultsValues
+        {
+            get {
+                resultsValues = new List<List<double>>();
+                for (int zi = 0; zi < zGrid.Count() - 1; zi++)
+                {
+                    var values = new List<double>();
+                    for (int xi = 0; xi < xGrid.Count() - 1; xi++)
+                    {
+                        values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * elemsInX + xi].P.Z);
+                    }
+
+                    resultsValues.Add(values);
+                };
+                return resultsValues;
+            }
+            set { resultsValues = value; }
+        }
+
 
         public void InitTask()
         {
@@ -195,19 +216,55 @@ namespace Inverse_solver.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        // to control buttons activity (add later):
-        private List<double> yGrid;
 
-        public List<double> YGrid
+        private List<double> yResultGridLayers;
+
+        public List<double> YResultGridLayers
         {
-            get { return yGrid; }
+            get { return yResultGridLayers; }
             set
             {
-                yGrid = value;
+                yResultGridLayers = value;
                 OnPropertyChanged();
-                //CommandManager.InvalidateRequerySuggested();
             }
         }
+
+        private int yResultLayerIndex;
+        public int YResultLayerIndex
+        {
+            get { return yResultLayerIndex; }
+            set
+            {
+                yResultLayerIndex = value;
+                HeatmapModel = GraphicsBuilder.buildHeatmap(xGrid, zGrid, ResultsValues);
+            }
+        }
+
+        private List<double> yMeasureGridLayers;
+
+        public List<double> YMeasureGridLayers
+        {
+            get { return yMeasureGridLayers; }
+            set
+            {
+                yMeasureGridLayers = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private int yMeasureLayerIndex;
+        public int YMeasureLayerIndex
+        {
+            get { return yMeasureLayerIndex; }
+            set
+            {
+                yMeasureLayerIndex = value;
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(MeasuredX, DiscrepancyValues);
+            }
+        }
+
+        public List<double> MeasuredX { get; set; }
+        public List<double> DiscrepancyValues { get; set; }
 
         // to control buttons activity (add later):
         private bool isTaskInitializated;
@@ -234,8 +291,7 @@ namespace Inverse_solver.ViewModel
                // CommandManager.InvalidateRequerySuggested();
             }
         }
-        
-        
+
         // Task settings props:
         // For measures grid:
         public int Hx { get; set; }
@@ -268,9 +324,6 @@ namespace Inverse_solver.ViewModel
 
         public int elemsInY { get; set; }
         public int elemsInZ { get; set; }
-
-        public int Ylevel { get; set; }
-        public List<List<double>> resultsValues { get; set; }
     }
 }
 

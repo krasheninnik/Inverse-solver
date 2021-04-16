@@ -22,7 +22,7 @@
             </Grid>
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="15">
                 <Label Content="Layer Y:" Margin="0,5,0,0"></Label>
-                <ListBox ItemsSource="{Binding YGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" />
+                <ListBox ItemsSource="{Binding YMeasureGridLayers}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding YMeasureLayerIndex}" />
             </StackPanel>
         </Grid>
     </Grid>
