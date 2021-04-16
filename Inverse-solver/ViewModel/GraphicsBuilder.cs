@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace Inverse_solver.ViewModel
 {
-    public class HeatmapBuilder
+    public class GraphicsBuilder
     {
-        public PlotModel buildCategorizedMap(List<double> xGrid, List<double> zGrid, List<List<double>> resultsValues)
+        public PlotModel buildHeatmap(List<double> xGrid, List<double> zGrid, List<List<double>> resultsValues)
         {
             var model = new PlotModel { Title = "Results" };
 
@@ -43,6 +43,30 @@ namespace Inverse_solver.ViewModel
             };
 
             model.Series.Add(heatMapSeries);
+            return model;
+        }
+
+        public PlotModel buildDiscrepancyGraph(List<double> x, List<double> fx)
+        {
+            // create the model and add the lines to it
+            var model = new OxyPlot.PlotModel
+            {
+                Title = $"Discrepancy graph"
+
+            };
+            var line1 = new OxyPlot.Series.LineSeries()
+            {
+                Title = $"Discrepancy",
+                Color = OxyPlot.OxyColors.Red,
+                StrokeThickness = 1,
+            };
+
+            for (int i = 0; i < x.Count; i++)
+            {
+                line1.Points.Add(new OxyPlot.DataPoint(x[i], fx[i]));
+            }
+
+            model.Series.Add(line1);
             return model;
         }
     }

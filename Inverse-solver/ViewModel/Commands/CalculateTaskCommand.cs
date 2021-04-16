@@ -15,13 +15,12 @@ namespace Inverse_solver.ViewModel.Commands
             ViewModel = viewModel;
         }
 
-
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
             // execute this method in any cases
-            return true;
+            return true;// this.ViewModel.IsTaskInitializated;
         }
 
         public void Execute(object parameter)

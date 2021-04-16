@@ -82,12 +82,20 @@
     <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenSettingsFormCommand.cs" />
+    <Compile Include="ViewModel\Commands\OpenDiscrepancyViewCommand.cs" />
     <Compile Include="ViewModel\Converters\MeasuredValuesConverter.cs" />
-    <Compile Include="ViewModel\HeatmapBuilder.cs" />
+    <Compile Include="ViewModel\GraphicsBuilder.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
+    <Compile Include="Views\DiscrepancyView.xaml.cs">
+      <DependentUpon>DiscrepancyView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\DiscrepancyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -7,10 +7,10 @@ using System.Windows.Input;
 
 namespace Inverse_solver.ViewModel.Commands
 {
-    public class InitTaskCommand : ICommand
+    public class OpenDiscrepancyViewCommand : ICommand
     {
         public TaskViewModel ViewModel { get; set; }
-        public InitTaskCommand(TaskViewModel viewModel)
+        public OpenDiscrepancyViewCommand(TaskViewModel viewModel)
         {
             ViewModel = viewModel;
         }
@@ -19,14 +19,12 @@ namespace Inverse_solver.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            // there must be condition: all fields in form have been filled
-            return true;
+            return true;//this.ViewModel.IsTaskCalculated;
         }
 
         public void Execute(object parameter)
         {
-
-            ViewModel.InitTask();
+            this.ViewModel.OpenDiscrepancyView();
         }
     }
 }

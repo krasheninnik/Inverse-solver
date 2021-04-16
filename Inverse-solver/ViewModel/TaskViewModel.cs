@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using Inverse_solver.Model;
 using Inverse_solver.ViewModel.Commands;
 using Inverse_solver.ViewModel.Converters;
@@ -22,21 +23,31 @@ namespace Inverse_solver.ViewModel
         {
             this.task = new CalculatingTask();
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
+            this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
             this.CalculateTaskCommand = new CalculateTaskCommand(this);
             this.InitTaskCommand = new InitTaskCommand(this);
-            this.HeatmapBuilder = new HeatmapBuilder();
+            this.GraphicsBuilder = new GraphicsBuilder();
         }
 
-        HeatmapBuilder HeatmapBuilder { get; set; }
+        GraphicsBuilder GraphicsBuilder { get; set; }
 
-        private PlotModel myModel;
+        // Model to show results of Inverse task
+        private PlotModel heatmapModel;
 
-        public PlotModel MyModel
+        public PlotModel HeatmapModel
         {
-            get { return myModel; }
-            set { myModel = value; OnPropertyChanged(); }
+            get { return heatmapModel; }
+            set { heatmapModel = value; OnPropertyChanged(); }
         }
 
+        // Model to show discrepancy graph
+        private PlotModel discrepancyModel;
+
+        public PlotModel DiscrepancyModel
+        {
+            get { return discrepancyModel; }
+            set { discrepancyModel = value; OnPropertyChanged(); }
+        }
 
         CalculatingTask task { get; set; }
 
@@ -44,14 +55,31 @@ namespace Inverse_solver.ViewModel
         public CalculateTaskCommand CalculateTaskCommand { get; set; }
         public OpenSettingsFormCommand OpenSettingsFormCommand { get; set; }
 
+        public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; set; }
+
         public InitTaskCommand InitTaskCommand { get; set; }
 
         public void OpenSettingsForm()
         {
+            this.IsTaskCalculated = true;
+            CommandManager.InvalidateRequerySuggested();
             SettingsForm sf = new SettingsForm();
             sf.DataContext = this;
             sf.Show();
         }
+
+
+        public void OpenDiscrepancyView()
+        {
+            DiscrepancyView dv = new DiscrepancyView();
+            dv.DataContext = this;
+            this.discrepancyModel = this.GraphicsBuilder.buildDiscrepancyGraph(
+                new List<double> { 0, 10, 20, 30, 40, 50, 60, 70, 80, 80, 90, 100 },
+                new List<double> { 0, 10, 20, 30, 40, 50, 60, 50, 40, 30, 20, 10 }
+                );
+            dv.Show();
+        }
+
 
         public void CalculateTask()
         {
@@ -133,7 +161,8 @@ namespace Inverse_solver.ViewModel
                 resultsValues.Add(values);
             }
 
-            this.MyModel = HeatmapBuilder.buildCategorizedMap(xGrid, zGrid, resultsValues);
+            this.HeatmapModel = GraphicsBuilder.buildHeatmap(xGrid, zGrid, resultsValues);
+            this.IsTaskCalculated = true;
         }
 
         public void InitTask()
@@ -145,6 +174,8 @@ namespace Inverse_solver.ViewModel
                 Zstart, Zend, ZstepsAmount,
                 out int nodesSize, out int elemsSize);
 
+            this.IsTaskInitializated = true;
+            this.IsTaskCalculated = false;
             /*  Comment untill develop it:
             NodesSize = nodesSize;
             ElemsSize = elemsSize;
@@ -163,6 +194,34 @@ namespace Inverse_solver.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
+        
+        // to control buttons activity (add later):
+        private bool isTaskInitializated;
+
+        public bool IsTaskInitializated
+        {
+            get { return isTaskInitializated; }
+            set { isTaskInitializated = value;
+                //OnPropertyChanged("CalculateTaskCommand");
+                //CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
+
+        private bool isTaskCalculated;
+
+        public bool IsTaskCalculated
+        {
+            get { return isTaskCalculated; }
+            set
+            {
+                isTaskCalculated = value;
+                //OnPropertyChanged("OpenDiscrepancyViewCommand");
+               // CommandManager.InvalidateRequerySuggested();
+            }
+        }
+        
+        
         // Task settings props:
         // For measures grid:
         public int Hx { get; set; }
