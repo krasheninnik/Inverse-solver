@@ -88,8 +88,9 @@ namespace Inverse_solver.ViewModel
 
 
             List<double> xGrid = new List<double> { 0, 10, 20, 30, 40, 50, 60 };
-            List<double> yGrid = new List<double> { 0, 3, 6, };
+            List<double> yGrid = new List<double> { 0, 3, 6, 0, 10, 20, 30, 40, 50, 60, 0, 10, 20, 30, 40, 50, 60, 0, 10, 20, 30, 40, 50, 60 };
             List<double> zGrid = new List<double> { 0, 10, 20, 30, 40};
+            YGrid = yGrid;
 
             int pointsInXY = xGrid.Count() * yGrid.Count();
             int pointsInX = xGrid.Count();
@@ -194,7 +195,20 @@ namespace Inverse_solver.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
 
-        
+        // to control buttons activity (add later):
+        private List<double> yGrid;
+
+        public List<double> YGrid
+        {
+            get { return yGrid; }
+            set
+            {
+                yGrid = value;
+                OnPropertyChanged();
+                //CommandManager.InvalidateRequerySuggested();
+            }
+        }
+
         // to control buttons activity (add later):
         private bool isTaskInitializated;
 
