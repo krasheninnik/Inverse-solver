@@ -69,7 +69,6 @@ namespace Inverse_solver.ViewModel
         #region CommandsFunctions
         public void OpenSettingsForm()
         {
-            this.IsTaskCalculated = true;
             CommandManager.InvalidateRequerySuggested();
             SettingsForm sf = new SettingsForm();
             sf.DataContext = this;
