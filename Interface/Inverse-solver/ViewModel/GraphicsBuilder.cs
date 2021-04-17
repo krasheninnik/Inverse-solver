@@ -13,6 +13,9 @@ namespace Inverse_solver.ViewModel
         {
             var model = new PlotModel { Title = "Results" };
 
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate [m]" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Z coordinate [m]" });
+
             // Color axis
             model.Axes.Add(new LinearColorAxis
             {
@@ -52,6 +55,10 @@ namespace Inverse_solver.ViewModel
                 Title = $"Discrepancy graph"
 
             };
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate [m]" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Discrepancy" });
+
             var line1 = new OxyPlot.Series.LineSeries()
             {
                 Title = $"Discrepancy",
