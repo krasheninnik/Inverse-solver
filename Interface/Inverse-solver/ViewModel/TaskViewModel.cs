@@ -79,6 +79,9 @@ namespace Inverse_solver.ViewModel
             dv.DataContext = this;
             DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(XMeasureGrid, DiscrepancyValues);
             dv.Show();
+
+            // display discrepancy for first y layer
+            YMeasureLayerIndex = 0;
         }
 
         public void CalculateTask()
