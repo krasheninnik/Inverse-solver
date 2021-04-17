@@ -26,13 +26,13 @@ namespace Inverse_solver.Model
 
         //  [DllImport("inverseSolverDLL\\Debug\\inverseSolverDLL.dll", CallingConvention = CallingConvention.Cdecl)]
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr createTask();
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void deleteTask(IntPtr task);        // IntPtr
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void initInverseTask(IntPtr task, int hx, int nx, int hy, int ny,
                             Value v0, Value[] measuredValues, int measuredValuesSize,
                             double xStart, double xEnd, int xStepsAmount,
@@ -40,21 +40,21 @@ namespace Inverse_solver.Model
                             double zStart, double zEnd, int zStepsAmount,
                             double alpha);
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void getGridInformation(IntPtr task, out GridInformation gridInformation);
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void getResultGrids(IntPtr task, [Out] Value[] nodes, [Out] double[] yLayers);
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void getMeasureGrids(IntPtr task, [Out] double[] xGrid, [Out] double[] yGrid);
 
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr solveTask(IntPtr task, [Out] FiniteElem[] elems);
 
 
-        [DllImport("Z:\\Inverse-solver\\Solver\\mct_direct\\x64\\Debug\\mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr getDiscrepancy(IntPtr task, int yLayer, [Out] double[] values);
 
         public void Init(int hx, int nx, int hy, int ny, Value p0Measure,
