@@ -81,7 +81,7 @@ public:
 	void getGridInformation(GridInformation& gridInfo);
 	void getResultGrids(std::vector<Point>& nodes, std::vector<double>& yLayers);
 	void getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid);
-	void getDiscrepancy(int yLayer, std::vector<double> fx);
+	void getDiscrepancy(int yLayer, std::vector<double>& fx);
 
 private:
 	double alpha;

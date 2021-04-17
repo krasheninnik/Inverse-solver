@@ -85,7 +85,7 @@ void Task::getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGri
 	yGrid = yAxisMeasures;
 }
 
-void Task::getDiscrepancy(int yLayer, std::vector<double> fx) {
+void Task::getDiscrepancy(int yLayer, std::vector<double>& fx) {
 	calcResidual(yLayer, fx);
 }
 
@@ -433,7 +433,7 @@ void Task::calcResidual(int y, std::vector<double>& residual) {
 		parameters.push_back(elems[i].p);
 	}
 	getB(parameters, calculatedB);
-	for (int i = y * xAxisGrid.size(); i < y * xAxisGrid.size() + xAxisGrid.size(); i++) {
+	for (int i = y * xAxisMeasures.size(); i < y * xAxisMeasures.size() + xAxisMeasures.size(); i++) {
 		residual.push_back(abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100);
 	}
 }

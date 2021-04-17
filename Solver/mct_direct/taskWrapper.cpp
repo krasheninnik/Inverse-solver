@@ -67,5 +67,5 @@ void getDiscrepancy(Task* task, int yLayer, double* fx) {
 
     // Convert vectors to C-style arrays
     for (int i = 0; i < fxVec.size(); i++) fx[i] = fxVec[i];
-}
+    }
 
