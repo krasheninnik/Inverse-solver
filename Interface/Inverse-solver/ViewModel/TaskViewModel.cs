@@ -18,20 +18,22 @@ namespace Inverse_solver.ViewModel
 {
     public class TaskViewModel : INotifyPropertyChanged
     {
-        private bool TESTCASE = false;
-
         public TaskViewModel()
         {
             this.InverseTask = new InverseTask();
+
+            // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
             this.CalculateTaskCommand = new CalculateTaskCommand(this);
             this.InitTaskCommand = new InitTaskCommand(this);
             this.InitTaskCommandTestCase = new InitTaskCommandTestCase(this);
+
+            //  Graphics
             this.GraphicsBuilder = new GraphicsBuilder();
         }
 
-        GraphicsBuilder GraphicsBuilder { get; set; }
+        private GraphicsBuilder GraphicsBuilder { get; set; }
 
         // Model to show results of Inverse task
         private PlotModel heatmapModel;
@@ -52,17 +54,19 @@ namespace Inverse_solver.ViewModel
             set { discrepancyModel = value; OnPropertyChanged(); }
         }
 
-        InverseTask InverseTask { get; set; }
+        private InverseTask InverseTask { get; set; }
 
-        // Commands
-        public CalculateTaskCommand CalculateTaskCommand { get; set; }
-        public OpenSettingsFormCommand OpenSettingsFormCommand { get; set; }
+        #region CommandsDefinition
+        public CalculateTaskCommand CalculateTaskCommand { get; private set; }
+        public OpenSettingsFormCommand OpenSettingsFormCommand { get; private set; }
 
-        public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; set; }
+        public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; private set; }
 
-        public InitTaskCommand InitTaskCommand { get; set; }
-        public InitTaskCommandTestCase InitTaskCommandTestCase { get; set; }
+        public InitTaskCommand InitTaskCommand { get; private set; }
+        public InitTaskCommandTestCase InitTaskCommandTestCase { get; private set; }
+        #endregion
 
+        #region CommandsFunctions
         public void OpenSettingsForm()
         {
             this.IsTaskCalculated = true;
@@ -70,52 +74,6 @@ namespace Inverse_solver.ViewModel
             SettingsForm sf = new SettingsForm();
             sf.DataContext = this;
             sf.Show();
-        }
-
-
-        public void OpenDiscrepancyView()
-        {
-            DiscrepancyView dv = new DiscrepancyView();
-            dv.DataContext = this;
-            DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(XMeasureGrid, DiscrepancyValues);
-            dv.Show();
-
-            // display discrepancy for first y layer
-            YMeasureLayerIndex = 0;
-        }
-
-        public void CalculateTask()
-        {
-            // memory for FiniteElems allocated in Init Method
-            InverseTask.CalculateTask(FiniteElems);
-    
-            /* for sake of debug )0)
-            for(int i = 0; i < FiniteElems.Length; i++) FiniteElems[i].P = new Value(i, i, i);
-            */ 
-            this.HeatmapModel = GraphicsBuilder.buildHeatmap(GridInfo, ResultsValues);
-            this.IsTaskCalculated = true;
-        }
-
-        private List<List<double>> resultsValues;
-
-        public List<List<double>> ResultsValues
-        {
-            get {
-                int elemsInXY = GridInfo.elemsInX * GridInfo.elemsInY;
-                resultsValues = new List<List<double>>();
-                for (int zi = 0; zi < GridInfo.elemsInZ; zi++)
-                {
-                    var values = new List<double>();
-                    for (int xi = 0; xi < GridInfo.elemsInX; xi++)
-                    {
-                        values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * GridInfo.elemsInX + xi].P.Z);
-                    }
-
-                    resultsValues.Add(values);
-                };
-                return resultsValues;
-            }
-            set { resultsValues = value; }
         }
 
         public void InitTaskTestCase()
@@ -140,8 +98,8 @@ namespace Inverse_solver.ViewModel
             XstepsAmount = 2;
 
             Ystart = 0;
-            Yend = 1;
-            YstepsAmount = 1;
+            Yend = 4;
+            YstepsAmount = 2;
 
             Zstart = -1000;
             Zend = -500;
@@ -160,29 +118,36 @@ namespace Inverse_solver.ViewModel
                 Zstart, Zend, ZstepsAmount,
                 Alpha);
 
-            InverseTask.GetGridInformation(out GridInformation gridInfo);
-            GridInfo = gridInfo;
-
-            double[] _yResultGridLayers = new double[GridInfo.yResultsLayersSize];
-
-            // initialize grids:
-            Nodes = new Value[GridInfo.pointsSize];
-            YResultGridLayers = new double[GridInfo.yResultsLayersSize];
-            InverseTask.GetResultGrids(Nodes, YResultGridLayers);
-
-            XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
-            DiscrepancyValues = new double[GridInfo.xMeasureLayersSize];
-            YMeasureGridLayers = new double[GridInfo.yMeasureLayersSize];
-            InverseTask.GetMeasureGrids(XMeasureGrid, YMeasureGridLayers);
-
-            // allocate memory for FE
-            FiniteElems = new FiniteElem[GridInfo.elemsSize];
-
+            OnPropertyChanged("YResultGridLayers");
             this.IsTaskInitializated = true;
             this.IsTaskCalculated = false;
             //window.Close();
         }
 
+        public void CalculateTask()
+        {
+            // memory for FiniteElems allocated in Init Method
+            InverseTask.CalculateTask();
+            this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues);
+            this.IsTaskCalculated = true;
+        }
+        public void OpenDiscrepancyView()
+        {
+            DiscrepancyView dv = new DiscrepancyView();
+            dv.DataContext = this;
+            DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValues);
+            dv.Show();
+
+            // display discrepancy for first y layer
+            YMeasureLayerIndex = 0;
+        }
+        #endregion
+
+        // To control buttons activity (add later):
+        public bool IsTaskInitializated { get; set; }
+        public bool IsTaskCalculated { get; set; }
+
+        #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 
         // Caller Member Name allows not to pass property name in the function,
@@ -191,44 +156,21 @@ namespace Inverse_solver.ViewModel
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
+        #endregion
 
+        // Contains information about Y layers, make it possible to see results on each Y layer.
+        public double[] YResultGridLayers { get { return InverseTask.YResultGridLayers; }}
+        public double[] YMeasureGridLayers{  get { return InverseTask.YMeasureGridLayers; } }
 
-        private double[] yResultGridLayers;
-
-        public double[] YResultGridLayers
-        {
-            get { return yResultGridLayers; }
-            set
-            {
-                yResultGridLayers = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private int yResultLayerIndex;
+        // Indexes for changing displayed results by selected Y
         public int YResultLayerIndex
         {
-            get { return yResultLayerIndex; }
+            get { return InverseTask.YResultLayerIndex; }
             set
             {
-                yResultLayerIndex = value;
-                HeatmapModel = GraphicsBuilder.buildHeatmap(GridInfo, ResultsValues);
-            }
-        }
-
-        private double[] XMeasureGrid { get; set; }
-
-        private double[] DiscrepancyValues;
-
-        private double[] yMeasureGridLayers;
-
-        public double[]  YMeasureGridLayers
-        {
-            get { return yMeasureGridLayers; }
-            set
-            {
-                yMeasureGridLayers = value;
-                OnPropertyChanged();
+                InverseTask.YResultLayerIndex = value;
+                // Prop InverseTask.ResultsValues depends on InverseTask.YResultsLayerIndex, so.. its updated
+                HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues);
             }
         }
 
@@ -239,40 +181,13 @@ namespace Inverse_solver.ViewModel
             set
             {
                 yMeasureLayerIndex = value;
-                // update discrepancy values for this Y level
-                InverseTask.GetDiscrepancy(yMeasureLayerIndex, DiscrepancyValues);
-                // redraw model:
-                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(XMeasureGrid, DiscrepancyValues);
+                // Update discrepancy values for this Y level
+                InverseTask.GetDiscrepancy(yMeasureLayerIndex);
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValues);
             }
         }
 
-        // to control buttons activity (add later):
-        private bool isTaskInitializated;
-
-        public bool IsTaskInitializated
-        {
-            get { return isTaskInitializated; }
-            set
-            {
-                isTaskInitializated = value;
-                //OnPropertyChanged("CalculateTaskCommand");
-                //CommandManager.InvalidateRequerySuggested();
-            }
-        }
-
-        private bool isTaskCalculated;
-
-        public bool IsTaskCalculated
-        {
-            get { return isTaskCalculated; }
-            set
-            {
-                isTaskCalculated = value;
-                //OnPropertyChanged("OpenDiscrepancyViewCommand");
-               // CommandManager.InvalidateRequerySuggested();
-            }
-        }
-
+        #region SettingsParameters
         // Task settings props:
         // For measures grid:
         public int Hx { get; set; }
@@ -284,8 +199,10 @@ namespace Inverse_solver.ViewModel
         public double X0 { get; set; }
         public double Y0 { get; set; }
         public double Z0 { get; set; }
+
         // For Measures:
         public List<Value> MeasuredValues { get; set; }
+
         // For space grid:
         public double Xstart { get; set; }
         public double Xend { get; set; }
@@ -296,15 +213,7 @@ namespace Inverse_solver.ViewModel
         public double Zstart { get; set; }
         public double Zend { get; set; }
         public int ZstepsAmount { get; set; }
-
-        // Calculating result:
-        public int ElemsSize { get; set; }
-        public FiniteElem[] FiniteElems { get; set; }
-
-        public int NodesSize { get; set; }
-        public Value[] Nodes { get; set; }
-
-        private GridInformation GridInfo;
+        #endregion
     }
 }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,20 +14,13 @@ namespace Inverse_solver.Model
     {
         // ptr on the Task class, allocated in C++ code
         private readonly IntPtr task;
-        public InverseTask()
-        {
-            task = createTask();
-        }
+        public InverseTask() { task = createTask();}
 
-        ~InverseTask()
-        {
-            deleteTask(task);
-        }
-
-
+        ~InverseTask() { deleteTask(task); }
 
         //  [DllImport("inverseSolverDLL\\Debug\\inverseSolverDLL.dll", CallingConvention = CallingConvention.Cdecl)]
 
+        #region DLLImports
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr createTask();
 
@@ -57,7 +51,9 @@ namespace Inverse_solver.Model
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr getDiscrepancy(IntPtr task, int yLayer, [Out] double[] values);
+        #endregion
 
+        #region PublicFunctionsForVM
         public void Init(int hx, int nx, int hy, int ny, Value p0Measure,
                             Value[] measuredValues, int measuredValuesSize,
                             double xStart, double xEnd, int xStepsAmount,
@@ -71,32 +67,71 @@ namespace Inverse_solver.Model
                       yStart, yEnd, yStepsAmount,
                       zStart, zEnd, zStepsAmount,
                       alpha);
+
+            getGridInformation(task, out gridInfo);
+
+            // initialize grids:
+            Nodes = new Value[GridInfo.pointsSize];
+            YResultGridLayers = new double[GridInfo.yResultsLayersSize];
+            getResultGrids(task, Nodes, YResultGridLayers);
+
+            XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
+            DiscrepancyValues = new double[GridInfo.xMeasureLayersSize];
+            YMeasureGridLayers = new double[GridInfo.yMeasureLayersSize];
+            getMeasureGrids(task, XMeasureGrid, YMeasureGridLayers);
+
+            // allocate memory for FE
+            FiniteElems = new FiniteElem[GridInfo.elemsSize];
         }
 
-        public void GetGridInformation(out GridInformation gridInformation)
+        public void CalculateTask()
         {
-            getGridInformation(task, out gridInformation);
+            solveTask(task, FiniteElems);
+
+            // for sake of debug:
+            //for (int i = 0; i < FiniteElems.Length; i++) FiniteElems[i].P = new Value(i, i, i);
         }
 
-        public void GetResultGrids([Out] Value[] nodes, [Out] double[] yLayers)
+        public void GetDiscrepancy(int yLayer)
         {
-            getResultGrids(task, nodes, yLayers);
+            getDiscrepancy(task, yLayer, DiscrepancyValues);
         }
+        #endregion
 
-        public void GetMeasureGrids([Out] double[] xGrid, [Out] double[] yGrid)
+        public int YResultLayerIndex { get; set; }
+        public List<List<double>> ResultsValues
         {
-            getMeasureGrids(task, xGrid, yGrid);
+            get
+            {
+                int elemsInXY = GridInfo.elemsInX * GridInfo.elemsInY;
+                List<List<double>>  resultsValues = new List<List<double>>();
+                for (int zi = 0; zi < GridInfo.elemsInZ; zi++)
+                {
+                    var values = new List<double>();
+                    for (int xi = 0; xi < GridInfo.elemsInX; xi++)
+                    {
+                        values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * GridInfo.elemsInX + xi].P.Z);
+                    }
+
+                    resultsValues.Add(values);
+                };
+                return resultsValues;
+            }
         }
 
-        public void CalculateTask([Out] FiniteElem[] elems)
-        {
-            solveTask(task, elems);
-        }
+        private GridInformation gridInfo;
+        public GridInformation GridInfo { get => gridInfo; }
 
-        public void GetDiscrepancy(int yLayer, [Out] double[] values)
-        {
-            getDiscrepancy(task, yLayer, values);
-        }
+        public double[] YResultGridLayers { get; set; }
 
+        public double[] XMeasureGrid { get; private set; }
+
+        public double[] DiscrepancyValues { get; private set; }
+
+        public double[] YMeasureGridLayers { get; private set; }  
+
+        // Finite elems and coordinate points:
+        public FiniteElem[] FiniteElems { get; set; }
+        public Value[] Nodes { get; set; }
     }
 }
