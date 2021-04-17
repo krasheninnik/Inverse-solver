@@ -10,17 +10,22 @@ namespace Inverse_solver.ViewModel.Commands
     public class CalculateTaskCommand : ICommand
     {
         public TaskViewModel ViewModel { get; set; }
+
         public CalculateTaskCommand(TaskViewModel viewModel)
         {
             ViewModel = viewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { CommandManager.RequerySuggested += value; }
+            remove { CommandManager.RequerySuggested -= value; }
+        }
 
         public bool CanExecute(object parameter)
         {
             // execute this method in any cases
-            return true;// this.ViewModel.IsTaskInitializated;
+            return this.ViewModel.IsTaskInitializated && !this.ViewModel.IsTaskCalculated;
         }
 
         public void Execute(object parameter)
