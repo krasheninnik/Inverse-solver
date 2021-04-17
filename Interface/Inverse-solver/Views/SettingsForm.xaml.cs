@@ -18,7 +18,7 @@ namespace Inverse_solver.Views
     /// <summary>
     /// Interaction logic for SettingsForm.xaml
     /// </summary>
-    public partial class SettingsForm : Window
+    public partial class SettingsForm : Window, IClosable
     {
         public SettingsForm()
         {

@@ -12,9 +12,17 @@ namespace Inverse_solver.ViewModel.Converters
     public class MeasuredValuesConverter : IValueConverter
     {
         // Take element from VM and convert fror Views
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) { 
+        
+            StringBuilder result = new StringBuilder("");
+            var arr = value as List<Value>;
+
+            if (arr == null) return null;
+
+            for (int i = 0; i < arr.Count; i++)
+                result.Append($"{arr[i].X} {arr[i].Y} {arr[i].Z}\n");
+
+            return result.ToString();
         }
 
         // Take element from Views and convert from VM

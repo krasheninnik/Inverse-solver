@@ -8,10 +8,10 @@ using System.Windows.Input;
 
 namespace Inverse_solver.ViewModel.Commands
 {
-    public class InitTaskCommand : ICommand
+    public class InitTaskCommandTestCase : ICommand
     {
         public TaskViewModel ViewModel { get; set; }
-        public InitTaskCommand(TaskViewModel viewModel)
+        public InitTaskCommandTestCase(TaskViewModel viewModel)
         {
             ViewModel = viewModel;
         }
@@ -26,7 +26,7 @@ namespace Inverse_solver.ViewModel.Commands
 
         public void Execute(object parameter)
         {
-            ViewModel.InitTask(/*parameter as IClosable*/);
+            ViewModel.InitTaskTestCase();
         }
     }
 }

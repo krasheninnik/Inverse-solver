@@ -27,6 +27,7 @@ namespace Inverse_solver.ViewModel
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
             this.CalculateTaskCommand = new CalculateTaskCommand(this);
             this.InitTaskCommand = new InitTaskCommand(this);
+            this.InitTaskCommandTestCase = new InitTaskCommandTestCase(this);
             this.GraphicsBuilder = new GraphicsBuilder();
         }
 
@@ -60,6 +61,7 @@ namespace Inverse_solver.ViewModel
         public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; set; }
 
         public InitTaskCommand InitTaskCommand { get; set; }
+        public InitTaskCommandTestCase InitTaskCommandTestCase { get; set; }
 
         public void OpenSettingsForm()
         {
@@ -75,109 +77,18 @@ namespace Inverse_solver.ViewModel
         {
             DiscrepancyView dv = new DiscrepancyView();
             dv.DataContext = this;
-            if (TESTCASE)
-            {
-                XMeasureGrid = new double[] { 0, 10, 20, 30, 40, 50, 60, 70, 80, 80, 90, 100 };
-                DiscrepancyValues = new double[] { 0, 10, 20, 30, 40, 50, 60, 50, 40, 30, 20, 10 };
-                YMeasureGridLayers = new double[] { -200, -100, 0 };
-            }
             DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(XMeasureGrid, DiscrepancyValues);
             dv.Show();
         }
 
-
-        //private List<double> xGrid = new List<double> { 0, 10, 20, 30, 40, 50, 60 };
-        //private List<double> yGrid = new List<double> { 0, 3, 6, 9, 12, 15 };
-        //private List<double> zGrid = new List<double> { 0, 10, 20, 30, 40 };
         public void CalculateTask()
         {
-            // this part for modeling test case
-            // kiddna mock from dll...
+            // memory for FiniteElems allocated in Init Method
+            InverseTask.CalculateTask(FiniteElems);
     
-            if (TESTCASE)
-            {
-                //var yGridLayersTemp = new double[yGrid.Count-1];
-                //for (int i = 1; i < yGrid.Count; i++)
-                //{
-                //    yGridLayersTemp[i-1] = ((yGrid[i] + yGrid[i - 1]) / 2);
-                //}
-                //YResultGridLayers = yGridLayersTemp;
-
-                //int pointsInXY = xGrid.Count() * yGrid.Count();
-                //int pointsInX = xGrid.Count();
-                //int pointsInY = yGrid.Count();
-                //int pointsInZ = zGrid.Count();
-
-                //elemsInX = pointsInX - 1;
-                //elemsInY = pointsInY - 1;
-                //elemsInZ = pointsInZ - 1;
-
-                //ElemsSize = elemsInX * elemsInY * elemsInZ;
-                //NodesSize = pointsInX * pointsInY * pointsInZ;
-
-                //Nodes = new Value[NodesSize];
-                //int ni = 0;
-                //for (int zi = 0; zi < zGrid.Count(); zi++)
-                //{
-                //    for (int yi = 0; yi < yGrid.Count(); yi++)
-                //    {
-                //        for (int xi = 0; xi < xGrid.Count(); xi++)
-                //        {
-                //            Nodes[ni++] = new Value(xGrid[xi], yGrid[yi], zGrid[zi]);
-                //        }
-                //    }
-                //}
-
-
-                //FiniteElems = new FiniteElem[ElemsSize];
-
-
-                //int ei = 0;
-                //for (int zi = 0; zi < zGrid.Count() - 1; zi++)
-                //{
-                //    for (int yi = 0; yi < yGrid.Count() - 1; yi++)
-                //    {
-                //        for (int xi = 0; xi < xGrid.Count() - 1; xi++)
-                //        {
-                //            int n0 = zi * pointsInXY + yi * pointsInX + xi;
-                //            int n1 = zi * pointsInXY + yi * pointsInX + xi + 1;
-                //            int n2 = zi * pointsInXY + (yi + 1) * pointsInX + xi;
-                //            int n3 = zi * pointsInXY + (yi + 1) * pointsInX + xi + 1;
-                //            int n4 = (zi + 1) * pointsInXY + yi * pointsInX + xi;
-                //            int n5 = (zi + 1) * pointsInXY + yi * pointsInX + xi + 1;
-                //            int n6 = (zi + 1) * pointsInXY + (yi + 1) * pointsInX + xi;
-                //            int n7 = (zi + 1) * pointsInXY + (yi + 1) * pointsInX + xi + 1;
-                //            int value = (xi + 1) * (yi + 1) * (zi + 1);
-
-                //            Value p = new Value(ei, ei, ei);
-                //            FiniteElems[ei++] = new FiniteElem(n0, n1, n2, n3, n4, n5, n6, n7, p);
-                //        }
-                //    }
-                //}
-
-                //ResultsValues = new List<List<double>>();
-                //for (int zi = 0; zi < zGrid.Count() - 1; zi++)
-                //{
-                //    var values = new List<double>();
-                //    for (int xi = 0; xi < xGrid.Count() - 1; xi++)
-                //    {
-                //        values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * elemsInX + xi].P.Z);
-                //    }
-
-                //    resultsValues.Add(values);
-                //}
-            }
-            else
-            {
-                // memory for FiniteElems allocated in Init Method
-                InverseTask.CalculateTask(FiniteElems);
-             }
-
-            for(int i = 0; i < FiniteElems.Length; i++)
-            {
-              //  FiniteElems[i].P = new Value(i, i, i);
-            }
-
+            /* for sake of debug )0)
+            for(int i = 0; i < FiniteElems.Length; i++) FiniteElems[i].P = new Value(i, i, i);
+            */ 
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(GridInfo, ResultsValues);
             this.IsTaskCalculated = true;
         }
@@ -204,10 +115,11 @@ namespace Inverse_solver.ViewModel
             set { resultsValues = value; }
         }
 
-        public void InitTask()
+        public void InitTaskTestCase()
         {
-            Hx = 100;           
-            Nx = 3;
+            // set test case parameters
+            Hx = 100;
+            Nx = 10;
             Hy = 1;
             Ny = 4;
             X0 = 1900;
@@ -217,7 +129,7 @@ namespace Inverse_solver.ViewModel
             Alpha = 10;
 
             MeasuredValues = new List<Value>();
-            for (int i = 0; i < (Nx + 1) * (Ny + 1) ; i++) MeasuredValues.Add(new Value(i, i, i));
+            for (int i = 0; i < (Nx + 1) * (Ny + 1); i++) MeasuredValues.Add(new Value(i, i, i));
 
 
             Xstart = 2000;
@@ -232,6 +144,12 @@ namespace Inverse_solver.ViewModel
             Zend = -500;
             ZstepsAmount = 2;
 
+            // call init function
+            this.InitTask();
+        }
+
+        public void InitTask(/*IClosable window*/)
+        {
             InverseTask.Init(Hx, Nx, Hy, Ny, new Value(X0, Y0, Z0),
                 MeasuredValues.ToArray(), MeasuredValues.Count,
                 Xstart, Xend, XstepsAmount,
@@ -259,6 +177,7 @@ namespace Inverse_solver.ViewModel
 
             this.IsTaskInitializated = true;
             this.IsTaskCalculated = false;
+            //window.Close();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

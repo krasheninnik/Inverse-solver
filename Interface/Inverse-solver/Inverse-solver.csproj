@@ -101,11 +101,13 @@
     <Compile Include="Model\FiniteElem.cs" />
     <Compile Include="Model\Value.cs" />
     <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
+    <Compile Include="ViewModel\Commands\InitTaskCommandTestCase.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenSettingsFormCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenDiscrepancyViewCommand.cs" />
     <Compile Include="ViewModel\Converters\MeasuredValuesConverter.cs" />
     <Compile Include="ViewModel\GraphicsBuilder.cs" />
+    <Compile Include="ViewModel\IClosable.cs" />
     <Compile Include="ViewModel\TaskViewModel.cs" />
     <Compile Include="Views\DiscrepancyView.xaml.cs">
       <DependentUpon>DiscrepancyView.xaml</DependentUpon>
