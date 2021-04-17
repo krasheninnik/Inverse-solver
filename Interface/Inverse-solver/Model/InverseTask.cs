@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -33,7 +34,7 @@ namespace Inverse_solver.Model
         static extern public void deleteTask(IntPtr task);        // IntPtr
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public void initInverseTask(IntPtr task, int hx, int nx, int hy, int ny,
+        static extern public void initInverseTask(IntPtr task, double hx, int nx, double hy, int ny,
                             Value v0, Value[] measuredValues, int measuredValuesSize,
                             double xStart, double xEnd, int xStepsAmount,
                             double yStart, double yEnd, int yStepsAmount,
@@ -64,7 +65,7 @@ namespace Inverse_solver.Model
                             double zStart, double zEnd, int zStepsAmount,
                             double alpha)
         {
-          initInverseTask(task, hx, nx, hy, ny,
+            initInverseTask(task, hx, nx, hy, ny,
                       p0Measure, measuredValues, measuredValuesSize,
                       xStart, xEnd, xStepsAmount,
                       yStart, yEnd, yStepsAmount,

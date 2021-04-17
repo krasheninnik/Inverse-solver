@@ -57,4 +57,4 @@ extern "C" INVERSESOLVERLIB void getGridInformation(Task* task, GridInformation&
 extern "C" INVERSESOLVERLIB void getResultGrids(Task* task, Point* nodes, double* yLayers);
 extern "C" INVERSESOLVERLIB void getMeasureGrids(Task* task, double* xGrid, double* yGrid);
 
-extern "C" INVERSESOLVERLIB void getDiscrepancy(Task* task, int yLayer, std::vector<double> fx);
+extern "C" INVERSESOLVERLIB void getDiscrepancy(Task* task, int yLayer, double* fx);

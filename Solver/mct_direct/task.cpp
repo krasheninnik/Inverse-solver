@@ -179,8 +179,8 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	gridInfo.elemsSize = gridInfo.elemsInX * gridInfo.elemsInY * gridInfo.elemsInZ;
 	gridInfo.pointsSize = nodes.size();
 	gridInfo.yResultsLayersSize = yAxisGrid.size() - 1;
-	gridInfo.yMeasureLayersSize = yAxisMeasures.size() - 1;
-	gridInfo.xMeasureLayersSize = xAxisMeasures.size() - 1;
+	gridInfo.yMeasureLayersSize = yAxisMeasures.size();
+	gridInfo.xMeasureLayersSize = xAxisMeasures.size();
 
 	gridInfo.dx = xAxisGrid[1] - xAxisGrid[0];
 	gridInfo.xStart = xAxisGrid.front();

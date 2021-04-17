@@ -209,30 +209,16 @@ namespace Inverse_solver.ViewModel
             Hx = 100;           
             Nx = 3;
             Hy = 1;
-            Ny = 1;
+            Ny = 4;
             X0 = 1900;
             Y0 = 0;
             Z0 = 0;
 
             Alpha = 10;
 
-            MeasuredValues = new List<Value>()
-            {
-                new Value(1,1,1),
-                new Value(2,2,2),
-                new Value(3,3,3),
-                new Value(4,4,4),
-                new Value(5,5,5),
-                new Value(6,6,6),
-                new Value(7,7,7),
-                new Value(8,8,8),
-                new Value(9,9,9),
-                  new Value(10,10, 10),
-                  new Value(11,11, 11),
-                new Value(12,12, 12),
-                //                  new Value(14,14, 14),
-                //new Value(13,13, 13),
-            };
+            MeasuredValues = new List<Value>();
+            for (int i = 0; i < (Nx + 1) * (Ny + 1) ; i++) MeasuredValues.Add(new Value(i, i, i));
+
 
             Xstart = 2000;
             Xend = 3000;
@@ -260,12 +246,8 @@ namespace Inverse_solver.ViewModel
 
             // initialize grids:
             Nodes = new Value[GridInfo.pointsSize];
-            Debug.WriteLine(Nodes[0].ToString());
             YResultGridLayers = new double[GridInfo.yResultsLayersSize];
-            Debug.WriteLine(YResultGridLayers[0].ToString());
-
             InverseTask.GetResultGrids(Nodes, YResultGridLayers);
-            Debug.WriteLine("getGrids");
 
             XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
             DiscrepancyValues = new double[GridInfo.xMeasureLayersSize];
