@@ -47,13 +47,12 @@ namespace Inverse_solver.ViewModel
             return model;
         }
 
-        public PlotModel buildDiscrepancyGraph(double[] x, double[]  fx)
+        public PlotModel buildDiscrepancyGraph(double[] x, double[] fx)
         {
             // create the model and add the lines to it
             var model = new OxyPlot.PlotModel
             {
                 Title = $"Discrepancy graph"
-
             };
 
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate [m]" });
