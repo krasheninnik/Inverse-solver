@@ -33,6 +33,7 @@ void getGridInformation(Task* task, GridInformation& gridInfo) {
 
 void solveTask(Task* task, FiniteElemProxy* felemsProxy) {
     std::vector<FiniteElem> felems;
+    task->reset();
     task->solve(felems);
    
     for (int i = 0; i < felems.size(); i++) {

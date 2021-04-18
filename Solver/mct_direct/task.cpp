@@ -403,6 +403,13 @@ std::vector<double> Task::B(Measure m) {
 	B[2] = m.B.z;
 	return B;
 }
+
+void Task::reset() {
+	for (auto& row : matrix) std::fill(row.begin(), row.end(), 0);
+	std::fill(rightPart.begin(), rightPart.end(), 0);
+	std::fill(p.begin(), p.end(), 0);
+}
+
 auto get_time() { return std::chrono::high_resolution_clock::now(); }
 void Task::solve(std::vector<FiniteElem>& _elems) {
 	auto start = get_time();

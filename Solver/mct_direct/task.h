@@ -78,6 +78,7 @@ public:
 		double alpha);
 	void init();
 	void solve(std::vector<FiniteElem>&_elems);
+	void reset();
 	void getB(std::vector<Point> parameters, std::vector<Point>& B);
 
 	void getGridInformation(GridInformation& gridInfo);
