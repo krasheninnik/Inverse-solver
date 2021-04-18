@@ -23,7 +23,7 @@ void Task::init() {
 	elems.resize(n);
 	for (FiniteElem &elem : elems) {
 		elem.nodes.resize(ELEM_DIM);
-		for (int &node : elem.nodes) {
+		for (int& node : elem.nodes) {
 			fin >> node;
 		}
 	}
@@ -34,7 +34,7 @@ void Task::init() {
 	// в начале считать количество измерений
 	fin >> n;
 	measures.resize(n);
-	for (Measure &m : measures) {
+	for (Measure& m : measures) {
 		fin >> m.point.x >> m.point.y >> m.point.z;
 		//fin >> m.B.x >> m.B.y >> m.B.z;
 	}
@@ -192,7 +192,7 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 
 Point Task::calculateB(int i) {
 	Point res = Point (0,0,0);
-	for (FiniteElem elem : elems) {
+	for (FiniteElem& elem : elems) {
 		Point b = B(i, elem);
 		res.x += b.x;
 		res.y += b.y;
@@ -406,11 +406,11 @@ std::vector<double> Task::B(Measure m) {
 void Task::solve(std::vector<FiniteElem>& _elems) {
 	for (int q = 0; q < matrix.size(); q++) {
 		for (int s = 0; s < matrix[q].size(); s++) {
-			for (Measure m : measures) {
+			for (Measure& m : measures) {
 				matrix[q][s] += vectorsProduct(L(q, m.point), L(s, m.point));
 			}
 		}
-		for (Measure m : measures) {
+		for (Measure& m : measures) {
 			rightPart[q] += vectorsProduct(L(q, m.point), B(m));
 		}
 	}
