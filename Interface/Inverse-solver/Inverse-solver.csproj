@@ -58,6 +58,9 @@
     <Reference Include="Microsoft.Maps.MapControl.WPF, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Maps.MapControl.WPF.1.0.0.3\lib\net40-Client\Microsoft.Maps.MapControl.WPF.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OxyPlot, Version=2.1.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
       <HintPath>..\packages\OxyPlot.Core.2.1.0-Preview1\lib\net45\OxyPlot.dll</HintPath>
     </Reference>
@@ -99,6 +102,7 @@
     </ApplicationDefinition>
     <Compile Include="Model\GridInformation.cs" />
     <Compile Include="Model\FiniteElem.cs" />
+    <Compile Include="Model\InitParameters.cs" />
     <Compile Include="Model\Value.cs" />
     <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommandTestCase.cs" />
@@ -155,6 +159,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="initSettings.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

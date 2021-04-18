@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -12,6 +13,7 @@ using Inverse_solver.Model;
 using Inverse_solver.ViewModel.Commands;
 using Inverse_solver.ViewModel.Converters;
 using Inverse_solver.Views;
+using Newtonsoft.Json;
 using OxyPlot;
 
 namespace Inverse_solver.ViewModel
@@ -41,8 +43,11 @@ namespace Inverse_solver.ViewModel
         public PlotModel HeatmapModel
         {
             get { return heatmapModel; }
-            set { heatmapModel = value;
-                OnPropertyChanged(); }
+            set
+            {
+                heatmapModel = value;
+                OnPropertyChanged();
+            }
         }
 
         // Model to show discrepancy graph
@@ -77,32 +82,32 @@ namespace Inverse_solver.ViewModel
 
         public void InitTaskTestCase()
         {
-            // set test case parameters
-            Hx = 100;
-            Nx = 10;
-            Hy = 1;
-            Ny = 4;
-            X0 = 1900;
-            Y0 = 0;
-            Z0 = 0;
+            // Deserialize JSON directly from a file and init variables
+            using (StreamReader file = File.OpenText("../../../Inverse-solver/initSettings.json"))
+            {
+                JsonSerializer serializer = new JsonSerializer();
+                InitParameters initSettings = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
 
-            Alpha = 10;
+                Hx = initSettings.Hx;
+                Nx = initSettings.Nx;
+                Hy = initSettings.Hy;
+                Ny = initSettings.Ny;
+                X0 = initSettings.X0;
+                Y0 = initSettings.Y0;
+                Z0 = initSettings.Z0;
+                Alpha = initSettings.Alpha;
+                MeasuredValues = initSettings.MeasuredValues;
 
-            MeasuredValues = new List<Value>();
-            for (int i = 0; i < (Nx + 1) * (Ny + 1); i++) MeasuredValues.Add(new Value(i, i, i));
-
-
-            Xstart = 2000;
-            Xend = 3000;
-            XstepsAmount = 2;
-
-            Ystart = 0;
-            Yend = 4;
-            YstepsAmount = 2;
-
-            Zstart = -1000;
-            Zend = -500;
-            ZstepsAmount = 2;
+                Xstart = initSettings.Xstart;
+                Xend = initSettings.Xend;
+                XstepsAmount = initSettings.XstepsAmount;
+                Ystart = initSettings.Ystart;
+                Yend = initSettings.Yend;
+                YstepsAmount = initSettings.YstepsAmount;
+                Zstart = initSettings.Zstart;
+                Zend = initSettings.Zend;
+                ZstepsAmount = initSettings.ZstepsAmount;
+            }
 
             // call init function
             this.InitTask();
@@ -158,8 +163,8 @@ namespace Inverse_solver.ViewModel
         #endregion
 
         // Contains information about Y layers, make it possible to see results on each Y layer.
-        public double[] YResultGridLayers { get { return InverseTask.YResultGridLayers; }}
-        public double[] YMeasureGridLayers{  get { return InverseTask.YMeasureGridLayers; } }
+        public double[] YResultGridLayers { get { return InverseTask.YResultGridLayers; } }
+        public double[] YMeasureGridLayers { get { return InverseTask.YMeasureGridLayers; } }
 
         // Indexes for changing displayed results by selected Y
         public int YResultLayerIndex

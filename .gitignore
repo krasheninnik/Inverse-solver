@@ -92,3 +92,10 @@ Solver/mct_direct/x64/Release/mct_direct.lib
 Solver/mct_direct/x64/Release/taskWrapper.obj
 Solver/mct_direct/x64/Debug/mct_direct.tlog/link.22880.delete.1.tlog
 Solver/mct_direct/x64/Release/mct_direct.tlog/link.delete.1.tlog
+Solver/mct_direct/Build/x64/Debug/mct_direct.dll
+Solver/mct_direct/Build/x64/Debug/mct_direct.exe
+Solver/mct_direct/Build/x64/Debug/mct_direct.exp
+Solver/mct_direct/Build/x64/Debug/mct_direct.ilk
+Solver/mct_direct/Build/x64/Debug/mct_direct.lib
+Solver/mct_direct/Build/x64/Debug/mct_direct.pdb
+Solver/mct_direct/x64/Debug/mct_direct.tlog/link.delete.1.tlog
