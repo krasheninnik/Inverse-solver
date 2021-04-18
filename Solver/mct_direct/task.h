@@ -4,6 +4,8 @@
 #include <fstream>
 #include <vector>
 #include <math.h>
+#include <ppl.h>
+#include <chrono>
 #include "Gauss.h"
 
 

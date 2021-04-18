@@ -6,9 +6,9 @@ void Task::init() {
 	int n;
 	std::ifstream fin;
 
-	// узлы элементов
+	// пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fin.open("nodes.txt");
-	// в начале считать количество узлов
+	// пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	fin >> n;
 	nodes.resize(n);
 	for (Point &node : nodes) {
@@ -16,9 +16,9 @@ void Task::init() {
 	}
 	fin.close();
 
-	// элементы
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fin.open("elems.txt");
-	// в начале считать количество элементов
+	// пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fin >> n;
 	elems.resize(n);
 	for (FiniteElem &elem : elems) {
@@ -29,9 +29,9 @@ void Task::init() {
 	}
 	fin.close();
 
-	// измерения
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fin.open("measures.txt");
-	// в начале считать количество измерений
+	// пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	fin >> n;
 	measures.resize(n);
 	for (Measure& m : measures) {
@@ -43,7 +43,7 @@ void Task::init() {
 	gaussPoints = { -0.774596669, 0.0 , 0.774596669 };
 	gaussWeights = { 0.555555556, 0.888888889, 0.555555556 };
 
-	//инициализация структур СЛАУ
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	double dim = TASK_DIM * elems.size();
 	matrix.resize(dim);
 	rightPart.resize(dim);
@@ -105,7 +105,7 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	int pointsInZ = zAxisGrid.size();
 	int pointsInXY = pointsInX * pointsInY;
 
-	//заполнение массива узлов
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
 	nodes.resize(pointsInX * pointsInY * pointsInZ);
 	int ni = 0;
 	for (int zi = 0; zi < pointsInZ; zi++)
@@ -119,7 +119,7 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 		}
 	}
 
-	//заполнение массива элементов
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	elems.resize((pointsInX - 1) * (pointsInY - 1) * (pointsInZ - 1));
 
 	int ei = 0;
@@ -145,8 +145,9 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 		}
 	}
 
-	//заполнение массива измерений
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	measures.clear();
+	measures.reserve(yAxisMeasures.size() * xAxisMeasures.size());
 	fillAxisMeasures(xAxisMeasures, p0Measure.x, nxMeasure, hxMeasure);
 	fillAxisMeasures(yAxisMeasures, p0Measure.y, nyMeasure, hyMeasure);
 	zMeasure = p0Measure.z;
@@ -163,7 +164,7 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	// just be:
 	yResidual = 0;
 
-	//инициализация структур СЛАУ
+	//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ
 	double dim = TASK_DIM * elems.size();
 	matrix.resize(dim);
 	rightPart.resize(dim);
@@ -259,7 +260,7 @@ double Task::variableChange(double var, double a, double b) {
 void Task::getB(std::vector<Point> parameters, std::vector<Point>& B) {
 	B.resize(measures.size());
 	int k = 0;
-	// запоминаем новые параметры
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	for (int i = 0; i < elems.size();i++) {
 		elems[i].p = parameters[i];
 	}
@@ -402,18 +403,22 @@ std::vector<double> Task::B(Measure m) {
 	B[2] = m.B.z;
 	return B;
 }
-
+auto get_time() { return std::chrono::high_resolution_clock::now(); }
 void Task::solve(std::vector<FiniteElem>& _elems) {
-	for (int q = 0; q < matrix.size(); q++) {
-		for (int s = 0; s < matrix[q].size(); s++) {
-			for (Measure& m : measures) {
-				matrix[q][s] += vectorsProduct(L(q, m.point), L(s, m.point));
+	auto start = get_time();
+	std::cout << "Start solve task";
+	concurrency::parallel_for(size_t(0), matrix.size(), [this](size_t q)
+		{
+			for (int s = 0; s < matrix[q].size(); s++) {
+				for (Measure& m: measures) {
+					matrix[q][s] += vectorsProduct(L(q, m.point), L(s, m.point));
+				}
 			}
-		}
-		for (Measure& m : measures) {
-			rightPart[q] += vectorsProduct(L(q, m.point), B(m));
-		}
-	}
+			for (Measure&m : measures) {
+				rightPart[q] += vectorsProduct(L(q, m.point), B(m));
+			}
+		});
+
 	alphaRegularization();
 	Gauss(matrix, rightPart, p);
 	for (int i = 0, j=0; i < p.size();i+=3, j++) {
@@ -423,15 +428,21 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 	}
 	_elems = elems;
 
+	auto finish = get_time();
+	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
+	std::cout << "Elapsed time = " << duration.count() << " ms\n";
 	//calcResidual(yResidual, _f);
 }
 
 void Task::calcResidual(int y, std::vector<double>& residual) {
 	std::vector<Point>parameters;
 	std::vector<Point>calculatedB;
+
+	parameters.reserve(elems.size());
 	for (int i = 0; i < elems.size(); i++) {
 		parameters.push_back(elems[i].p);
 	}
+
 	getB(parameters, calculatedB);
 	for (int i = y * xAxisMeasures.size(); i < y * xAxisMeasures.size() + xAxisMeasures.size(); i++) {
 		residual.push_back(abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100);
