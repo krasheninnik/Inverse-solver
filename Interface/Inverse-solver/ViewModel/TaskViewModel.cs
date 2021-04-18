@@ -27,13 +27,22 @@ namespace Inverse_solver.ViewModel
             // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
-            this.CalculateTaskCommand = new CalculateTaskCommand(this);
-            this.InitTaskCommand = new InitTaskCommand(this);
-            this.InitTaskCommandTestCase = new InitTaskCommandTestCase(this);
+            this.CalculateTaskCommand = new CalculateTaskCommand(this, (ex) => StatusMessage = ex.Message);
+            this.InitTaskCommand = new InitTaskCommand(this, (ex) => StatusMessage = ex.Message);
+            this.InitTaskCommandTestCase = new InitTaskCommandTestCase(this, (ex) => StatusMessage = ex.Message);
 
             //  Graphics
             this.GraphicsBuilder = new GraphicsBuilder();
         }
+
+        private string statusMessage;
+
+        public string StatusMessage
+        {
+            get { return statusMessage; }
+            set { statusMessage = value; OnPropertyChanged();}
+        }
+
 
         private GraphicsBuilder GraphicsBuilder { get; set; }
 
@@ -80,60 +89,78 @@ namespace Inverse_solver.ViewModel
             sf.Show();
         }
 
-        public void InitTaskTestCase()
+        public async Task InitTaskTestCase()
         {
-            // Deserialize JSON directly from a file and init variables
-            using (StreamReader file = File.OpenText("../../../Inverse-solver/initSettings.json"))
+            await Task.Run(async () =>
             {
-                JsonSerializer serializer = new JsonSerializer();
-                InitParameters initSettings = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
+                // Deserialize JSON directly from a file and init variables
+                using (StreamReader file = File.OpenText("../../../Inverse-solver/initSettings.json"))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    InitParameters initSettings = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
 
-                Hx = initSettings.Hx;
-                Nx = initSettings.Nx;
-                Hy = initSettings.Hy;
-                Ny = initSettings.Ny;
-                X0 = initSettings.X0;
-                Y0 = initSettings.Y0;
-                Z0 = initSettings.Z0;
-                Alpha = initSettings.Alpha;
-                MeasuredValues = initSettings.MeasuredValues;
+                    Hx = initSettings.Hx;
+                    Nx = initSettings.Nx;
+                    Hy = initSettings.Hy;
+                    Ny = initSettings.Ny;
+                    X0 = initSettings.X0;
+                    Y0 = initSettings.Y0;
+                    Z0 = initSettings.Z0;
+                    Alpha = initSettings.Alpha;
+                    MeasuredValues = initSettings.MeasuredValues;
 
-                Xstart = initSettings.Xstart;
-                Xend = initSettings.Xend;
-                XstepsAmount = initSettings.XstepsAmount;
-                Ystart = initSettings.Ystart;
-                Yend = initSettings.Yend;
-                YstepsAmount = initSettings.YstepsAmount;
-                Zstart = initSettings.Zstart;
-                Zend = initSettings.Zend;
-                ZstepsAmount = initSettings.ZstepsAmount;
-            }
+                    Xstart = initSettings.Xstart;
+                    Xend = initSettings.Xend;
+                    XstepsAmount = initSettings.XstepsAmount;
+                    Ystart = initSettings.Ystart;
+                    Yend = initSettings.Yend;
+                    YstepsAmount = initSettings.YstepsAmount;
+                    Zstart = initSettings.Zstart;
+                    Zend = initSettings.Zend;
+                    ZstepsAmount = initSettings.ZstepsAmount;
+                }
 
-            // call init function
-            this.InitTask();
+                // call init function
+                await InitTask();
+            });
+
+            // Update commands CanExecute states
+            CommandManager.InvalidateRequerySuggested();
         }
 
-        public void InitTask(/*IClosable window*/)
+        public  async Task InitTask(/*IClosable window*/)
         {
-            InverseTask.Init(Hx, Nx, Hy, Ny, new Value(X0, Y0, Z0),
-                MeasuredValues.ToArray(), MeasuredValues.Count,
-                Xstart, Xend, XstepsAmount,
-                Ystart, Yend, YstepsAmount,
-                Zstart, Zend, ZstepsAmount,
-                Alpha);
-
+            await Task.Run(() =>
+            {
+                InverseTask.Init(Hx, Nx, Hy, Ny, new Value(X0, Y0, Z0),
+                    MeasuredValues.ToArray(), MeasuredValues.Count,
+                    Xstart, Xend, XstepsAmount,
+                    Ystart, Yend, YstepsAmount,
+                    Zstart, Zend, ZstepsAmount,
+                    Alpha);
+            });
             OnPropertyChanged("YResultGridLayers");
             this.IsTaskInitializated = true;
             this.IsTaskCalculated = false;
             //window.Close();
+
+            // Update commands CanExecute states
+            CommandManager.InvalidateRequerySuggested();
         }
 
-        public void CalculateTask()
+        public async Task CalculateTask()
         {
-            // memory for FiniteElems allocated in Init Method
-            InverseTask.CalculateTask();
+            Debug.WriteLine("#: in CalculateTask");
+            await Task.Run(() =>
+            {
+                InverseTask.CalculateTask();
+            });
+
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues);
             this.IsTaskCalculated = true;
+
+            // Update commands CanExecute states
+            CommandManager.InvalidateRequerySuggested();
         }
         public void OpenDiscrepancyView()
         {

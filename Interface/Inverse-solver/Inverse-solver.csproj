@@ -104,6 +104,7 @@
     <Compile Include="Model\FiniteElem.cs" />
     <Compile Include="Model\InitParameters.cs" />
     <Compile Include="Model\Value.cs" />
+    <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
     <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommandTestCase.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommand.cs" />

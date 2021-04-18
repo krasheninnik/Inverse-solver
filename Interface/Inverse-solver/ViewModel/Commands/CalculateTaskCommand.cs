@@ -7,30 +7,26 @@ using System.Windows.Input;
 
 namespace Inverse_solver.ViewModel.Commands
 {
-    public class CalculateTaskCommand : ICommand
+    public class CalculateTaskCommand : AsyncCommandBase
     {
         public TaskViewModel ViewModel { get; set; }
 
-        public CalculateTaskCommand(TaskViewModel viewModel)
+        public CalculateTaskCommand(TaskViewModel viewModel, Action<Exception> onException) :
+            base(onException)
         {
             ViewModel = viewModel;
         }
 
-        public event EventHandler CanExecuteChanged
+        protected override async Task ExecuteAsync(object parameter)
         {
-            add { CommandManager.RequerySuggested += value; }
-            remove { CommandManager.RequerySuggested -= value; }
+            ViewModel.StatusMessage = "Start calclulating task...";
+            await ViewModel.CalculateTask();
+            ViewModel.StatusMessage = "Task has been calculated.";
         }
 
-        public bool CanExecute(object parameter)
+        protected override bool CanExecuteSync()
         {
-            // execute this method in any cases
             return this.ViewModel.IsTaskInitializated && !this.ViewModel.IsTaskCalculated;
-        }
-
-        public void Execute(object parameter)
-        {
-            this.ViewModel.CalculateTask();
         }
     }
 }

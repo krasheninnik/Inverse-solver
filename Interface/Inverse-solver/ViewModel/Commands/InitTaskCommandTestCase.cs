@@ -8,25 +8,20 @@ using System.Windows.Input;
 
 namespace Inverse_solver.ViewModel.Commands
 {
-    public class InitTaskCommandTestCase : ICommand
+    public class InitTaskCommandTestCase : AsyncCommandBase
     {
         public TaskViewModel ViewModel { get; set; }
-        public InitTaskCommandTestCase(TaskViewModel viewModel)
+        public InitTaskCommandTestCase(TaskViewModel viewModel, Action<Exception> onException) :
+            base(onException)
         {
             ViewModel = viewModel;
         }
 
-        public event EventHandler CanExecuteChanged;
-
-        public bool CanExecute(object parameter)
+        protected override async Task ExecuteAsync(object parameter)
         {
-            // there must be condition: all fields in form have been filled
-            return true;
-        }
-
-        public void Execute(object parameter)
-        {
-            ViewModel.InitTaskTestCase();
+            ViewModel.StatusMessage = "Start task initialization...";
+            await ViewModel.InitTaskTestCase();
+            ViewModel.StatusMessage = "Task has been initialized.";
         }
     }
 }
