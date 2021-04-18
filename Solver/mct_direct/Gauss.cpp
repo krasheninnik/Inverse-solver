@@ -1,6 +1,6 @@
 #include "Gauss.h"
 
-vector<vector<double>> forward_path(vector<vector<double>> A) {
+void forward_path(vector<vector<double>>& A) {
 	int n = A.size();
 	for (int j = 0; j < n; j++) {
 		//поиск максимального элемента в столбце
@@ -28,10 +28,9 @@ vector<vector<double>> forward_path(vector<vector<double>> A) {
 			}
 		}
 	}
-	return A;
 }
 
-vector<double> backward_path(vector<vector<double>> A, vector<double>x) {
+void backward_path(vector<vector<double>>& A, vector<double>& x) {
 	int n = A.size();
 	for (int i = n - 1; i >= 0; i--) {
 		x[i] = A[i][n];
@@ -41,14 +40,12 @@ vector<double> backward_path(vector<vector<double>> A, vector<double>x) {
 		x[i] -= sum;
 		x[i] /= A[i][i];
 	}
-	return x;
 }
 
-vector<double> Gauss(vector<vector<double>> A, vector<double>b, vector<double>x) {
+void Gauss(vector<vector<double>>& A, vector<double>& b, vector<double>& x) {
 	for (int i = 0; i < A.size(); i++) {
 		A[i].push_back(b[i]);
 	}
-	A = forward_path(A);
-	x = backward_path(A, x);
-	return x;
+	forward_path(A);
+	backward_path(A, x);
 }

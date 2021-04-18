@@ -415,7 +415,7 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 		}
 	}
 	alphaRegularization();
-	p = Gauss(matrix, rightPart, p);
+	Gauss(matrix, rightPart, p);
 	for (int i = 0, j=0; i < p.size();i+=3, j++) {
 		elems[j].p.x = p[i];
 		elems[j].p.y = p[i + 1];
