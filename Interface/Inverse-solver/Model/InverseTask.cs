@@ -54,19 +54,14 @@ namespace Inverse_solver.Model
         #endregion
 
         #region PublicFunctionsForVM
-        public void Init(int hx, int nx, int hy, int ny, Value p0Measure,
-                            Value[] measuredValues, int measuredValuesSize,
-                            double xStart, double xEnd, int xStepsAmount,
-                            double yStart, double yEnd, int yStepsAmount,
-                            double zStart, double zEnd, int zStepsAmount,
-                            double alpha)
+        public void Init(InitParameters ip)
         {
-            initInverseTask(task, hx, nx, hy, ny,
-                      p0Measure, measuredValues, measuredValuesSize,
-                      xStart, xEnd, xStepsAmount,
-                      yStart, yEnd, yStepsAmount,
-                      zStart, zEnd, zStepsAmount,
-                      alpha);
+            initInverseTask(task, ip.Hx, ip.Nx, ip.Hy, ip.Ny, new Value(ip.X0, ip.Y0, ip.Z0),
+                      ip.MeasuredValues.ToArray(), ip.MeasuredValues.Count,
+                      ip.Xstart, ip.Xend, ip.XstepsAmount,
+                      ip.Ystart, ip.Yend, ip.YstepsAmount,
+                      ip.Zstart, ip.Zend, ip.ZstepsAmount,
+                      ip.Alpha);
 
             getGridInformation(task, out gridInfo);
 

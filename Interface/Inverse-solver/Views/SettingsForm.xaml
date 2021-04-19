@@ -7,14 +7,20 @@
         xmlns:local="clr-namespace:Inverse_solver.Views"
         xmlns:converter="clr-namespace:Inverse_solver.ViewModel.Converters"
         mc:Ignorable="d"
-        Title="SettingsForm" Height="527.709" Width="952.307">
+        Title="SettingsForm" Height="543.618" Width="952.307">
 
     <Window.Resources>
         <converter:MeasuredValuesConverter x:Key="MeasuredValuesConverter"></converter:MeasuredValuesConverter>
     </Window.Resources>
 
-    <Grid Margin="0,0,12,-11">
+    <Grid Margin="0,0,12,7">
         <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
             <RowDefinition Height="159*"/>
             <RowDefinition Height="349*"/>
         </Grid.RowDefinitions>
@@ -23,11 +29,7 @@
             <ColumnDefinition Width="198*"/>
             <ColumnDefinition Width="47*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.ColumnSpan="3" Margin="0,43,0,35" Grid.RowSpan="2">
-            <!--<TextBox Width="30" Text="{Binding Number1, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox Width="30" Text="{Binding Number2, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-            <TextBox Width="30" Text="{Binding Number3, Mode=OneWay}" IsReadOnly="True"></TextBox>-->
-
+        <StackPanel Grid.ColumnSpan="3" Margin="0,43,0,0" Grid.RowSpan="2">
             <Label HorizontalAlignment="Left" Content="Grid For Measured Values:"/>
             <Grid Margin="10,10,73,10">
                 <Grid.ColumnDefinitions>
@@ -46,34 +48,31 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0"  Grid.Column="0" HorizontalAlignment="Right" Width="25">hx:</Label>
-                <TextBox Grid.Column="1" Margin="0,0,0,10"  Text="{Binding Hx, Mode=OneWayToSource}"/>
+                <TextBox Grid.Column="1" Margin="0,0,0,10"  Text="{Binding InitParameters.Hx}"/>
 
                 <Label Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Right" Width="25">nx:</Label>
-                <TextBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding Nx, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding InitParameters.Nx}"/>
 
                 <Label Grid.Row="0"  Grid.Column="4" HorizontalAlignment="Right" Width="25">α:</Label>
-                <TextBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10"  Text="{Binding Alpha, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10"  Text="{Binding InitParameters.Alpha}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Width="25">hy:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Text="{Binding Hy, Mode=OneWayToSource}" />
+                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Text="{Binding InitParameters.Hy}" />
 
                 <Label Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Right" Width="25">ny:</Label>
-                <TextBox Grid.Row="1"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding Ny, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="1"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding InitParameters.Ny}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Width="25">x0:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding X0, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.X0}"/>
 
                 <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
-                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Y0, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Y0}"/>
 
                 <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
-                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding Z0, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.Z0}"/>
             </Grid>
             <Label HorizontalAlignment="Left" Content="Measured Values:"/>
-            <!--<ScrollViewer>
-                <TextBox AcceptsReturn="True"/>
-            </ScrollViewer>-->
-            <TextBox Text="{Binding MeasuredValues, Converter={StaticResource  MeasuredValuesConverter}, Mode=OneWayToSource}" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True"  />
+            <TextBox Text="{Binding InitParameters.MeasuredValues, Converter={StaticResource  MeasuredValuesConverter}}" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True"  />
             <Label HorizontalAlignment="Left" Content="Space Grid:"/>
             <Grid Margin="10,10,73,10">
                 <Grid.ColumnDefinitions>
@@ -91,31 +90,31 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">xStart:</Label>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Xstart, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitParameters.Xstart}"/>
 
                 <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">xEnd:</Label>
-                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding Xend, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding InitParameters.Xend}"/>
 
                 <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right">xStepsAmount:</Label>
-                <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding XstepsAmount, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding InitParameters.XstepsAmount}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">yStart:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Ystart, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InitParameters.Ystart}"/>
 
                 <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">yEnd:</Label>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding Yend, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InitParameters.Yend}"/>
 
                 <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right">yStepsAmount:</Label>
-                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding YstepsAmount, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InitParameters.YstepsAmount}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">zStart:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Zstart, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.Zstart}"/>
 
                 <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right">zEnd:</Label>
-                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding Zend, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Zend}"/>
 
                 <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right">zStepsAmount:</Label>
-                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding ZstepsAmount, Mode=OneWayToSource}"/>
+                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.ZstepsAmount}"/>
             </Grid>
             <Button  VerticalAlignment="Bottom"
                      HorizontalAlignment="Center"
@@ -125,5 +124,7 @@
                      CommandParameter="{Binding ElementName=SettingsFormWindow}">
             </Button>
         </StackPanel>
+        </Grid>
+        <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" Text="{Binding StatusMessage}"></TextBlock>
     </Grid>
 </Window>

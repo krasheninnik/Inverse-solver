@@ -23,6 +23,7 @@ namespace Inverse_solver.ViewModel
         public TaskViewModel()
         {
             this.InverseTask = new InverseTask();
+            this.InitParameters = new InitParameters();
 
             // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
@@ -97,27 +98,7 @@ namespace Inverse_solver.ViewModel
                 using (StreamReader file = File.OpenText("../../../Inverse-solver/initSettings.json"))
                 {
                     JsonSerializer serializer = new JsonSerializer();
-                    InitParameters initSettings = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
-
-                    Hx = initSettings.Hx;
-                    Nx = initSettings.Nx;
-                    Hy = initSettings.Hy;
-                    Ny = initSettings.Ny;
-                    X0 = initSettings.X0;
-                    Y0 = initSettings.Y0;
-                    Z0 = initSettings.Z0;
-                    Alpha = initSettings.Alpha;
-                    MeasuredValues = initSettings.MeasuredValues;
-
-                    Xstart = initSettings.Xstart;
-                    Xend = initSettings.Xend;
-                    XstepsAmount = initSettings.XstepsAmount;
-                    Ystart = initSettings.Ystart;
-                    Yend = initSettings.Yend;
-                    YstepsAmount = initSettings.YstepsAmount;
-                    Zstart = initSettings.Zstart;
-                    Zend = initSettings.Zend;
-                    ZstepsAmount = initSettings.ZstepsAmount;
+                    InitParameters = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
                 }
 
                 // call init function
@@ -132,12 +113,7 @@ namespace Inverse_solver.ViewModel
         {
             await Task.Run(() =>
             {
-                InverseTask.Init(Hx, Nx, Hy, Ny, new Value(X0, Y0, Z0),
-                    MeasuredValues.ToArray(), MeasuredValues.Count,
-                    Xstart, Xend, XstepsAmount,
-                    Ystart, Yend, YstepsAmount,
-                    Zstart, Zend, ZstepsAmount,
-                    Alpha);
+                InverseTask.Init(InitParameters);
             });
             OnPropertyChanged("YResultGridLayers");
             this.IsTaskInitializated = true;
@@ -218,33 +194,7 @@ namespace Inverse_solver.ViewModel
             }
         }
 
-        #region SettingsParameters
-        // Task settings props:
-        // For measures grid:
-        public int Hx { get; set; }
-        public int Hy { get; set; }
-        public int Nx { get; set; }
-        public int Ny { get; set; }
-        public double Alpha { get; set; }
-
-        public double X0 { get; set; }
-        public double Y0 { get; set; }
-        public double Z0 { get; set; }
-
-        // For Measures:
-        public List<Value> MeasuredValues { get; set; }
-
-        // For space grid:
-        public double Xstart { get; set; }
-        public double Xend { get; set; }
-        public int XstepsAmount { get; set; }
-        public double Ystart { get; set; }
-        public double Yend { get; set; }
-        public int YstepsAmount { get; set; }
-        public double Zstart { get; set; }
-        public double Zend { get; set; }
-        public int ZstepsAmount { get; set; }
-        #endregion
+        public InitParameters InitParameters { get; set; }
     }
 }
 
