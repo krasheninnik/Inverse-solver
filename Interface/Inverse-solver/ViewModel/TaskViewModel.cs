@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
 using Inverse_solver.Model;
 using Inverse_solver.ViewModel.Commands;
@@ -30,7 +31,8 @@ namespace Inverse_solver.ViewModel
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
             this.CalculateTaskCommand = new CalculateTaskCommand(this, (ex) => StatusMessage = ex.Message);
             this.InitTaskCommand = new InitTaskCommand(this, (ex) => StatusMessage = ex.Message);
-            this.InitTaskCommandTestCase = new InitTaskCommandTestCase(this, (ex) => StatusMessage = ex.Message);
+            this.SetInitParametersFromFileCommand = new SetInitParametersFromFileCommand(this, (ex) => StatusMessage = ex.Message);
+            this.SaveInitParametersToFileCommand = new SaveInitParametersToFileCommand(this, (ex) => StatusMessage = ex.Message);
 
             //  Graphics
             this.GraphicsBuilder = new GraphicsBuilder();
@@ -78,7 +80,8 @@ namespace Inverse_solver.ViewModel
         public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; private set; }
 
         public InitTaskCommand InitTaskCommand { get; private set; }
-        public InitTaskCommandTestCase InitTaskCommandTestCase { get; private set; }
+        public SetInitParametersFromFileCommand SetInitParametersFromFileCommand { get; private set; }
+        public SaveInitParametersToFileCommand SaveInitParametersToFileCommand { get; private set; }
         #endregion
 
         #region CommandsFunctions
@@ -90,23 +93,60 @@ namespace Inverse_solver.ViewModel
             sf.Show();
         }
 
-        public async Task InitTaskTestCase()
+        public async Task SetInitParametersFromFile()
         {
-            await Task.Run(async () =>
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
+
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                // Deserialize JSON directly from a file and init variables
-                using (StreamReader file = File.OpenText("../../../Inverse-solver/initSettings.json"))
+                openFileDialog.Filter = "json files (*.json)|*.json";
+                openFileDialog.RestoreDirectory = true;
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    JsonSerializer serializer = new JsonSerializer();
-                    InitParameters = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
+                    //Get the path of specified file
+                    filePath = openFileDialog.FileName;
+
+                    await Task.Run(async () =>
+                    {
+                        // Deserialize JSON directly from a file and init variables
+                        using (StreamReader file = File.OpenText(filePath))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            InitParameters = (InitParameters)serializer.Deserialize(file, typeof(InitParameters));
+                        }
+                    });
                 }
+            }
+        }
 
-                // call init function
-                await InitTask();
-            });
+        public async Task SaveInitParametersToFile()
+        {
+            var fileContent = string.Empty;
+            var filePath = string.Empty;
 
-            // Update commands CanExecute states
-            CommandManager.InvalidateRequerySuggested();
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "json files (*.json)|*.json";
+                saveFileDialog.RestoreDirectory = true;
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    filePath = saveFileDialog.FileName;
+
+                    await Task.Run(async () =>
+                    {
+                        // serialize JSON directly to a file
+                        using (StreamWriter file = File.CreateText(filePath))
+                        {
+                            JsonSerializer serializer = new JsonSerializer();
+                            serializer.Serialize(file, InitParameters);
+                        }
+                    });
+                }
+            }
         }
 
         public  async Task InitTask(/*IClosable window*/)
@@ -126,7 +166,6 @@ namespace Inverse_solver.ViewModel
 
         public async Task CalculateTask()
         {
-            Debug.WriteLine("#: in CalculateTask");
             await Task.Run(() =>
             {
                 InverseTask.CalculateTask();
@@ -194,7 +233,11 @@ namespace Inverse_solver.ViewModel
             }
         }
 
-        public InitParameters InitParameters { get; set; }
+        private InitParameters initParameters;
+        public InitParameters InitParameters { 
+            get { return initParameters; } 
+            set { initParameters = value; OnPropertyChanged(); } 
+        }
     }
 }
 

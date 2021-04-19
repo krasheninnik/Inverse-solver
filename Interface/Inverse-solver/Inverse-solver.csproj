@@ -106,7 +106,8 @@
     <Compile Include="Model\Value.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
     <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
-    <Compile Include="ViewModel\Commands\InitTaskCommandTestCase.cs" />
+    <Compile Include="ViewModel\Commands\SaveInitParametersToFileCommand.cs" />
+    <Compile Include="ViewModel\Commands\SetInitParametersFromFileCommand.cs" />
     <Compile Include="ViewModel\Commands\InitTaskCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenSettingsFormCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenDiscrepancyViewCommand.cs" />

@@ -8,10 +8,10 @@ using System.Windows.Input;
 
 namespace Inverse_solver.ViewModel.Commands
 {
-    public class InitTaskCommandTestCase : AsyncCommandBase
+    public class SetInitParametersFromFileCommand : AsyncCommandBase
     {
         public TaskViewModel ViewModel { get; set; }
-        public InitTaskCommandTestCase(TaskViewModel viewModel, Action<Exception> onException) :
+        public SetInitParametersFromFileCommand(TaskViewModel viewModel, Action<Exception> onException) :
             base(onException)
         {
             ViewModel = viewModel;
@@ -19,9 +19,9 @@ namespace Inverse_solver.ViewModel.Commands
 
         protected override async Task ExecuteAsync(object parameter)
         {
-            ViewModel.StatusMessage = "Start task initialization...";
-            await ViewModel.InitTaskTestCase();
-            ViewModel.StatusMessage = "Task has been initialized.";
+            ViewModel.StatusMessage = "Start retrive initialization parameters from file...";
+            await ViewModel.SetInitParametersFromFile();
+            ViewModel.StatusMessage = "Parameters have been retrived.";
         }
     }
 }
