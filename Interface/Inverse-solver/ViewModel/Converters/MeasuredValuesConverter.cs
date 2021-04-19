@@ -36,6 +36,9 @@ namespace Inverse_solver.ViewModel.Converters
                 string[] lines = measuredValuesString.Split('\n');
                 foreach (var line in lines)
                 {
+                    // skip empty line
+                    if (line == "") continue;
+
                     // TODO: add error handling
                     double x = 0;
                     double y = 0;

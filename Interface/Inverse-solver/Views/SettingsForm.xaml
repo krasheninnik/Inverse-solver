@@ -5,12 +5,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Inverse_solver.Views"
+        xmlns:vr="clr-namespace:Inverse_solver.ViewModel.ValidationRules"
+        
         xmlns:converter="clr-namespace:Inverse_solver.ViewModel.Converters"
         mc:Ignorable="d"
         Title="SettingsForm" Height="543.618" Width="952.307">
 
     <Window.Resources>
         <converter:MeasuredValuesConverter x:Key="MeasuredValuesConverter"></converter:MeasuredValuesConverter>
+
+        <Style x:Key="ToolTipWithErrorMessageOnErrorStyle" TargetType="TextBox">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Window.Resources>
 
     <Grid Margin="0,0,12,7">
@@ -43,36 +55,37 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                </Grid.RowDefinitions>
+                    <Label Grid.Row="0"  Grid.Column="0" HorizontalAlignment="Right" Width="25">hx:</Label>
+                    <TextBox Grid.Column="1" Margin="0,0,0,10" Text="{Binding InitParameters.Hx, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="0"  Grid.Column="0" HorizontalAlignment="Right" Width="25">hx:</Label>
-                <TextBox Grid.Column="1" Margin="0,0,0,10"  Text="{Binding InitParameters.Hx}"/>
+                    <Label Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Right" Width="25">nx:</Label>
+                    <TextBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding InitParameters.Nx, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="0"  Grid.Column="2" HorizontalAlignment="Right" Width="25">nx:</Label>
-                <TextBox Grid.Row="0"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding InitParameters.Nx}"/>
+                    <Label Grid.Row="0"  Grid.Column="4" HorizontalAlignment="Right" Width="25">α:</Label>
+                    <TextBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10"  Text="{Binding InitParameters.Alpha, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="0"  Grid.Column="4" HorizontalAlignment="Right" Width="25">α:</Label>
-                <TextBox Grid.Row="0"  Grid.Column="5" Margin="0,0,0,10"  Text="{Binding InitParameters.Alpha}"/>
+                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Width="25">hy:</Label>
+                    <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Text="{Binding InitParameters.Hy, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Width="25">hy:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,10" Text="{Binding InitParameters.Hy}" />
+                    <Label Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Right" Width="25">ny:</Label>
+                    <TextBox Grid.Row="1"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding InitParameters.Ny, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="1"  Grid.Column="2" HorizontalAlignment="Right" Width="25">ny:</Label>
-                <TextBox Grid.Row="1"  Grid.Column="3" Margin="0,0,0,10"  Text="{Binding InitParameters.Ny}"/>
+                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Width="25">x0:</Label>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.X0}"/>
 
-                <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Width="25">x0:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.X0}"/>
-
-                <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
-                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Y0}"/>
-
-                <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
-                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.Z0}"/>
+                    <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
+                    <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Y0}"/>
+    
+                    <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
+                    <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.Z0}"/>
             </Grid>
             <Label HorizontalAlignment="Left" Content="Measured Values:"/>
-            <TextBox Text="{Binding InitParameters.MeasuredValues, Converter={StaticResource  MeasuredValuesConverter}}" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True"  />
+                <TextBox Text="{Binding InitParameters.MeasuredValues, Converter={StaticResource  MeasuredValuesConverter}, ValidatesOnDataErrors=True}"
+                         Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"
+                         TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True"  />
             <Label HorizontalAlignment="Left" Content="Space Grid:"/>
             <Grid Margin="10,10,73,10">
                 <Grid.ColumnDefinitions>
@@ -90,36 +103,36 @@
                 </Grid.RowDefinitions>
 
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">xStart:</Label>
-                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitParameters.Xstart}"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitParameters.Xstart, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">xEnd:</Label>
-                <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding InitParameters.Xend}"/>
+                    <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding InitParameters.Xend, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right">xStepsAmount:</Label>
-                <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding InitParameters.XstepsAmount}"/>
+                    <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding InitParameters.XstepsAmount, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">yStart:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InitParameters.Ystart}"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InitParameters.Ystart, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">yEnd:</Label>
-                <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InitParameters.Yend}"/>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InitParameters.Yend, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right">yStepsAmount:</Label>
-                <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InitParameters.YstepsAmount}"/>
+                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InitParameters.YstepsAmount, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">zStart:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.Zstart}"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.Zstart, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right">zEnd:</Label>
-                <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Zend}"/>
+                    <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Zend, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
                 <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right">zStepsAmount:</Label>
-                <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.ZstepsAmount}"/>
+                    <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.ZstepsAmount, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
             </Grid>
             <Button  VerticalAlignment="Bottom"
                      HorizontalAlignment="Center"
                      Margin="20" Width="200" Height="30" 
-                     Content = "simple command" 
+                     Content = "Init task" 
                      Command="{Binding InitTaskCommand}"
                      CommandParameter="{Binding ElementName=SettingsFormWindow}">
             </Button>
