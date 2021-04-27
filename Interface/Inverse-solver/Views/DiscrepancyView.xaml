@@ -15,6 +15,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100*"></ColumnDefinition>
                 <ColumnDefinition Width="20*"></ColumnDefinition>
+                <ColumnDefinition Width="20*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Grid.Row="0">
@@ -22,7 +23,11 @@
             </Grid>
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="15">
                 <Label Content="Layer Y:" Margin="0,5,0,0"></Label>
-                <ListBox ItemsSource="{Binding YMeasureGridLayers}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding YMeasureLayerIndex}" />
+                <ListBox ItemsSource="{Binding YMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding YMeasureLayerIndex}" />
+            </StackPanel>
+            <StackPanel Grid.Column="2" Grid.Row="0" Margin="15">
+                <Label Content="Layer X:" Margin="0,5,0,0"></Label>
+                <ListBox ItemsSource="{Binding XMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding XMeasureLayerIndex}" />
             </StackPanel>
         </Grid>
     </Grid>

@@ -43,7 +43,7 @@ namespace Inverse_solver.ViewModel
         public string StatusMessage
         {
             get { return statusMessage; }
-            set { statusMessage = value; OnPropertyChanged();}
+            set { statusMessage = value; OnPropertyChanged(); }
         }
 
 
@@ -149,7 +149,7 @@ namespace Inverse_solver.ViewModel
             }
         }
 
-        public  async Task InitTask(/*IClosable window*/)
+        public async Task InitTask(/*IClosable window*/)
         {
             await Task.Run(() =>
             {
@@ -206,7 +206,9 @@ namespace Inverse_solver.ViewModel
 
         // Contains information about Y layers, make it possible to see results on each Y layer.
         public double[] YResultGridLayers { get { return InverseTask.YResultGridLayers; } }
-        public double[] YMeasureGridLayers { get { return InverseTask.YMeasureGridLayers; } }
+        public double[] YMeasureGrid { get { return InverseTask.YMeasureGrid; } }
+        public double[] XMeasureGrid { get { return InverseTask.XMeasureGrid; } }
+
 
         // Indexes for changing displayed results by selected Y
         public int YResultLayerIndex
@@ -233,10 +235,25 @@ namespace Inverse_solver.ViewModel
             }
         }
 
+        private int xMeasureLayerIndex;
+        public int XMeasureLayerIndex
+        {
+            get { return xMeasureLayerIndex; }
+            set
+            {
+                xMeasureLayerIndex = value;
+                // Update discrepancy values for this Y level
+                InverseTask.GetDiscrepancy(xMeasureLayerIndex);
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.YMeasureGrid, InverseTask.DiscrepancyValues);
+            }
+        }
+
+
         private InitParameters initParameters;
-        public InitParameters InitParameters { 
-            get { return initParameters; } 
-            set { initParameters = value; OnPropertyChanged(); } 
+        public InitParameters InitParameters
+        {
+            get { return initParameters; }
+            set { initParameters = value; OnPropertyChanged(); }
         }
     }
 }

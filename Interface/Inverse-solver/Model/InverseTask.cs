@@ -72,8 +72,8 @@ namespace Inverse_solver.Model
 
             XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
             DiscrepancyValues = new double[GridInfo.xMeasureLayersSize];
-            YMeasureGridLayers = new double[GridInfo.yMeasureLayersSize];
-            getMeasureGrids(task, XMeasureGrid, YMeasureGridLayers);
+            YMeasureGrid = new double[GridInfo.yMeasureLayersSize];
+            getMeasureGrids(task, XMeasureGrid, YMeasureGrid);
 
             // allocate memory for FE
             FiniteElems = new FiniteElem[GridInfo.elemsSize];
@@ -119,11 +119,10 @@ namespace Inverse_solver.Model
 
         public double[] YResultGridLayers { get; set; }
 
-        public double[] XMeasureGrid { get; private set; }
-
         public double[] DiscrepancyValues { get; private set; }
 
-        public double[] YMeasureGridLayers { get; private set; }  
+        public double[] YMeasureGrid { get; private set; }
+        public double[] XMeasureGrid { get; private set; }
 
         // Finite elems and coordinate points:
         public FiniteElem[] FiniteElems { get; set; }
