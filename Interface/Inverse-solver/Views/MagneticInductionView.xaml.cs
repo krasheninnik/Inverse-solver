@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Inverse_solver.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,12 @@ namespace Inverse_solver.Views
         public MagneticInductionView()
         {
             InitializeComponent();
+        }
+
+        void On_Closing(object sender, CancelEventArgs e)
+        {
+            (this.DataContext as TaskViewModel).MagneticInductionViewOpened = false;
+            this.DataContext = null;
         }
     }
 }

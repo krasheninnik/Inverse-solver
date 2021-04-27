@@ -23,7 +23,7 @@ namespace Inverse_solver.ViewModel.Commands
 
         public bool CanExecute(object parameter)
         {
-            return this.ViewModel.IsTaskCalculated;
+            return this.ViewModel.IsTaskCalculated && !this.ViewModel.MagneticInductionViewOpened;
         }
 
         public void Execute(object parameter)

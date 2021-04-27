@@ -81,6 +81,9 @@ namespace Inverse_solver.ViewModel
             get { return magneticInductionModel; }
             set { magneticInductionModel = value; OnPropertyChanged(); }
         }
+
+        public bool DiscrepancyViewOpened = false;
+        public bool MagneticInductionViewOpened = false;
         #endregion
 
         private InverseTask InverseTask { get; set; }
@@ -192,8 +195,9 @@ namespace Inverse_solver.ViewModel
 
         public void OpenMagneticInductionView()
         {
+            MagneticInductionViewOpened = true;
             MagneticInductionView view = new MagneticInductionView();
-            view.DataContext = this; 
+            view.DataContext = this;
             view.Show();
 
             // display discrepancy for first y layer
@@ -202,10 +206,10 @@ namespace Inverse_solver.ViewModel
 
         public void OpenDiscrepancyView()
         {
+            DiscrepancyViewOpened = true;
             DiscrepancyView view = new DiscrepancyView();
             view.DataContext = this;
             view.Show();
-
             // display discrepancy for first y layer
             YDiscrepancyMeasureLayerIndex = 0;
         }
