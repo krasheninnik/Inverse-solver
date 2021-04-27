@@ -20,6 +20,7 @@ namespace Inverse_solver.ViewModel
             model.Axes.Add(new LinearColorAxis
             {
                 Palette = OxyPalettes.Hot(200)
+                //Palette = OxyPalettes.Gray(200)          
             });
 
             // Display values source:
@@ -47,7 +48,7 @@ namespace Inverse_solver.ViewModel
             return model;
         }
 
-        public PlotModel buildDiscrepancyGraph(double[] x, double[] fx)
+        public PlotModel buildDiscrepancyGraph(double[] x, double[] fx, string mode)
         {
             // create the model and add the lines to it
             var model = new OxyPlot.PlotModel
@@ -55,12 +56,39 @@ namespace Inverse_solver.ViewModel
                 Title = $"Discrepancy graph"
             };
 
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate [m]" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = $"{mode} coordinate [m]" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Discrepancy" });
 
             var line1 = new OxyPlot.Series.LineSeries()
             {
                 Title = $"Discrepancy",
+                Color = OxyPlot.OxyColors.Red,
+                StrokeThickness = 1,
+            };
+
+            for (int i = 0; i < x.Length; i++)
+            {
+                line1.Points.Add(new OxyPlot.DataPoint(x[i], fx[i]));
+            }
+
+            model.Series.Add(line1);
+            return model;
+        }
+
+        public PlotModel buildMagneticInductionGraph(double[] x, double[] fx, string mode)
+        {
+            // create the model and add the lines to it
+            var model = new OxyPlot.PlotModel
+            {
+                Title = $"Magnetic Induction graph"
+            };
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = $"{mode} coordinate [m]" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Discrepancy" });
+
+            var line1 = new OxyPlot.Series.LineSeries()
+            {
+                Title = $"Magnetic Induction",
                 Color = OxyPlot.OxyColors.Red,
                 StrokeThickness = 1,
             };

@@ -79,6 +79,8 @@ namespace Inverse_solver.Model
             XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
             DiscrepancyValuesByX = new double[GridInfo.yMeasureLayersSize];
             DiscrepancyValuesByY = new double[GridInfo.xMeasureLayersSize];
+            MagnIndValuesByX = new double[GridInfo.yMeasureLayersSize];
+            MagnIndValuesByY = new double[GridInfo.xMeasureLayersSize];
             YMeasureGrid = new double[GridInfo.yMeasureLayersSize];
             getMeasureGrids(task, XMeasureGrid, YMeasureGrid);
 
@@ -106,12 +108,12 @@ namespace Inverse_solver.Model
 
         public void GetMagneticInductionByY(int yLayer)
         {
-            getMagneticInductionByY(task, yLayer, DiscrepancyValuesByY);
+            getMagneticInductionByY(task, yLayer, MagnIndValuesByY);
         }
 
         public void GetMagneticInductionByX(int xLayer)
         {
-            getMagneticInductionByX(task, xLayer, DiscrepancyValuesByX);
+            getMagneticInductionByX(task, xLayer, MagnIndValuesByX);
         }
         #endregion
 
@@ -144,6 +146,8 @@ namespace Inverse_solver.Model
         public double[] DiscrepancyValuesByX { get; private set; }
         public double[] DiscrepancyValuesByY { get; private set; }
 
+        public double[] MagnIndValuesByY { get; private set; }
+        public double[] MagnIndValuesByX { get; private set; }
 
         public double[] YMeasureGrid { get; private set; }
         public double[] XMeasureGrid { get; private set; }

@@ -29,6 +29,7 @@ namespace Inverse_solver.ViewModel
             // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
+            this.OpenMagneticInductionViewCommand = new OpenMagneticInductionViewCommand(this);
             this.CalculateTaskCommand = new CalculateTaskCommand(this, (ex) => StatusMessage = ex.Message);
             this.InitTaskCommand = new InitTaskCommand(this, (ex) => StatusMessage = ex.Message);
             this.SetInitParametersFromFileCommand = new SetInitParametersFromFileCommand(this, (ex) => StatusMessage = ex.Message);
@@ -47,6 +48,7 @@ namespace Inverse_solver.ViewModel
         }
 
 
+        #region GraphicsBuilderAndModels
         private GraphicsBuilder GraphicsBuilder { get; set; }
 
         // Model to show results of Inverse task
@@ -71,12 +73,22 @@ namespace Inverse_solver.ViewModel
             set { discrepancyModel = value; OnPropertyChanged(); }
         }
 
+        // Model to show magnetic induction graph
+        private PlotModel magneticInductionModel;
+
+        public PlotModel MagneticInductionModel
+        {
+            get { return magneticInductionModel; }
+            set { magneticInductionModel = value; OnPropertyChanged(); }
+        }
+        #endregion
+
         private InverseTask InverseTask { get; set; }
 
         #region CommandsDefinition
         public CalculateTaskCommand CalculateTaskCommand { get; private set; }
         public OpenSettingsFormCommand OpenSettingsFormCommand { get; private set; }
-
+        public OpenMagneticInductionViewCommand OpenMagneticInductionViewCommand { get; private set; }
         public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; private set; }
 
         public InitTaskCommand InitTaskCommand { get; private set; }
@@ -177,15 +189,25 @@ namespace Inverse_solver.ViewModel
             // Update commands CanExecute states
             CommandManager.InvalidateRequerySuggested();
         }
-        public void OpenDiscrepancyView()
+
+        public void OpenMagneticInductionView()
         {
-            DiscrepancyView dv = new DiscrepancyView();
-            dv.DataContext = this;
-            DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValuesByY);
-            dv.Show();
+            MagneticInductionView view = new MagneticInductionView();
+            view.DataContext = this; 
+            view.Show();
 
             // display discrepancy for first y layer
-            YMeasureLayerIndex = 0;
+            YMagnIndMeasureLayerIndex = 0;
+        }
+
+        public void OpenDiscrepancyView()
+        {
+            DiscrepancyView view = new DiscrepancyView();
+            view.DataContext = this;
+            view.Show();
+
+            // display discrepancy for first y layer
+            YDiscrepancyMeasureLayerIndex = 0;
         }
         #endregion
 
@@ -222,29 +244,55 @@ namespace Inverse_solver.ViewModel
             }
         }
 
-        private int yMeasureLayerIndex;
-        public int YMeasureLayerIndex
+        private int yDiscrepancyMeasureLayerIndex;
+        public int YDiscrepancyMeasureLayerIndex
         {
-            get { return yMeasureLayerIndex; }
+            get { return yDiscrepancyMeasureLayerIndex; }
             set
             {
-                yMeasureLayerIndex = value;
+                yDiscrepancyMeasureLayerIndex = value;
                 // Update discrepancy values for this Y level
-                InverseTask.GetDiscrepancyByY(yMeasureLayerIndex);
-                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValuesByY);
+                InverseTask.GetDiscrepancyByY(yDiscrepancyMeasureLayerIndex);
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValuesByY, "X");
             }
         }
 
-        private int xMeasureLayerIndex;
-        public int XMeasureLayerIndex
+        private int xDiscrepancyMeasureLayerIndex;
+        public int XDiscrepancyMeasureLayerIndex
         {
-            get { return xMeasureLayerIndex; }
+            get { return xDiscrepancyMeasureLayerIndex; }
             set
             {
-                xMeasureLayerIndex = value;
+                xDiscrepancyMeasureLayerIndex = value;
                 // Update discrepancy values for this X level
-                InverseTask.GetDiscrepancyByX(xMeasureLayerIndex);
-                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.YMeasureGrid, InverseTask.DiscrepancyValuesByX);
+                InverseTask.GetDiscrepancyByX(xDiscrepancyMeasureLayerIndex);
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.YMeasureGrid, InverseTask.DiscrepancyValuesByX, "Y");
+            }
+        }
+
+        private int yMagnIndMeasureLayerIndex;
+        public int YMagnIndMeasureLayerIndex
+        {
+            get { return yMagnIndMeasureLayerIndex; }
+            set
+            {
+                yMagnIndMeasureLayerIndex = value;
+                // Update discrepancy values for this Y level
+                InverseTask.GetMagneticInductionByY(yMagnIndMeasureLayerIndex);
+                MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.XMeasureGrid, InverseTask.MagnIndValuesByY, "X");
+            }
+        }
+
+        private int xMagnIndMeasureLayerIndex;
+        public int XMagnIndMeasureLayerIndex
+        {
+            get { return xMagnIndMeasureLayerIndex; }
+            set
+            {
+                xMagnIndMeasureLayerIndex = value;
+                // Update discrepancy values for this X level
+                InverseTask.GetMagneticInductionByX(xMagnIndMeasureLayerIndex);
+                MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.YMeasureGrid, InverseTask.MagnIndValuesByX, "Y");
             }
         }
 

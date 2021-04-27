@@ -1,4 +1,4 @@
-﻿<Window x:Class="Inverse_solver.Views.DiscrepancyView"
+﻿<Window x:Class="Inverse_solver.Views.MagneticInductionView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,15 +19,15 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0" Grid.Row="0">
-                <oxy:PlotView Model="{Binding DiscrepancyModel}"></oxy:PlotView>
+                <oxy:PlotView Model="{Binding MagneticInductionModel}"></oxy:PlotView>
             </Grid>
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="15">
                 <Label Content="Layer Y:" Margin="0,5,0,0"></Label>
-                <ListBox ItemsSource="{Binding YMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding YDiscrepancyMeasureLayerIndex}" />
+                <ListBox ItemsSource="{Binding YMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding YMagnIndMeasureLayerIndex}" />
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.Row="0" Margin="15">
                 <Label Content="Layer X:" Margin="0,5,0,0"></Label>
-                <ListBox ItemsSource="{Binding XMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding XDiscrepancyMeasureLayerIndex}" />
+                <ListBox ItemsSource="{Binding XMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding XMagnIndMeasureLayerIndex}" />
             </StackPanel>
         </Grid>
     </Grid>
