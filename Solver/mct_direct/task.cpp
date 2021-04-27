@@ -54,6 +54,11 @@ void Task::init() {
 	yResidual = 0;
 	alpha = 1.0;
 	xAxisGrid.resize(3);
+
+	// to storage calculated values of residual and magnetic induction
+	assert(xAxisMeasures.size() > 0 && yAxisMeasures.size() > 0);
+	residualValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
+	magneticInductionValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
 }
 
 //void Task::calculateB(Measure &m) {
@@ -83,10 +88,6 @@ void Task::getResultGrids(std::vector<Point>& _nodes, std::vector<double>& _yLay
 void Task::getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid) {
 	xGrid = xAxisMeasures;
 	yGrid = yAxisMeasures;
-}
-
-void Task::getDiscrepancy(int yLayer, std::vector<double>& fx) {
-	calcResidual(yLayer, fx);
 }
 
 void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure,
@@ -163,6 +164,11 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 
 	// just be:
 	yResidual = 0;
+	
+	// to storage calculated values of residual and magnetic induction
+	residualValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
+	magneticInductionValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
+
 
 	//������������� �������� ����
 	double dim = TASK_DIM * elems.size();
@@ -438,12 +444,10 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 	auto finish = get_time();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
 	std::cout << "Elapsed time = " << duration.count() << " ms\n";
-	//calcResidual(yResidual, _f);
-}
-
-void Task::calcResidual(int y, std::vector<double>& residual) {
-	std::vector<Point>parameters;
-	std::vector<Point>calculatedB;
+	
+	// calculate additional residual and magnetic induction:
+	std::vector<Point> parameters;
+	std::vector<Point> calculatedB;
 
 	parameters.reserve(elems.size());
 	for (int i = 0; i < elems.size(); i++) {
@@ -451,8 +455,47 @@ void Task::calcResidual(int y, std::vector<double>& residual) {
 	}
 
 	getB(parameters, calculatedB);
-	for (int i = y * xAxisMeasures.size(); i < y * xAxisMeasures.size() + xAxisMeasures.size(); i++) {
-		residual.push_back(abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100);
+
+	// calculate residual:
+	for (int i = 0; i < residualValues.size(); i++) {
+		residualValues[i] = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100;
+	}
+
+	// calculate magnetic induction:
+	for (int i = 0; i < magneticInductionValues.size(); i++) {
+		magneticInductionValues[i] = calculatedB[i];
+	}
+}
+
+void Task::getDiscrepancyByY(int y, std::vector<double>& residual) {
+	residual.resize(xAxisMeasures.size());
+	int firstIndex = y * xAxisMeasures.size();
+	int lastIndex = (y + 1) * xAxisMeasures.size();
+	std::copy(residualValues.begin() + firstIndex, residualValues.begin() + lastIndex, residual.begin());
+}
+
+void Task::getDiscrepancyByX(int x, std::vector<double>& residual) {
+	residual.resize(yAxisMeasures.size());
+	for (int k = 0, i = x; i < residualValues.size(); i += xAxisMeasures.size(), k++) {
+		residual[k] = residualValues[i];
+	}
+}
+
+void Task::getMagneticInductionByY(int y, std::vector<double>& magneticInduction) {
+	magneticInduction.resize(xAxisMeasures.size());
+	int firstIndex = y * xAxisMeasures.size();
+	int lastIndex = (y + 1) * xAxisMeasures.size();
+	std::transform(magneticInductionValues.begin() + firstIndex,
+		magneticInductionValues.begin() + lastIndex,
+		magneticInduction.begin(),
+		[](Point p) {return p.x; }		
+	);
+}
+
+void Task::getMagneticInductionByX(int x, std::vector<double>& magneticInduction) {
+	magneticInduction.resize(yAxisMeasures.size());
+	for (int k = 0, i = x; i < magneticInductionValues.size(); i += xAxisMeasures.size(), k++) {
+		magneticInduction[k] = magneticInductionValues[i].y;
 	}
 }
 

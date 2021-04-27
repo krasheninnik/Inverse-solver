@@ -7,7 +7,7 @@
 #include <ppl.h>
 #include <chrono>
 #include "Gauss.h"
-
+#include <assert.h>
 
 class GridInformation
 {
@@ -68,9 +68,9 @@ public:
 
 class Task {
 public:
-	//все что с пометкой Measure относится к сетке измерений
-	//все что с пометкой Grid относится к сетке КЭ
-	//yResidual - номер Y, по которому будем строить функционал невязки
+	//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Measure пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
+	//пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Grid пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ
+	//yResidual - пїЅпїЅпїЅпїЅпїЅ Y, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	void init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure, Point p0Measure, std::vector<Point> B,
 		double x0Grid, double x1Grid, int xStepsGrid,
 		double y0Grid, double y1Grid, int yStepsGrid,
@@ -84,7 +84,11 @@ public:
 	void getGridInformation(GridInformation& gridInfo);
 	void getResultGrids(std::vector<Point>& nodes, std::vector<double>& yLayers);
 	void getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid);
-	void getDiscrepancy(int yLayer, std::vector<double>& fx);
+	void getDiscrepancyByY(int y, std::vector<double>& fx);
+	void getDiscrepancyByX(int x, std::vector<double>& fx);
+	void getMagneticInductionByY(int y, std::vector<double>& magneticInduction);
+	void getMagneticInductionByX(int x, std::vector<double>& magneticInduction);
+
 
 private:
 	double alpha;
@@ -110,22 +114,27 @@ private:
 
 	std::vector<std::vector<double>> matrix;
 	std::vector<double> rightPart;
+
+	// for save results values:
 	std::vector<double> p;
+	std::vector<double> residualValues;
+	std::vector<Point> magneticInductionValues;
+
 
 	void fillAxisGrid(std::vector<double>& axis, double a, double b, int steps);
 	void fillAxisMeasures(std::vector<double>& axis, double a, int steps, double h);
 	
-	// вычисление значения B в i-точке измерения 
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ B пїЅ i-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 
 	Point calculateB(int i);
-	// вычисление значения B в i-точке измерения на k-элементе
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ B пїЅ i-пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ k-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	Point B(int i, FiniteElem elem);
 	// calculate element volume
 	double mes(FiniteElem elem);
 	// calculate distance between p1 and p2 
 	double r(Point p1, Point p2);
-	// вычисление координат точки p1 при переносе начала координат в p2
+	// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ p1 пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ p2
 	Point calculateCoords(Point p1, Point p2);
-	//замена переменных в численном интегрировании
+	//пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
 	double variableChange(double var, double a, double b);
 
 	std::vector<double>L(int number, Point point);

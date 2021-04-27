@@ -62,11 +62,35 @@ void getMeasureGrids(Task* task, double* xGrid, double* yGrid) {
     for (int i = 0; i < yGridVec.size(); i++) yGrid[i] = yGridVec[i];
 }
 
-void getDiscrepancy(Task* task, int yLayer, double* fx) {
+void getDiscrepancyByY(Task* task, int yLayerIndex, double* residual) {
     std::vector<double> fxVec;
-    task->getDiscrepancy(yLayer, fxVec);
+    task->getDiscrepancyByY(yLayerIndex, fxVec);
 
     // Convert vectors to C-style arrays
-    for (int i = 0; i < fxVec.size(); i++) fx[i] = fxVec[i];
-    }
+    for (int i = 0; i < fxVec.size(); i++) residual[i] = fxVec[i];
+}
 
+void getDiscrepancyByX(Task* task, int xLayerIndex, double* residual) {
+    std::vector<double> fxVec;
+    task->getDiscrepancyByX(xLayerIndex, fxVec);
+
+    // Convert vectors to C-style arrays
+    for (int i = 0; i < fxVec.size(); i++) residual[i] = fxVec[i];
+}
+
+
+void getMagneticInductionByY(Task* task, int yLayerIndex, double* magneticInduction) {
+    std::vector<double> fxVec;
+    task->getMagneticInductionByY(yLayerIndex, fxVec);
+
+    // Convert vectors to C-style arrays
+    for (int i = 0; i < fxVec.size(); i++) magneticInduction[i] = fxVec[i];
+}
+
+void getMagneticInductionByX(Task* task, int xLayerIndex, double* magneticInduction) {
+    std::vector<double> fxVec;
+    task->getDiscrepancyByX(xLayerIndex, fxVec);
+
+    // Convert vectors to C-style arrays
+    for (int i = 0; i < fxVec.size(); i++) magneticInduction[i] = fxVec[i];
+}
