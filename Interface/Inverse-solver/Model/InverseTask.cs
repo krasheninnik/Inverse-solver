@@ -14,7 +14,7 @@ namespace Inverse_solver.Model
     {
         // ptr on the Task class, allocated in C++ code
         private readonly IntPtr task;
-        public InverseTask() { task = createTask();}
+        public InverseTask() { task = createTask(); }
 
         ~InverseTask() { deleteTask(task); }
 
@@ -50,7 +50,13 @@ namespace Inverse_solver.Model
 
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr getDiscrepancy(IntPtr task, int yLayer, [Out] double[] values);
+        static extern public IntPtr getDiscrepancyByY(IntPtr task, int yLayer, [Out] double[] values);
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr getDiscrepancyByX(IntPtr task, int xLayer, [Out] double[] values);
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr getMagneticInductionByY(IntPtr task, int yLayer, [Out] double[] values);
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr getMagneticInductionByX(IntPtr task, int xLayer, [Out] double[] values);
         #endregion
 
         #region PublicFunctionsForVM
@@ -71,7 +77,8 @@ namespace Inverse_solver.Model
             getResultGrids(task, Nodes, YResultGridLayers);
 
             XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
-            DiscrepancyValues = new double[GridInfo.xMeasureLayersSize];
+            DiscrepancyValuesByX = new double[GridInfo.yMeasureLayersSize];
+            DiscrepancyValuesByY = new double[GridInfo.xMeasureLayersSize];
             YMeasureGrid = new double[GridInfo.yMeasureLayersSize];
             getMeasureGrids(task, XMeasureGrid, YMeasureGrid);
 
@@ -87,9 +94,24 @@ namespace Inverse_solver.Model
             //for (int i = 0; i < FiniteElems.Length; i++) FiniteElems[i].P = new Value(i, i, i);
         }
 
-        public void GetDiscrepancy(int yLayer)
+        public void GetDiscrepancyByY(int yLayer)
         {
-            getDiscrepancy(task, yLayer, DiscrepancyValues);
+            getDiscrepancyByY(task, yLayer, DiscrepancyValuesByY);
+        }
+
+        public void GetDiscrepancyByX(int xLayer)
+        {
+            getDiscrepancyByX(task, xLayer, DiscrepancyValuesByX);
+        }
+
+        public void GetMagneticInductionByY(int yLayer)
+        {
+            getMagneticInductionByY(task, yLayer, DiscrepancyValuesByY);
+        }
+
+        public void GetMagneticInductionByX(int xLayer)
+        {
+            getMagneticInductionByX(task, xLayer, DiscrepancyValuesByX);
         }
         #endregion
 
@@ -99,7 +121,7 @@ namespace Inverse_solver.Model
             get
             {
                 int elemsInXY = GridInfo.elemsInX * GridInfo.elemsInY;
-                List<List<double>>  resultsValues = new List<List<double>>();
+                List<List<double>> resultsValues = new List<List<double>>();
                 for (int zi = 0; zi < GridInfo.elemsInZ; zi++)
                 {
                     var values = new List<double>();
@@ -119,7 +141,9 @@ namespace Inverse_solver.Model
 
         public double[] YResultGridLayers { get; set; }
 
-        public double[] DiscrepancyValues { get; private set; }
+        public double[] DiscrepancyValuesByX { get; private set; }
+        public double[] DiscrepancyValuesByY { get; private set; }
+
 
         public double[] YMeasureGrid { get; private set; }
         public double[] XMeasureGrid { get; private set; }
