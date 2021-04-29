@@ -13,6 +13,13 @@ namespace Inverse_solver.ViewModel
         {
             var model = new PlotModel { Title = "Results" };
 
+            var colorAxis = new LinearColorAxis
+            {
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Hot(200)
+            };
+            model.Axes.Add(colorAxis);
+
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate [m]" });
             model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Z coordinate [m]" });
 
