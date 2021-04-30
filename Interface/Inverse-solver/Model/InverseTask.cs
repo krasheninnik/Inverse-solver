@@ -118,18 +118,18 @@ namespace Inverse_solver.Model
         #endregion
 
         public int YResultLayerIndex { get; set; }
-        public List<List<double>> ResultsValues
+        public List<List<Value>> ResultsValues
         {
             get
             {
                 int elemsInXY = GridInfo.elemsInX * GridInfo.elemsInY;
-                List<List<double>> resultsValues = new List<List<double>>();
+                List<List<Value>> resultsValues = new List<List<Value>>();
                 for (int zi = 0; zi < GridInfo.elemsInZ; zi++)
                 {
-                    var values = new List<double>();
+                    var values = new List<Value>();
                     for (int xi = 0; xi < GridInfo.elemsInX; xi++)
                     {
-                        values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * GridInfo.elemsInX + xi].P.Z);
+                        values.Add(FiniteElems[zi * elemsInXY + YResultLayerIndex * GridInfo.elemsInX + xi].P);
                     }
 
                     resultsValues.Add(values);

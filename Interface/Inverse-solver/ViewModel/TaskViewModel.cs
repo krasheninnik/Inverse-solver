@@ -26,6 +26,10 @@ namespace Inverse_solver.ViewModel
             this.InverseTask = new InverseTask();
             this.InitParameters = new InitParameters();
 
+            // Startup init:
+            ResultComponentsToShowList = new List<string>{ "X", "Y", "Z" };
+            ResultComponentToShow = ResultComponentsToShowList[0];
+
             // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
@@ -186,7 +190,7 @@ namespace Inverse_solver.ViewModel
                 InverseTask.CalculateTask();
             });
 
-            this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues);
+            this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
             this.IsTaskCalculated = true;
 
             // Update commands CanExecute states
@@ -235,6 +239,27 @@ namespace Inverse_solver.ViewModel
         public double[] YMeasureGrid { get { return InverseTask.YMeasureGrid; } }
         public double[] XMeasureGrid { get { return InverseTask.XMeasureGrid; } }
 
+        private List<string> resultComponentsToShowList;
+        public List<string> ResultComponentsToShowList
+        {
+            get { return resultComponentsToShowList; }
+            private set { resultComponentsToShowList = value; OnPropertyChanged(); }
+        }
+
+        private string resultComponentToShow;
+        public string ResultComponentToShow
+        {
+            get { return resultComponentToShow; }
+            set
+            {
+                resultComponentToShow = value;
+                if (InverseTask.ResultsValues.Count > 0)
+                {
+                    HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
+                }
+                OnPropertyChanged();
+            }
+        }
 
         // Indexes for changing displayed results by selected Y
         public int YResultLayerIndex
@@ -244,7 +269,7 @@ namespace Inverse_solver.ViewModel
             {
                 InverseTask.YResultLayerIndex = value;
                 // Prop InverseTask.ResultsValues depends on InverseTask.YResultsLayerIndex, so.. its updated
-                HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues);
+                HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
             }
         }
 

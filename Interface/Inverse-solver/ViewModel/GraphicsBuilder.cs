@@ -9,7 +9,7 @@ namespace Inverse_solver.ViewModel
 {
     public class GraphicsBuilder
     {
-        public PlotModel buildHeatmap(GridInformation gridInformation, List<List<double>> resultsValues)
+        public PlotModel buildHeatmap(GridInformation gridInformation, List<List<Value>> resultsValues, string ResultComponentToShow)
         {
             var model = new PlotModel { Title = "Results" };
 
@@ -30,13 +30,30 @@ namespace Inverse_solver.ViewModel
                 //Palette = OxyPalettes.Gray(200)          
             });
 
+            // Extract result component to show:
+            Func<Value, double> extractComponent;
+            switch (ResultComponentToShow)
+            {
+                case "X":
+                    extractComponent = value => value.X;
+                    break;
+                case "Y":
+                    extractComponent = value => value.Y;
+                    break;
+                case "Z":
+                    extractComponent = value => value.Z;
+                    break;
+                default:
+                    throw new Exception($"There no such ResultComponentToShow: {ResultComponentToShow}");
+            }
+
             // Display values source:
             var data = new double[gridInformation.elemsInX, gridInformation.elemsInZ];
             for (int z = 0; z < gridInformation.elemsInZ; z++)
             {
                 for (int x = 0; x < gridInformation.elemsInX; x++)
                 {
-                    data[x, z] = resultsValues[z][x];
+                    data[x, z] = extractComponent(resultsValues[z][x]);
                 }
             }
 
