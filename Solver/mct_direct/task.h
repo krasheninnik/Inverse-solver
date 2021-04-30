@@ -76,7 +76,7 @@ public:
 		double y0Grid, double y1Grid, int yStepsGrid,
 		double z0Grid, double z1Grid, int zStepsGrid,
 		double alpha, double pmin, double pmax,
-		double alphaStep, double fittingProcentThreshold);
+		double firstAlpha, double alphaStep, double fittingProcentThreshold);
 	void init();
 	void buildMatrix();
 	void solveWithAlphaSetted(std::vector<FiniteElem>& _elems);
@@ -92,13 +92,14 @@ public:
 	void getDiscrepancyByX(int x, std::vector<Point>& fx);
 	void getMagneticInductionByY(int y, std::vector<Point>& magneticInduction);
 	void getMagneticInductionByX(int x, std::vector<Point>& magneticInduction);
-	void changeAlpha(double alpha);
+	void changeAlphaThings(double alpha, double pmin, double pmax, double firstAlpha, double alphaStep, double fittingProcentThreshold);
 
 
 private:
 	double alpha;
 	double pmin;
 	double pmax;
+	double firstAlpha;
 	double alphaStep;
 	double fittingProcentThreshold;
 
@@ -155,6 +156,8 @@ private:
 	std::vector<double>B(Measure m);
 
 	void alphaRegularization();
+	void restoreMatrixAndSolve();
+	bool isFindedParametersInTheRange();
 
 	void calcResidual(int y, std::vector<double>& residual);
 

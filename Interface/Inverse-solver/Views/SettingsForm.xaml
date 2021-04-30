@@ -8,7 +8,7 @@
         
         xmlns:converter="clr-namespace:Inverse_solver.ViewModel.Converters"
         mc:Ignorable="d"
-        Title="SettingsForm" Height="624.618" Width="986.307">
+        Title="SettingsForm" Height="666.618" Width="988.307">
 
     <Window.Resources>
         <converter:MeasuredValuesConverter x:Key="MeasuredValuesConverter"></converter:MeasuredValuesConverter>
@@ -84,7 +84,7 @@
                 <Label HorizontalAlignment="Left" Content="Measured Values:"/>
                 <TextBox Text="{Binding InitParameters.MeasuredValues, Converter={StaticResource  MeasuredValuesConverter}, ValidatesOnDataErrors=True}"
                          Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"
-                         TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True"  />
+                         TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" Height="100" AcceptsReturn="True"  />
                 <Label HorizontalAlignment="Left" Content="Space Grid:"/>
                 <Grid Margin="10,10,73,10">
                     <Grid.ColumnDefinitions>
@@ -151,11 +151,14 @@
                     <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">Pmax:</Label>
                     <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding InitParameters.Pmax, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">α step:</Label>
-                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InitParameters.AlphaStep, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
+                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">First α:</Label>
+                    <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InitParameters.FirstAlpha, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                    <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">Procent threshold:</Label>
-                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InitParameters.FittingProcentThreshold, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
+                    <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">α step:</Label>
+                    <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InitParameters.AlphaStep, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
+
+                    <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right">Procent threshold:</Label>
+                    <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InitParameters.FittingProcentThreshold, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
                 </Grid>
 
 
@@ -169,7 +172,7 @@
                     </Button>
 
                     <Button  
-                     Content = "Change alpha" Command="{Binding ChangeAlphaCommand}"
+                     Content = "Change alpha things" Command="{Binding ChangeAlphaCommand}"
                      Margin="20" Width="200" Height="30">
                     </Button>
 

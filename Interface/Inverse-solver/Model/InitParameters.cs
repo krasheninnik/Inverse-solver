@@ -62,7 +62,8 @@ namespace Inverse_solver.Model
                         updateCoupledVariable(ref RPCfromPmin, ref RPCfromPmax, "Pmin");
                         break;
 
-                    case "AlphaStep": if (this.AlphaStep <= 0) errorString = "Hx must be positive double."; break;
+                    case "FirstAlpha": if (this.FirstAlpha <= 0) errorString = "FirstAlpha must be positive double."; break;
+                    case "AlphaStep": if (this.AlphaStep <= 0) errorString = "AlphaStep must be positive double."; break;
                     case "FittingProcentThreshold": if (this.FittingProcentThreshold <= 0 || this.FittingProcentThreshold > 100) errorString = "FittingProcentThreshold must be positive double: less or equal 100"; break;
 
                     case "Hx": if (this.Hx <= 0) errorString = "Hx must be positive double."; break;
@@ -154,6 +155,7 @@ namespace Inverse_solver.Model
         // alpha fitting parameters:
         public double Pmin { get; set; }
         public double Pmax { get; set; }
+        public double FirstAlpha { get; set; }
         public double AlphaStep { get; set; }
         public double FittingProcentThreshold { get; set; }
 

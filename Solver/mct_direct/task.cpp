@@ -72,8 +72,14 @@ void Task::init() {
 //}
 
 
-void Task::changeAlpha(double _alpha) {
+void Task::changeAlphaThings(double _alpha, double _pmin, double _pmax,
+	double _firstAlpha, double _alphaStep, double _fittingProcentThreshold) {
 	alpha = _alpha;
+	pmin = _pmin;
+	pmax = _pmax;
+	firstAlpha = _firstAlpha;
+	alphaStep = _alphaStep;
+	fittingProcentThreshold = _fittingProcentThreshold;
 }
 
 void Task::getGridInformation(GridInformation& _gridInfo) {
@@ -99,7 +105,7 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	double y0Grid, double y1Grid, int yStepsGrid,
 	double z0Grid, double z1Grid, int zStepsGrid,
 	double _alpha, double _pmin, double _pmax,
-	double _alphaStep, double _fittingProcentThreshold) {
+	double _firstAlpha, double _alphaStep, double _fittingProcentThreshold) {
 
 	fillAxisGrid(xAxisGrid, x0Grid, x1Grid, xStepsGrid);
 	fillAxisGrid(yAxisGrid, y0Grid, y1Grid, yStepsGrid);
@@ -171,14 +177,14 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	alpha = _alpha;
 
 	pmin = _pmin;
-	pmax = _pmax,
+	pmax = _pmax;
+	firstAlpha = _firstAlpha;
 	alphaStep = _alphaStep;
 	fittingProcentThreshold = _fittingProcentThreshold;
 
 	// to storage calculated values of residual and magnetic induction
 	residualValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
 	magneticInductionValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
-
 
 	//������������� �������� ����
 	double dim = TASK_DIM * elems.size();
@@ -453,17 +459,27 @@ void Task::buildMatrix() {
 	matrixStored = matrix;
 }
 
-void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems) {
+void Task::restoreMatrixAndSolve() {
 	// restore builded matrix
 	matrix = matrixStored;
-	
+
+	// solve
 	alphaRegularization();
 	Gauss(matrix, rightPart, p);
+
+	// save results to elems
 	for (int i = 0, j = 0; i < p.size(); i += 3, j++) {
 		elems[j].p.x = p[i];
 		elems[j].p.y = p[i + 1];
 		elems[j].p.z = p[i + 2];
 	}
+}
+
+void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems) {
+
+	restoreMatrixAndSolve();
+	// save elems for output
+	_elems = elems;
 
 	// calculate additional residual and magnetic induction:
 	std::vector<Point> parameters;
@@ -489,15 +505,126 @@ void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems) {
 	}
 }
 
+bool Task::isFindedParametersInTheRange() {
+	bool inTheRange = true;
+
+	for (int i = 0; i < elems.size(); i++) {
+		if (pmin > elems[i].p.x || elems[i].p.x > pmax ||
+			pmin > elems[i].p.y || elems[i].p.y > pmax ||
+			pmin > elems[i].p.z || elems[i].p.z > pmax) {
+			inTheRange = false;
+			break;
+		}
+	}
+
+	return inTheRange;
+}
+
 void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha) {
-	///
-	/// 
-	/// 
-	/// 
-	/// 
-	*_alpha = 999;
+	// store setted alpha
+	double settedAlpha = alpha;
+
+	// init variables for calculating
+	double functional0 = 0;
+	double functionalCur = 0;
+	std::vector<Point> parameters;
+	std::vector<Point> calculatedB;
+	parameters.resize(elems.size());
+
+	// calculate with alpha = 0:
+	alpha = 0;
+	restoreMatrixAndSolve();
+
+	for (int i = 0; i < elems.size(); i++) {parameters[i] = elems[i].p;}
+	getB(parameters, calculatedB);
+
+	std::cout << "parameters" << std::endl;
+	for_each(parameters.begin(), parameters.end(), [](Point a) {std::cout << a.x << "\t" << a.y << "\t" << a.z << std::endl; });
+	std::cout << std::endl << "calculatedB" << std::endl;
+	for_each(calculatedB.begin(), calculatedB.end(), [](Point a) {std::cout << a.x << "\t" << a.y << "\t" << a.z << std::endl; });
+	std::cout << std::endl << "measures" << std::endl;
+	for_each(measures.begin(), measures.end(), [](auto a) {std::cout << a.B.x << "\t" << a.B.y << "\t" << a.B.z << std::endl; });
+	std::cout << std::endl;
 
 
+	// calculate functional:
+	for (int i = 0; i < residualValues.size(); i++) {
+		double xResidual = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x);
+		double yResidual = abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y);
+		double zResidual = abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z);
+
+		//residualValues[i] = Point(xResidual * 100, xResidual * 100, xResidual * 100);
+		functional0 += xResidual * xResidual + yResidual * yResidual + zResidual * zResidual;
+		if (isnan(functional0)) {
+			std::cout << "functional0 is nan on the i-th elem: " << i << std::endl;
+			return;
+		}
+	}
+
+	bool inTheRange = isFindedParametersInTheRange();
+	functionalCur = functional0;
+	std::cout << "functional0: " << functional0 << std::endl;
+	double functonalDiff = (abs(functional0 - functionalCur) / functional0) * 100;
+	// debug things:
+	std::cout << "Calculate functional with alpha = 0" << std::endl;
+	std::cout << "alpha: " << alpha << ", functional diff: " << functonalDiff << ", in the range: " << inTheRange << std::endl;
+
+	// set alpha to first alpha for fitting alpha
+	alpha = firstAlpha;
+	std::cout << "Start alpha fitting: " << std::endl;
+	while (!inTheRange && functonalDiff < fittingProcentThreshold) {
+		// debug things:
+		std::cout << "alpha: " << alpha << ", functional diff: " << functonalDiff << ", in the range: " << inTheRange << std::endl;
+
+		restoreMatrixAndSolve();
+		/// output result alpha
+		*_alpha = alpha;
+
+		for (int i = 0; i < elems.size(); i++) { parameters[i] = elems[i].p; }
+		getB(parameters, calculatedB);
+
+		// calculate functional:
+		functionalCur = 0;
+		for (int i = 0; i < residualValues.size(); i++) {
+			double xResidual = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x);
+			double yResidual = abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y);
+			double zResidual = abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z);
+
+			functionalCur += xResidual * xResidual + yResidual * yResidual + zResidual * zResidual;
+		}
+
+		// check if all the finded parameters in the possible range:
+		inTheRange = isFindedParametersInTheRange();
+
+		// check the diff between functional0 and current functional
+		functonalDiff = (abs(functional0 - functionalCur) / functional0) * 100;
+
+		// next interation alpha
+		alpha *= alphaStep;
+
+	}
+
+	// save results for best (*** last ***) task solving...
+	// calculate residual:
+	for (int i = 0; i < residualValues.size(); i++) {
+		double xResidual = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x);
+		double yResidual = abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y);
+		double zResidual = abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z);
+
+		residualValues[i] = Point(xResidual * 100, xResidual * 100, xResidual * 100);
+	}
+
+	// calculate magnetic induction:
+	for (int i = 0; i < magneticInductionValues.size(); i++) {
+		magneticInductionValues[i] = calculatedB[i];
+	}
+
+
+	// save elems for output
+	_elems = elems;
+
+	// restore setted alpha
+	alpha = settedAlpha;
 }
 
 

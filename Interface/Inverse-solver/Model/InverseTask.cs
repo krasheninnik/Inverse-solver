@@ -34,7 +34,7 @@ namespace Inverse_solver.Model
                             double yStart, double yEnd, int yStepsAmount,
                             double zStart, double zEnd, int zStepsAmount,
                             double alpha, double Pmin, double Pmax,
-                            double AlphaStep, double FittingProcentThreshold);
+                            double firstAlpha, double alphaStep, double fittingProcentThreshold);
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void getGridInformation(IntPtr task, out GridInformation gridInformation);
@@ -54,7 +54,8 @@ namespace Inverse_solver.Model
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr getMagneticInductionByX(IntPtr task, int xLayer, [Out] Value[] values);
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr changeAlpha(IntPtr task, double alpha);
+        static extern public IntPtr changeAlphaThings(IntPtr task, double alpha, double pmin, double pmax,
+                double firstAlpha, double alphaStep, double fittingProcentThreshold);
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr buildMatrix(IntPtr task);
@@ -76,7 +77,7 @@ namespace Inverse_solver.Model
                       ip.Ystart, ip.Yend, ip.YstepsAmount,
                       ip.Zstart, ip.Zend, ip.ZstepsAmount,
                       ip.Alpha, ip.Pmin, ip.Pmax,
-                      ip.AlphaStep, ip.FittingProcentThreshold);
+                      ip.FirstAlpha, ip.AlphaStep, ip.FittingProcentThreshold);
 
             getGridInformation(task, out gridInfo);
 
@@ -97,9 +98,10 @@ namespace Inverse_solver.Model
             FiniteElems = new FiniteElem[GridInfo.elemsSize];
         }
 
-        public void ChangeAlpha(double alpha)
+        public void ChangeAlpha(InitParameters ip)
         {
-            changeAlpha(task, alpha);
+            changeAlphaThings(task, ip.Alpha, ip.Pmin, ip.Pmax,
+                      ip.FirstAlpha, ip.AlphaStep, ip.FittingProcentThreshold);
         }
 
         public void BuildMatrix()

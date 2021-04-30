@@ -53,7 +53,7 @@ extern "C" INVERSESOLVERLIB  void initInverseTask(Task * task,
     double yStart, double yEnd, int yStepsAmount,
     double zStart, double zEnd, int zStepsAmount,
     double _alpha, double pmin, double pmax,
-	double alphaStep, double fittingProcentThreshold);
+	double firstAlpha, double alphaStep, double fittingProcentThreshold);
 
 extern "C" INVERSESOLVERLIB void getGridInformation(Task* task, GridInformation& gridInfo);
 
@@ -65,4 +65,5 @@ extern "C" INVERSESOLVERLIB void getDiscrepancyByX(Task* task, int xLayerIndex, 
 extern "C" INVERSESOLVERLIB void getMagneticInductionByY(Task* task, int yLayerIndex, Point* magneticInduction);
 extern "C" INVERSESOLVERLIB void getMagneticInductionByX(Task* task, int xLayerIndex, Point* magneticInduction);
 
-extern "C" INVERSESOLVERLIB void changeAlpha(Task * task, double alpha);
+extern "C" INVERSESOLVERLIB void changeAlphaThings(Task * task, double alpha, double pmin, double pmax,
+	double firstAlpha, double alphaStep, double fittingProcentThreshold);

@@ -15,7 +15,7 @@ void initInverseTask(Task* task,
     double yStart, double yEnd, int yStepsAmount,
     double zStart, double zEnd, int zStepsAmount,
     double _alpha, double pmin, double pmax,
-    double alphaStep, double fittingProcentThreshold) {
+    double firstAlpha, double alphaStep, double fittingProcentThreshold) {
 
     // transform C-ctyle array to vector
     std::vector<Value> B(measuredValuesSize);
@@ -26,7 +26,7 @@ void initInverseTask(Task* task,
         yStart, yEnd, yStepsAmount,
         zStart, zEnd, zStepsAmount,
         _alpha, pmin, pmax,
-        alphaStep, fittingProcentThreshold);
+        firstAlpha, alphaStep, fittingProcentThreshold);
 }
 
 void getGridInformation(Task* task, GridInformation& gridInfo) {
@@ -111,6 +111,7 @@ void getMagneticInductionByX(Task* task, int xLayerIndex, Point* magneticInducti
     for (int i = 0; i < fxVec.size(); i++) magneticInduction[i] = fxVec[i];
 }
 
-void changeAlpha(Task* task, double alpha) {
-    task->changeAlpha(alpha);
+void changeAlphaThings(Task* task, double alpha, double pmin, double pmax,
+    double firstAlpha, double alphaStep, double fittingProcentThreshold) {
+    task->changeAlphaThings(alpha, pmin, pmax, firstAlpha, alphaStep, fittingProcentThreshold);
 }

@@ -119,7 +119,7 @@ namespace Inverse_solver.ViewModel
         #region CommandsFunctions
         public void ChangeAlpha()
         {
-            InverseTask.ChangeAlpha(initParameters.Alpha);
+            InverseTask.ChangeAlpha(initParameters);
             this.IsSolvedWithAlphaSetted = false;
         }
 
@@ -227,6 +227,7 @@ namespace Inverse_solver.ViewModel
 
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
             this.IsSolvedWithAlphaSetted = true;
+            this.IsSolvedWithAlphaFitting = false;
 
             // Update commands CanExecute states
             CommandManager.InvalidateRequerySuggested();
@@ -241,6 +242,7 @@ namespace Inverse_solver.ViewModel
 
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
             this.IsSolvedWithAlphaFitting = true;
+            this.IsSolvedWithAlphaSetted = false;
 
             // Update commands CanExecute states
             CommandManager.InvalidateRequerySuggested();
