@@ -164,7 +164,8 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 
 	// just be:
 	yResidual = 0;
-	
+	alpha = _alpha;
+
 	// to storage calculated values of residual and magnetic induction
 	residualValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
 	magneticInductionValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
