@@ -14,7 +14,8 @@ void initInverseTask(Task* task,
     double xStart, double xEnd, int xStepsAmount,
     double yStart, double yEnd, int yStepsAmount,
     double zStart, double zEnd, int zStepsAmount,
-    double _alpha) {
+    double _alpha, double pmin, double pmax,
+    double alphaStep, double fittingProcentThreshold) {
 
     // transform C-ctyle array to vector
     std::vector<Value> B(measuredValuesSize);
@@ -24,7 +25,8 @@ void initInverseTask(Task* task,
         xStart, xEnd, xStepsAmount,
         yStart, yEnd, yStepsAmount,
         zStart, zEnd, zStepsAmount,
-        _alpha);
+        _alpha, pmin, pmax,
+        alphaStep, fittingProcentThreshold);
 }
 
 void getGridInformation(Task* task, GridInformation& gridInfo) {

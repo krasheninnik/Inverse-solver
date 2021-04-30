@@ -75,7 +75,8 @@ public:
 		double x0Grid, double x1Grid, int xStepsGrid,
 		double y0Grid, double y1Grid, int yStepsGrid,
 		double z0Grid, double z1Grid, int zStepsGrid,
-		double alpha);
+		double alpha, double pmin, double pmax,
+		double alphaStep, double fittingProcentThreshold);
 	void init();
 	void buildMatrix();
 	void solveWithAlphaSetted(std::vector<FiniteElem>& _elems);
@@ -96,6 +97,10 @@ public:
 
 private:
 	double alpha;
+	double pmin;
+	double pmax;
+	double alphaStep;
+	double fittingProcentThreshold;
 
 	std::vector<Measure> measures;
 	std::vector<Point> nodes;

@@ -33,7 +33,8 @@ namespace Inverse_solver.Model
                             double xStart, double xEnd, int xStepsAmount,
                             double yStart, double yEnd, int yStepsAmount,
                             double zStart, double zEnd, int zStepsAmount,
-                            double alpha);
+                            double alpha, double Pmin, double Pmax,
+                            double AlphaStep, double FittingProcentThreshold);
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void getGridInformation(IntPtr task, out GridInformation gridInformation);
@@ -74,7 +75,8 @@ namespace Inverse_solver.Model
                       ip.Xstart, ip.Xend, ip.XstepsAmount,
                       ip.Ystart, ip.Yend, ip.YstepsAmount,
                       ip.Zstart, ip.Zend, ip.ZstepsAmount,
-                      ip.Alpha);
+                      ip.Alpha, ip.Pmin, ip.Pmax,
+                      ip.AlphaStep, ip.FittingProcentThreshold);
 
             getGridInformation(task, out gridInfo);
 

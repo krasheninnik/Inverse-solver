@@ -52,7 +52,8 @@ extern "C" INVERSESOLVERLIB  void initInverseTask(Task * task,
     double xStart, double xEnd, int xStepsAmount,
     double yStart, double yEnd, int yStepsAmount,
     double zStart, double zEnd, int zStepsAmount,
-    double _alpha);
+    double _alpha, double pmin, double pmax,
+	double alphaStep, double fittingProcentThreshold);
 
 extern "C" INVERSESOLVERLIB void getGridInformation(Task* task, GridInformation& gridInfo);
 

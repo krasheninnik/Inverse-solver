@@ -98,7 +98,8 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	double x0Grid, double x1Grid, int xStepsGrid,
 	double y0Grid, double y1Grid, int yStepsGrid,
 	double z0Grid, double z1Grid, int zStepsGrid,
-	double _alpha) {
+	double _alpha, double _pmin, double _pmax,
+	double _alphaStep, double _fittingProcentThreshold) {
 
 	fillAxisGrid(xAxisGrid, x0Grid, x1Grid, xStepsGrid);
 	fillAxisGrid(yAxisGrid, y0Grid, y1Grid, yStepsGrid);
@@ -168,6 +169,11 @@ void Task::init(double hxMeasure, int nxMeasure, double hyMeasure, int nyMeasure
 	// just be:
 	yResidual = 0;
 	alpha = _alpha;
+
+	pmin = _pmin;
+	pmax = _pmax,
+	alphaStep = _alphaStep;
+	fittingProcentThreshold = _fittingProcentThreshold;
 
 	// to storage calculated values of residual and magnetic induction
 	residualValues.resize(xAxisMeasures.size() * yAxisMeasures.size());
