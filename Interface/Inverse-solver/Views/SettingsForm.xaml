@@ -8,7 +8,7 @@
         
         xmlns:converter="clr-namespace:Inverse_solver.ViewModel.Converters"
         mc:Ignorable="d"
-        Title="SettingsForm" Height="552.618" Width="952.307">
+        Title="SettingsForm" Height="624.618" Width="986.307">
 
     <Window.Resources>
         <converter:MeasuredValuesConverter x:Key="MeasuredValuesConverter"></converter:MeasuredValuesConverter>
@@ -32,28 +32,28 @@
 
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
-            <RowDefinition Height="159*"/>
-            <RowDefinition Height="349*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="211*"/>
-            <ColumnDefinition Width="198*"/>
-            <ColumnDefinition Width="47*"/>
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.ColumnSpan="3" Margin="0,43,0,0" Grid.RowSpan="2">
-            <Label HorizontalAlignment="Left" Content="Grid For Measured Values:"/>
-            <Grid Margin="10,10,73,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="40*"/>
-                    <ColumnDefinition Width="40*"/>
-                    <ColumnDefinition Width="40*"/>
-                    <ColumnDefinition Width="40*"/>
-                    <ColumnDefinition Width="40*"/>
-                    <ColumnDefinition Width="40*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
+                <RowDefinition Height="159*"/>
+                <RowDefinition Height="349*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="211*"/>
+                <ColumnDefinition Width="198*"/>
+                <ColumnDefinition Width="47*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.ColumnSpan="3" Margin="0,43,0,0" Grid.RowSpan="2">
+                <Label HorizontalAlignment="Left" Content="Grid For Measured Values:"/>
+                <Grid Margin="10,10,73,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="40*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
@@ -77,57 +77,57 @@
 
                     <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" Width="25">y0:</Label>
                     <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Y0}"/>
-    
+
                     <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right" Width="24">z0:</Label>
                     <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.Z0}"/>
-            </Grid>
-            <Label HorizontalAlignment="Left" Content="Measured Values:"/>
+                </Grid>
+                <Label HorizontalAlignment="Left" Content="Measured Values:"/>
                 <TextBox Text="{Binding InitParameters.MeasuredValues, Converter={StaticResource  MeasuredValuesConverter}, ValidatesOnDataErrors=True}"
                          Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"
                          TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="100" AcceptsReturn="True"  />
-            <Label HorizontalAlignment="Left" Content="Space Grid:"/>
-            <Grid Margin="10,10,73,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="20*"/>
-                    <ColumnDefinition Width="20*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                <Label HorizontalAlignment="Left" Content="Space Grid:"/>
+                <Grid Margin="10,10,73,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="20*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">xStart:</Label>
+                    <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right">xStart:</Label>
                     <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitParameters.Xstart, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">xEnd:</Label>
+                    <Label Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right">xEnd:</Label>
                     <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding InitParameters.Xend, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right">xStepsAmount:</Label>
+                    <Label Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right">xStepsAmount:</Label>
                     <TextBox Grid.Row="0" Grid.Column="5" Text="{Binding InitParameters.XstepsAmount, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">yStart:</Label>
+                    <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right">yStart:</Label>
                     <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding InitParameters.Ystart, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">yEnd:</Label>
+                    <Label Grid.Row="1" Grid.Column="2" HorizontalAlignment="Right">yEnd:</Label>
                     <TextBox Grid.Row="1" Grid.Column="3" Text="{Binding InitParameters.Yend, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right">yStepsAmount:</Label>
+                    <Label Grid.Row="1" Grid.Column="4" HorizontalAlignment="Right">yStepsAmount:</Label>
                     <TextBox Grid.Row="1" Grid.Column="5" Text="{Binding InitParameters.YstepsAmount, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">zStart:</Label>
+                    <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right">zStart:</Label>
                     <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InitParameters.Zstart, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right">zEnd:</Label>
+                    <Label Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right">zEnd:</Label>
                     <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding InitParameters.Zend, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
 
-                <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right">zStepsAmount:</Label>
+                    <Label Grid.Row="2" Grid.Column="4" HorizontalAlignment="Right">zStepsAmount:</Label>
                     <TextBox Grid.Row="2" Grid.Column="5" Text="{Binding InitParameters.ZstepsAmount, ValidatesOnDataErrors=True}" Style="{StaticResource ToolTipWithErrorMessageOnErrorStyle}"/>
-            </Grid>
+                </Grid>
 
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" VerticalAlignment="Bottom">
                     <Button Content = "Set parameters from file" Command="{Binding SetInitParametersFromFileCommand}"
@@ -138,6 +138,10 @@
                         Margin="20" Width="200" Height="30">
                     </Button>
 
+                    <Button  
+                     Content = "Change alpha" Command="{Binding ChangeAlphaCommand}"
+                     Margin="20" Width="200" Height="30">
+                    </Button>
 
                     <Button  
                      Content = "Init task" Command="{Binding InitTaskCommand}"
@@ -145,10 +149,6 @@
                      Margin="20" Width="200" Height="30">
                     </Button>
 
-                    <Button  
-                     Content = "Change alpha" Command="{Binding ChangeAlphaCommand}"
-                     Margin="20" Width="200" Height="30">
-                    </Button>
                 </StackPanel>
             </StackPanel>
         </Grid>

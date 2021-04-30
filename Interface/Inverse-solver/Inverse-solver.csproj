@@ -105,8 +105,10 @@
     <Compile Include="Model\InitParameters.cs" />
     <Compile Include="Model\Value.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
-    <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
+    <Compile Include="ViewModel\Commands\BuildMatrixCommand.cs" />
     <Compile Include="ViewModel\Commands\ChangeAlphaCommand.cs" />
+    <Compile Include="ViewModel\Commands\SolveWithAlphaFittingCommand.cs" />
+    <Compile Include="ViewModel\Commands\SolveWithAlphaCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenMagneticInductionViewCommand.cs" />
     <Compile Include="ViewModel\Commands\SaveInitParametersToFileCommand.cs" />
     <Compile Include="ViewModel\Commands\SetInitParametersFromFileCommand.cs" />

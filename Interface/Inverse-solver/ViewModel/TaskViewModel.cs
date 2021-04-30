@@ -37,11 +37,13 @@ namespace Inverse_solver.ViewModel
             DiscrepancyComponentToShow = DiscrepancyComponentsToShowList[0];
 
             // Commands:
+            this.SolveWithAlphaFittingCommand = new SolveWithAlphaFittingCommand(this, (ex) => StatusMessage = ex.Message);
+            this.SolveWithAlphaCommand = new SolveWithAlphaCommand(this, (ex) => StatusMessage = ex.Message);
             this.ChangeAlphaCommand = new ChangeAlphaCommand(this);
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
             this.OpenMagneticInductionViewCommand = new OpenMagneticInductionViewCommand(this);
-            this.CalculateTaskCommand = new CalculateTaskCommand(this, (ex) => StatusMessage = ex.Message);
+            this.BuildMatrixCommand = new BuildMatrixCommand(this, (ex) => StatusMessage = ex.Message);
             this.InitTaskCommand = new InitTaskCommand(this, (ex) => StatusMessage = ex.Message);
             this.SetInitParametersFromFileCommand = new SetInitParametersFromFileCommand(this, (ex) => StatusMessage = ex.Message);
             this.SaveInitParametersToFileCommand = new SaveInitParametersToFileCommand(this, (ex) => StatusMessage = ex.Message);
@@ -100,8 +102,11 @@ namespace Inverse_solver.ViewModel
         private InverseTask InverseTask { get; set; }
 
         #region CommandsDefinition
+        public SolveWithAlphaCommand SolveWithAlphaCommand { get; private set; }
+        public SolveWithAlphaFittingCommand SolveWithAlphaFittingCommand { get; private set; }
+
         public ChangeAlphaCommand ChangeAlphaCommand { get; private set; }
-        public CalculateTaskCommand CalculateTaskCommand { get; private set; }
+        public BuildMatrixCommand BuildMatrixCommand { get; private set; }
         public OpenSettingsFormCommand OpenSettingsFormCommand { get; private set; }
         public OpenMagneticInductionViewCommand OpenMagneticInductionViewCommand { get; private set; }
         public OpenDiscrepancyViewCommand OpenDiscrepancyViewCommand { get; private set; }
@@ -115,6 +120,7 @@ namespace Inverse_solver.ViewModel
         public void ChangeAlpha()
         {
             InverseTask.ChangeAlpha(initParameters.Alpha);
+            this.IsSolvedWithAlphaSetted = false;
         }
 
         public void OpenSettingsForm()
@@ -189,22 +195,52 @@ namespace Inverse_solver.ViewModel
             });
             OnPropertyChanged("YResultGridLayers");
             this.IsTaskInitializated = true;
-            this.IsTaskCalculated = false;
+            this.IsSolvedWithAlphaSetted = false;
+            this.IsSolvedWithAlphaFitting = false;
+            this.IsMatrixBuilded = false;
+
             //window.Close();
 
             // Update commands CanExecute states
             CommandManager.InvalidateRequerySuggested();
         }
 
-        public async Task CalculateTask()
+        public async Task BuildMatrix()
         {
             await Task.Run(() =>
             {
-                InverseTask.CalculateTask();
+                InverseTask.BuildMatrix();
+            });
+
+            this.IsMatrixBuilded = true;
+
+            // Update commands CanExecute states
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        public async Task SolveTaskWithAlphaSetted()
+        {
+            await Task.Run(() =>
+            {
+                InverseTask.SolveWithAlphaSetted();
             });
 
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
-            this.IsTaskCalculated = true;
+            this.IsSolvedWithAlphaSetted = true;
+
+            // Update commands CanExecute states
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        public async Task SolveTaskWithAlphaFitting()
+        {
+            await Task.Run(() =>
+            {
+                InverseTask.SolveWithAlphaFitting();
+            });
+
+            this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
+            this.IsSolvedWithAlphaFitting = true;
 
             // Update commands CanExecute states
             CommandManager.InvalidateRequerySuggested();
@@ -234,7 +270,10 @@ namespace Inverse_solver.ViewModel
 
         // To control buttons activity (add later):
         public bool IsTaskInitializated { get; set; }
-        public bool IsTaskCalculated { get; set; }
+        public bool IsMatrixBuilded { get; set; }
+        public bool IsSolvedWithAlphaSetted { get; set; }
+        public bool IsSolvedWithAlphaFitting { get; set; }
+        public bool IsTaskCalculated { get { return IsSolvedWithAlphaSetted || IsSolvedWithAlphaFitting; } }
 
         #region PropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -383,6 +422,10 @@ namespace Inverse_solver.ViewModel
             }
         }
 
+        public double FittedAlpha
+        {
+            get { return InverseTask.FittedAlpha; }
+        }
 
         private InitParameters initParameters;
         public InitParameters InitParameters

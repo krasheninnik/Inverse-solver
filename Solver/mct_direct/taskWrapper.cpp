@@ -31,11 +31,25 @@ void getGridInformation(Task* task, GridInformation& gridInfo) {
     task->getGridInformation(gridInfo);
 }
 
-void solveTask(Task* task, FiniteElemProxy* felemsProxy) {
-    std::vector<FiniteElem> felems;
+
+void buildMatrix(Task* task) {
     task->reset();
-    task->solve(felems);
-   
+    task->buildMatrix();
+}
+
+void solveWithAlphaSetted(Task* task, FiniteElemProxy* felemsProxy) {
+    std::vector<FiniteElem> felems;
+    task->solveWithAlphaSetted(felems);
+
+    for (int i = 0; i < felems.size(); i++) {
+        auto& el = felems[i];
+        felemsProxy[i] = FiniteElemProxy(el.nodes[0], el.nodes[1], el.nodes[2], el.nodes[3], el.nodes[4], el.nodes[5], el.nodes[6], el.nodes[7], el.p);
+    }
+}
+void solveWithAlphaFitting(Task* task, FiniteElemProxy* felemsProxy, double* alpha) {
+    std::vector<FiniteElem> felems;
+    task->solveWithAlphaFitting(felems, alpha);
+
     for (int i = 0; i < felems.size(); i++) {
         auto& el = felems[i];
         felemsProxy[i] = FiniteElemProxy(el.nodes[0], el.nodes[1], el.nodes[2], el.nodes[3], el.nodes[4], el.nodes[5], el.nodes[6], el.nodes[7], el.p);

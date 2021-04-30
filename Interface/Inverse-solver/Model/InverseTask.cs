@@ -44,11 +44,6 @@ namespace Inverse_solver.Model
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public void getMeasureGrids(IntPtr task, [Out] double[] xGrid, [Out] double[] yGrid);
 
-
-        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr solveTask(IntPtr task, [Out] FiniteElem[] elems);
-
-
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr getDiscrepancyByY(IntPtr task, int yLayer, [Out] Value[] values);
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -59,6 +54,16 @@ namespace Inverse_solver.Model
         static extern public IntPtr getMagneticInductionByX(IntPtr task, int xLayer, [Out] Value[] values);
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr changeAlpha(IntPtr task, double alpha);
+
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr buildMatrix(IntPtr task);
+
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr solveWithAlphaSetted(IntPtr task, [Out] FiniteElem[] elems);
+
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr solveWithAlphaFitting(IntPtr task, [Out] FiniteElem[] elems, out double alpha);
+
         #endregion
 
         #region PublicFunctionsForVM
@@ -90,12 +95,26 @@ namespace Inverse_solver.Model
             FiniteElems = new FiniteElem[GridInfo.elemsSize];
         }
 
-        public void CalculateTask()
+        public void ChangeAlpha(double alpha)
         {
-            solveTask(task, FiniteElems);
+            changeAlpha(task, alpha);
+        }
 
-            // for sake of debug:
-            //for (int i = 0; i < FiniteElems.Length; i++) FiniteElems[i].P = new Value(i, i, i);
+        public void BuildMatrix()
+        {
+            buildMatrix(task);
+        }
+
+        public void SolveWithAlphaSetted()
+        {
+            solveWithAlphaSetted(task, FiniteElems);
+        }
+
+        public void SolveWithAlphaFitting()
+        {
+
+            solveWithAlphaFitting(task, FiniteElems, out double fittedAlpha);
+            FittedAlpha = fittedAlpha;
         }
 
         public void GetDiscrepancyByY(int yLayer)
@@ -117,12 +136,9 @@ namespace Inverse_solver.Model
         {
             getMagneticInductionByX(task, xLayer, MagnIndValuesByX);
         }
+
         #endregion
 
-        public void ChangeAlpha(double alpha)
-        {
-            changeAlpha(task, alpha);
-        }
         public int YResultLayerIndex { get; set; }
         public List<List<Value>> ResultsValues
         {
@@ -146,6 +162,8 @@ namespace Inverse_solver.Model
 
         private GridInformation gridInfo;
         public GridInformation GridInfo { get => gridInfo; }
+
+        public double FittedAlpha { get; set; }
 
         public double[] YResultGridLayers { get; set; }
 

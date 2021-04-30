@@ -29,7 +29,9 @@
         </Grid>
         <StackPanel Grid.Column="1" Grid.Row="0" Margin="15">
             <Button Margin="0,40,0,0" Content = "Task Settings" Command="{Binding OpenSettingsFormCommand}"></Button>
-            <Button Margin="0,5,0,0" Content = "Calculate" Command="{Binding CalculateTaskCommand}"></Button>
+            <Button Margin="0,5,0,0" Content = "Build Matrix" Command="{Binding BuildMatrixCommand}"></Button>
+            <Button Margin="0,5,0,0" Content = "Solve with alpha" Command="{Binding SolveWithAlphaCommand}"></Button>
+            <Button Margin="0,5,0,0" Content = "Solve with alpha fitting" Command="{Binding SolveWithAlphaFittingCommand}"></Button>
             <Button Margin="0,5,0,0" Content = "Show discrepancy" Command="{Binding OpenDiscrepancyViewCommand}"></Button>
             <Button Margin="0,5,0,0" Content = "Show magnetic induction" Command="{Binding OpenMagneticInductionViewCommand}"></Button>
 

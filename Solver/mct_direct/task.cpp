@@ -421,7 +421,7 @@ void Task::reset() {
 }
 
 auto get_time() { return std::chrono::high_resolution_clock::now(); }
-void Task::solve(std::vector<FiniteElem>& _elems) {
+void Task::buildMatrix() {
 	auto start = get_time();
 	std::cout << "Start solve task";
 	concurrency::parallel_for(size_t(0), matrix.size(), [this](size_t q)
@@ -436,19 +436,29 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 			}
 		});
 
-	alphaRegularization();
-	Gauss(matrix, rightPart, p);
-	for (int i = 0, j=0; i < p.size();i+=3, j++) {
-		elems[j].p.x = p[i];
-		elems[j].p.y = p[i + 1];
-		elems[j].p.z = p[i + 2];
-	}
-	_elems = elems;
+	
+	//_elems = elems;
 
 	auto finish = get_time();
 	auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
 	std::cout << "Elapsed time = " << duration.count() << " ms\n";
+
+	// store matrix (yeap, it's to much memory, but ....)
+	matrixStored = matrix;
+}
+
+void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems) {
+	// restore builded matrix
+	matrix = matrixStored;
 	
+	alphaRegularization();
+	Gauss(matrix, rightPart, p);
+	for (int i = 0, j = 0; i < p.size(); i += 3, j++) {
+		elems[j].p.x = p[i];
+		elems[j].p.y = p[i + 1];
+		elems[j].p.z = p[i + 2];
+	}
+
 	// calculate additional residual and magnetic induction:
 	std::vector<Point> parameters;
 	std::vector<Point> calculatedB;
@@ -472,6 +482,18 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 		magneticInductionValues[i] = calculatedB[i];
 	}
 }
+
+void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha) {
+	///
+	/// 
+	/// 
+	/// 
+	/// 
+	*_alpha = 999;
+
+
+}
+
 
 void Task::getDiscrepancyByY(int y, std::vector<Point>& residual) {
 	residual.resize(xAxisMeasures.size());

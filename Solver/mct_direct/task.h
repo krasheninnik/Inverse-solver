@@ -77,7 +77,10 @@ public:
 		double z0Grid, double z1Grid, int zStepsGrid,
 		double alpha);
 	void init();
-	void solve(std::vector<FiniteElem>&_elems);
+	void buildMatrix();
+	void solveWithAlphaSetted(std::vector<FiniteElem>& _elems);
+	void solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha);
+
 	void reset();
 	void getB(std::vector<Point> parameters, std::vector<Point>& B);
 
@@ -89,6 +92,7 @@ public:
 	void getMagneticInductionByY(int y, std::vector<Point>& magneticInduction);
 	void getMagneticInductionByX(int x, std::vector<Point>& magneticInduction);
 	void changeAlpha(double alpha);
+
 
 private:
 	double alpha;
@@ -113,6 +117,8 @@ private:
 	int yResidual;
 
 	std::vector<std::vector<double>> matrix;
+	std::vector<std::vector<double>> matrixStored;
+
 	std::vector<double> rightPart;
 
 	// for save results values:
