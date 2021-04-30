@@ -71,6 +71,7 @@ namespace Inverse_solver.ViewModel
                 Title = $"Discrepancy",
                 Color = OxyPlot.OxyColors.Red,
                 StrokeThickness = 1,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
             };
 
             for (int i = 0; i < x.Length; i++)
@@ -98,6 +99,7 @@ namespace Inverse_solver.ViewModel
                 Title = $"Magnetic Induction",
                 Color = OxyPlot.OxyColors.Red,
                 StrokeThickness = 1,
+                InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
             };
 
             for (int i = 0; i < x.Length; i++)
