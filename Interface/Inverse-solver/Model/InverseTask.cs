@@ -54,9 +54,9 @@ namespace Inverse_solver.Model
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr getDiscrepancyByX(IntPtr task, int xLayer, [Out] double[] values);
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr getMagneticInductionByY(IntPtr task, int yLayer, [Out] double[] values);
+        static extern public IntPtr getMagneticInductionByY(IntPtr task, int yLayer, [Out] Value[] values);
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr getMagneticInductionByX(IntPtr task, int xLayer, [Out] double[] values);
+        static extern public IntPtr getMagneticInductionByX(IntPtr task, int xLayer, [Out] Value[] values);
         #endregion
 
         #region PublicFunctionsForVM
@@ -79,8 +79,8 @@ namespace Inverse_solver.Model
             XMeasureGrid = new double[GridInfo.xMeasureLayersSize];
             DiscrepancyValuesByX = new double[GridInfo.yMeasureLayersSize];
             DiscrepancyValuesByY = new double[GridInfo.xMeasureLayersSize];
-            MagnIndValuesByX = new double[GridInfo.yMeasureLayersSize];
-            MagnIndValuesByY = new double[GridInfo.xMeasureLayersSize];
+            MagnIndValuesByX = new Value[GridInfo.yMeasureLayersSize];
+            MagnIndValuesByY = new Value[GridInfo.xMeasureLayersSize];
             YMeasureGrid = new double[GridInfo.yMeasureLayersSize];
             getMeasureGrids(task, XMeasureGrid, YMeasureGrid);
 
@@ -146,8 +146,8 @@ namespace Inverse_solver.Model
         public double[] DiscrepancyValuesByX { get; private set; }
         public double[] DiscrepancyValuesByY { get; private set; }
 
-        public double[] MagnIndValuesByY { get; private set; }
-        public double[] MagnIndValuesByX { get; private set; }
+        public Value[] MagnIndValuesByY { get; private set; }
+        public Value[] MagnIndValuesByX { get; private set; }
 
         public double[] YMeasureGrid { get; private set; }
         public double[] XMeasureGrid { get; private set; }

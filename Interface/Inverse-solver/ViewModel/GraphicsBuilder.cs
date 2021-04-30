@@ -71,7 +71,6 @@ namespace Inverse_solver.ViewModel
             model.Series.Add(heatMapSeries);
             return model;
         }
-
         public PlotModel buildDiscrepancyGraph(double[] x, double[] fx, string mode)
         {
             // create the model and add the lines to it
@@ -100,7 +99,7 @@ namespace Inverse_solver.ViewModel
             return model;
         }
 
-        public PlotModel buildMagneticInductionGraph(double[] x, double[] fx, string mode)
+        public PlotModel buildMagneticInductionGraph(double[] x, Value[] fx, string mode, string magneticInductionComponentToShow)
         {
             // create the model and add the lines to it
             var model = new OxyPlot.PlotModel
@@ -119,9 +118,27 @@ namespace Inverse_solver.ViewModel
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
             };
 
+            // Extract result component to show:
+            Func<Value, double> extractComponent;
+            switch (magneticInductionComponentToShow)
+            {
+                case "X":
+                    extractComponent = value => value.X;
+                    break;
+                case "Y":
+                    extractComponent = value => value.Y;
+                    break;
+                case "Z":
+                    extractComponent = value => value.Z;
+                    break;
+                default:
+                    throw new Exception($"There no such MagneticInductionComponentToShow: {magneticInductionComponentToShow}");
+            }
+
+
             for (int i = 0; i < x.Length; i++)
             {
-                line1.Points.Add(new OxyPlot.DataPoint(x[i], fx[i]));
+                line1.Points.Add(new OxyPlot.DataPoint(x[i], extractComponent(fx[i])));
             }
 
             model.Series.Add(line1);

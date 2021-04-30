@@ -481,21 +481,17 @@ void Task::getDiscrepancyByX(int x, std::vector<double>& residual) {
 	}
 }
 
-void Task::getMagneticInductionByY(int y, std::vector<double>& magneticInduction) {
+void Task::getMagneticInductionByY(int y, std::vector<Point>& magneticInduction) {
 	magneticInduction.resize(xAxisMeasures.size());
 	int firstIndex = y * xAxisMeasures.size();
 	int lastIndex = (y + 1) * xAxisMeasures.size();
-	std::transform(magneticInductionValues.begin() + firstIndex,
-		magneticInductionValues.begin() + lastIndex,
-		magneticInduction.begin(),
-		[](Point p) {return p.x; }		
-	);
+	std::copy(magneticInductionValues.begin() + firstIndex, magneticInductionValues.begin() + lastIndex, magneticInduction.begin());
 }
 
-void Task::getMagneticInductionByX(int x, std::vector<double>& magneticInduction) {
+void Task::getMagneticInductionByX(int x, std::vector<Point>& magneticInduction) {
 	magneticInduction.resize(yAxisMeasures.size());
 	for (int k = 0, i = x; i < magneticInductionValues.size(); i += xAxisMeasures.size(), k++) {
-		magneticInduction[k] = magneticInductionValues[i].y;
+		magneticInduction[k] = magneticInductionValues[i];
 	}
 }
 

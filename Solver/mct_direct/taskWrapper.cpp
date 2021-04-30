@@ -79,17 +79,17 @@ void getDiscrepancyByX(Task* task, int xLayerIndex, double* residual) {
 }
 
 
-void getMagneticInductionByY(Task* task, int yLayerIndex, double* magneticInduction) {
-    std::vector<double> fxVec;
+void getMagneticInductionByY(Task* task, int yLayerIndex, Point* magneticInduction) {
+    std::vector<Point> fxVec;
     task->getMagneticInductionByY(yLayerIndex, fxVec);
 
     // Convert vectors to C-style arrays
     for (int i = 0; i < fxVec.size(); i++) magneticInduction[i] = fxVec[i];
 }
 
-void getMagneticInductionByX(Task* task, int xLayerIndex, double* magneticInduction) {
-    std::vector<double> fxVec;
-    task->getDiscrepancyByX(xLayerIndex, fxVec);
+void getMagneticInductionByX(Task* task, int xLayerIndex, Point* magneticInduction) {
+    std::vector<Point> fxVec;
+    task->getMagneticInductionByX(xLayerIndex, fxVec);
 
     // Convert vectors to C-style arrays
     for (int i = 0; i < fxVec.size(); i++) magneticInduction[i] = fxVec[i];

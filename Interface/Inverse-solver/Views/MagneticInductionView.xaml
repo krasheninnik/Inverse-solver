@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Inverse_solver.Views"
         mc:Ignorable="d"
         xmlns:oxy="http://oxyplot.org/wpf"
-        Title="DiscrepancyView" Height="450" Width="800"
+        Title="MagneticInductionView" Height="509" Width="980"
         Closing="On_Closing"
         >
     <Grid>
@@ -26,6 +26,10 @@
             <StackPanel Grid.Column="1" Grid.Row="0" Margin="15">
                 <Label Content="Layer Y:" Margin="0,5,0,0"></Label>
                 <ListBox ItemsSource="{Binding YMeasureGrid}" ScrollViewer.VerticalScrollBarVisibility="Auto" MaxHeight="200" SelectedIndex="{Binding YMagnIndMeasureLayerIndex}" />
+
+                <Label Content="Show component:" Margin="0,0,0,0"></Label>
+                <ComboBox ItemsSource="{Binding MagneticInductionComponentsToShowList}" SelectedItem="{Binding MagneticInductionComponentToShow}" />
+
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.Row="0" Margin="15">
                 <Label Content="Layer X:" Margin="0,5,0,0"></Label>

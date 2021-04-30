@@ -86,8 +86,8 @@ public:
 	void getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid);
 	void getDiscrepancyByY(int y, std::vector<double>& fx);
 	void getDiscrepancyByX(int x, std::vector<double>& fx);
-	void getMagneticInductionByY(int y, std::vector<double>& magneticInduction);
-	void getMagneticInductionByX(int x, std::vector<double>& magneticInduction);
+	void getMagneticInductionByY(int y, std::vector<Point>& magneticInduction);
+	void getMagneticInductionByX(int x, std::vector<Point>& magneticInduction);
 
 
 private:

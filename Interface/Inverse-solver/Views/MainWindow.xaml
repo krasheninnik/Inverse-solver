@@ -8,7 +8,7 @@
         xmlns:converter="clr-namespace:Inverse_solver.ViewModel.Converters"
         xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="588.969" Width="1044.719">
+        Title="InverseSolver" Height="588.969" Width="1044.719">
 
     <Window.DataContext>
         <viewmodel:TaskViewModel />

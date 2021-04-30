@@ -30,6 +30,9 @@ namespace Inverse_solver.ViewModel
             ResultComponentsToShowList = new List<string>{ "X", "Y", "Z" };
             ResultComponentToShow = ResultComponentsToShowList[0];
 
+            MagneticInductionComponentsToShowList = new List<string> { "X", "Y", "Z" };
+            MagneticInductionComponentToShow = MagneticInductionComponentsToShowList[0];
+
             // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
@@ -261,6 +264,29 @@ namespace Inverse_solver.ViewModel
             }
         }
 
+        private List<string> magneticInductionComponentsToShowList;
+        public List<string> MagneticInductionComponentsToShowList
+        {
+            get { return magneticInductionComponentsToShowList; }
+            private set { magneticInductionComponentsToShowList = value; OnPropertyChanged(); }
+        }
+
+        private string magneticInductionComponentToShow;
+        public string MagneticInductionComponentToShow
+        {
+            get { return magneticInductionComponentToShow; }
+            set
+            {
+                magneticInductionComponentToShow = value;
+                if (InverseTask.MagnIndValuesByX != null && InverseTask.MagnIndValuesByY != null)
+                {
+                    MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.YMeasureGrid, InverseTask.MagnIndValuesByX, "Y", MagneticInductionComponentToShow);
+                }
+                OnPropertyChanged();
+            }
+
+        }
+
         // Indexes for changing displayed results by selected Y
         public int YResultLayerIndex
         {
@@ -308,7 +334,7 @@ namespace Inverse_solver.ViewModel
                 yMagnIndMeasureLayerIndex = value;
                 // Update discrepancy values for this Y level
                 InverseTask.GetMagneticInductionByY(yMagnIndMeasureLayerIndex);
-                MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.XMeasureGrid, InverseTask.MagnIndValuesByY, "X");
+                MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.XMeasureGrid, InverseTask.MagnIndValuesByY, "X", MagneticInductionComponentToShow);
             }
         }
 
@@ -321,7 +347,7 @@ namespace Inverse_solver.ViewModel
                 xMagnIndMeasureLayerIndex = value;
                 // Update discrepancy values for this X level
                 InverseTask.GetMagneticInductionByX(xMagnIndMeasureLayerIndex);
-                MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.YMeasureGrid, InverseTask.MagnIndValuesByX, "Y");
+                MagneticInductionModel = GraphicsBuilder.buildMagneticInductionGraph(InverseTask.YMeasureGrid, InverseTask.MagnIndValuesByX, "Y", MagneticInductionComponentToShow);
             }
         }
 
