@@ -62,16 +62,16 @@ void getMeasureGrids(Task* task, double* xGrid, double* yGrid) {
     for (int i = 0; i < yGridVec.size(); i++) yGrid[i] = yGridVec[i];
 }
 
-void getDiscrepancyByY(Task* task, int yLayerIndex, double* residual) {
-    std::vector<double> fxVec;
+void getDiscrepancyByY(Task* task, int yLayerIndex, Point* residual) {
+    std::vector<Point> fxVec;
     task->getDiscrepancyByY(yLayerIndex, fxVec);
 
     // Convert vectors to C-style arrays
     for (int i = 0; i < fxVec.size(); i++) residual[i] = fxVec[i];
 }
 
-void getDiscrepancyByX(Task* task, int xLayerIndex, double* residual) {
-    std::vector<double> fxVec;
+void getDiscrepancyByX(Task* task, int xLayerIndex, Point* residual) {
+    std::vector<Point> fxVec;
     task->getDiscrepancyByX(xLayerIndex, fxVec);
 
     // Convert vectors to C-style arrays

@@ -57,7 +57,7 @@ extern "C" INVERSESOLVERLIB void getGridInformation(Task* task, GridInformation&
 extern "C" INVERSESOLVERLIB void getResultGrids(Task* task, Point* nodes, double* yLayers);
 extern "C" INVERSESOLVERLIB void getMeasureGrids(Task* task, double* xGrid, double* yGrid);
 
-extern "C" INVERSESOLVERLIB void getDiscrepancyByY(Task* task, int yLayerIndex, double* residual);
-extern "C" INVERSESOLVERLIB void getDiscrepancyByX(Task* task, int xLayerIndex, double* residual);
+extern "C" INVERSESOLVERLIB void getDiscrepancyByY(Task* task, int yLayerIndex, Point* residual);
+extern "C" INVERSESOLVERLIB void getDiscrepancyByX(Task* task, int xLayerIndex, Point* residual);
 extern "C" INVERSESOLVERLIB void getMagneticInductionByY(Task* task, int yLayerIndex, Point* magneticInduction);
 extern "C" INVERSESOLVERLIB void getMagneticInductionByX(Task* task, int xLayerIndex, Point* magneticInduction);

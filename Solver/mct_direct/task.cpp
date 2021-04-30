@@ -459,7 +459,9 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 
 	// calculate residual:
 	for (int i = 0; i < residualValues.size(); i++) {
-		residualValues[i] = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100;
+		residualValues[i] = Point(abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100,
+			abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y) * 100,
+			abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z) * 100);
 	}
 
 	// calculate magnetic induction:
@@ -468,14 +470,14 @@ void Task::solve(std::vector<FiniteElem>& _elems) {
 	}
 }
 
-void Task::getDiscrepancyByY(int y, std::vector<double>& residual) {
+void Task::getDiscrepancyByY(int y, std::vector<Point>& residual) {
 	residual.resize(xAxisMeasures.size());
 	int firstIndex = y * xAxisMeasures.size();
 	int lastIndex = (y + 1) * xAxisMeasures.size();
 	std::copy(residualValues.begin() + firstIndex, residualValues.begin() + lastIndex, residual.begin());
 }
 
-void Task::getDiscrepancyByX(int x, std::vector<double>& residual) {
+void Task::getDiscrepancyByX(int x, std::vector<Point>& residual) {
 	residual.resize(yAxisMeasures.size());
 	for (int k = 0, i = x; i < residualValues.size(); i += xAxisMeasures.size(), k++) {
 		residual[k] = residualValues[i];

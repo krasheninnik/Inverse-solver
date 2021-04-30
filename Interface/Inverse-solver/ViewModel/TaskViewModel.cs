@@ -33,6 +33,9 @@ namespace Inverse_solver.ViewModel
             MagneticInductionComponentsToShowList = new List<string> { "X", "Y", "Z" };
             MagneticInductionComponentToShow = MagneticInductionComponentsToShowList[0];
 
+            DiscrepancyComponentsToShowList = new List<string> { "X", "Y", "Z" };
+            DiscrepancyComponentToShow = DiscrepancyComponentsToShowList[0];
+
             // Commands:
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
@@ -287,6 +290,28 @@ namespace Inverse_solver.ViewModel
 
         }
 
+        private List<string> discrepancyComponentsToShowList;
+        public List<string> DiscrepancyComponentsToShowList
+        {
+            get { return discrepancyComponentsToShowList; }
+            private set { discrepancyComponentsToShowList = value; OnPropertyChanged(); }
+        }
+
+        private string discrepancyComponentToShow;
+        public string DiscrepancyComponentToShow
+        {
+            get { return discrepancyComponentToShow; }
+            set
+            {
+                discrepancyComponentToShow = value;
+                if (InverseTask.DiscrepancyValuesByX != null && InverseTask.DiscrepancyValuesByY != null)
+                {
+                    DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValuesByY, "X", DiscrepancyComponentToShow);
+                }
+                OnPropertyChanged();
+            }
+        }
+
         // Indexes for changing displayed results by selected Y
         public int YResultLayerIndex
         {
@@ -308,7 +333,7 @@ namespace Inverse_solver.ViewModel
                 yDiscrepancyMeasureLayerIndex = value;
                 // Update discrepancy values for this Y level
                 InverseTask.GetDiscrepancyByY(yDiscrepancyMeasureLayerIndex);
-                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValuesByY, "X");
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.XMeasureGrid, InverseTask.DiscrepancyValuesByY, "X", DiscrepancyComponentToShow);
             }
         }
 
@@ -321,7 +346,7 @@ namespace Inverse_solver.ViewModel
                 xDiscrepancyMeasureLayerIndex = value;
                 // Update discrepancy values for this X level
                 InverseTask.GetDiscrepancyByX(xDiscrepancyMeasureLayerIndex);
-                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.YMeasureGrid, InverseTask.DiscrepancyValuesByX, "Y");
+                DiscrepancyModel = GraphicsBuilder.buildDiscrepancyGraph(InverseTask.YMeasureGrid, InverseTask.DiscrepancyValuesByX, "Y", DiscrepancyComponentToShow);
             }
         }
 

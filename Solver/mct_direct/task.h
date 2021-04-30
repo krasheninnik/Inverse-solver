@@ -84,8 +84,8 @@ public:
 	void getGridInformation(GridInformation& gridInfo);
 	void getResultGrids(std::vector<Point>& nodes, std::vector<double>& yLayers);
 	void getMeasureGrids(std::vector<double>& xGrid, std::vector<double>& yGrid);
-	void getDiscrepancyByY(int y, std::vector<double>& fx);
-	void getDiscrepancyByX(int x, std::vector<double>& fx);
+	void getDiscrepancyByY(int y, std::vector<Point>& fx);
+	void getDiscrepancyByX(int x, std::vector<Point>& fx);
 	void getMagneticInductionByY(int y, std::vector<Point>& magneticInduction);
 	void getMagneticInductionByX(int x, std::vector<Point>& magneticInduction);
 
@@ -117,7 +117,7 @@ private:
 
 	// for save results values:
 	std::vector<double> p;
-	std::vector<double> residualValues;
+	std::vector<Point> residualValues;
 	std::vector<Point> magneticInductionValues;
 
 

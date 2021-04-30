@@ -9,13 +9,11 @@ namespace Inverse_solver.ViewModel
 {
     public class GraphicsBuilder
     {
-        public PlotModel buildHeatmap(GridInformation gridInformation, List<List<Value>> resultsValues, string ResultComponentToShow)
+        private Func<Value, double> CreateExtractComponentFunction(string componentToShow)
         {
-            var model = new PlotModel { Title = "Results" };
-
-            // Extract result component to show:
+            // Extract result component to show
             Func<Value, double> extractComponent;
-            switch (ResultComponentToShow)
+            switch (componentToShow)
             {
                 case "X":
                     extractComponent = value => value.X;
@@ -27,8 +25,19 @@ namespace Inverse_solver.ViewModel
                     extractComponent = value => value.Z;
                     break;
                 default:
-                    throw new Exception($"There no such ResultComponentToShow: {ResultComponentToShow}");
+                    throw new Exception($"There no such ComponentToShow: {componentToShow}");
             }
+
+            return extractComponent;
+        }
+
+
+        public PlotModel buildHeatmap(GridInformation gridInformation, List<List<Value>> resultsValues, string ResultComponentToShow)
+        {
+            var model = new PlotModel { Title = "Results" };
+
+            // Extract result component to show:
+            Func<Value, double> extractComponent = CreateExtractComponentFunction(ResultComponentToShow);
 
             // find min and max for this model:
             double max = extractComponent(resultsValues[0][0]);
@@ -85,7 +94,7 @@ namespace Inverse_solver.ViewModel
             model.Series.Add(heatMapSeries);
             return model;
         }
-        public PlotModel buildDiscrepancyGraph(double[] x, double[] fx, string mode)
+        public PlotModel buildDiscrepancyGraph(double[] x, Value[] fx, string mode, string discrepancyComponentToShow)
         {
             // create the model and add the lines to it
             var model = new OxyPlot.PlotModel
@@ -104,9 +113,13 @@ namespace Inverse_solver.ViewModel
                 InterpolationAlgorithm = InterpolationAlgorithms.CanonicalSpline,
             };
 
+
+            // Extract result component to show:
+            Func<Value, double> extractComponent = CreateExtractComponentFunction(discrepancyComponentToShow);
+
             for (int i = 0; i < x.Length; i++)
             {
-                line1.Points.Add(new OxyPlot.DataPoint(x[i], fx[i]));
+                line1.Points.Add(new OxyPlot.DataPoint(x[i], extractComponent(fx[i])));
             }
 
             model.Series.Add(line1);
@@ -133,22 +146,7 @@ namespace Inverse_solver.ViewModel
             };
 
             // Extract result component to show:
-            Func<Value, double> extractComponent;
-            switch (magneticInductionComponentToShow)
-            {
-                case "X":
-                    extractComponent = value => value.X;
-                    break;
-                case "Y":
-                    extractComponent = value => value.Y;
-                    break;
-                case "Z":
-                    extractComponent = value => value.Z;
-                    break;
-                default:
-                    throw new Exception($"There no such MagneticInductionComponentToShow: {magneticInductionComponentToShow}");
-            }
-
+            Func<Value, double> extractComponent = CreateExtractComponentFunction(magneticInductionComponentToShow);
 
             for (int i = 0; i < x.Length; i++)
             {
