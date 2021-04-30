@@ -549,9 +549,9 @@ void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha
 
 	// calculate functional:
 	for (int i = 0; i < residualValues.size(); i++) {
-		double xResidual = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x);
-		double yResidual = abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y);
-		double zResidual = abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z);
+		double xResidual = abs(measures[i].B.x - calculatedB[i].x);
+		double yResidual = abs(measures[i].B.y - calculatedB[i].y);
+		double zResidual = abs(measures[i].B.z - calculatedB[i].z);
 
 		//residualValues[i] = Point(xResidual * 100, xResidual * 100, xResidual * 100);
 		functional0 += xResidual * xResidual + yResidual * yResidual + zResidual * zResidual;
@@ -573,9 +573,6 @@ void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha
 	alpha = firstAlpha;
 	std::cout << "Start alpha fitting: " << std::endl;
 	while (!inTheRange && functonalDiff < fittingProcentThreshold) {
-		// debug things:
-		std::cout << "alpha: " << alpha << ", functional diff: " << functonalDiff << ", in the range: " << inTheRange << std::endl;
-
 		restoreMatrixAndSolve();
 		/// output result alpha
 		*_alpha = alpha;
@@ -586,9 +583,9 @@ void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha
 		// calculate functional:
 		functionalCur = 0;
 		for (int i = 0; i < residualValues.size(); i++) {
-			double xResidual = abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x);
-			double yResidual = abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y);
-			double zResidual = abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z);
+			double xResidual = abs(measures[i].B.x - calculatedB[i].x);
+			double yResidual = abs(measures[i].B.y - calculatedB[i].y);
+			double zResidual = abs(measures[i].B.z - calculatedB[i].z);
 
 			functionalCur += xResidual * xResidual + yResidual * yResidual + zResidual * zResidual;
 		}
@@ -601,7 +598,8 @@ void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha
 
 		// next interation alpha
 		alpha *= alphaStep;
-
+		// debug things:
+		std::cout << "alpha: " << alpha << ", functional diff: " << functonalDiff << ", in the range: " << inTheRange << std::endl;
 	}
 
 	// save results for best (*** last ***) task solving...
