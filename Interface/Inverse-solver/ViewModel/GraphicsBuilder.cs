@@ -13,23 +13,6 @@ namespace Inverse_solver.ViewModel
         {
             var model = new PlotModel { Title = "Results" };
 
-            var colorAxis = new LinearColorAxis
-            {
-                Position = AxisPosition.Right,
-                Palette = OxyPalettes.Hot(200)
-            };
-            model.Axes.Add(colorAxis);
-
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate, m" });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Z coordinate, m" });
-
-            // Color axis
-            model.Axes.Add(new LinearColorAxis
-            {
-                Palette = OxyPalettes.Hot(200)
-                //Palette = OxyPalettes.Gray(200)          
-            });
-
             // Extract result component to show:
             Func<Value, double> extractComponent;
             switch (ResultComponentToShow)
@@ -46,6 +29,37 @@ namespace Inverse_solver.ViewModel
                 default:
                     throw new Exception($"There no such ResultComponentToShow: {ResultComponentToShow}");
             }
+
+            // find min and max for this model:
+            double max = extractComponent(resultsValues[0][0]);
+            double min = extractComponent(resultsValues[0][0]);
+
+            for(int i = 0; i < resultsValues.Count; i++)
+            {
+                for (int j = 0; j < resultsValues[i].Count; j++)
+                {
+                    double curComp = extractComponent(resultsValues[i][j]);
+                    if (curComp > max) max = curComp;
+                    if (curComp < min) min = curComp;
+                }
+            }
+
+            // kind of output result correction
+            max += 1;
+            min -= 1;
+
+            // Color axis
+            var colorAxis = new LinearColorAxis
+            {
+                Position = AxisPosition.Right,
+                Palette = OxyPalettes.Hot(200),
+                Minimum = min,
+                Maximum = max
+            };
+            model.Axes.Add(colorAxis);
+
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate, m" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Z coordinate, m" });
 
             // Display values source:
             var data = new double[gridInformation.elemsInX, gridInformation.elemsInZ];
