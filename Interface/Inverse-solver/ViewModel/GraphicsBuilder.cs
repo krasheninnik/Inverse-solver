@@ -54,8 +54,8 @@ namespace Inverse_solver.ViewModel
             }
 
             // kind of output result correction
-            max += 1;
-            min -= 1;
+            max += 0.1;
+            min -= 0.1;
 
             // Color axis
             var colorAxis = new LinearColorAxis
