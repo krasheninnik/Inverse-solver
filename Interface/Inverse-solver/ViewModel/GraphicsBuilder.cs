@@ -20,8 +20,8 @@ namespace Inverse_solver.ViewModel
             };
             model.Axes.Add(colorAxis);
 
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate [m]" });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Z coordinate [m]" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = "X coordinate, m" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Z coordinate, m" });
 
             // Color axis
             model.Axes.Add(new LinearColorAxis
@@ -63,8 +63,8 @@ namespace Inverse_solver.ViewModel
                 Title = $"Discrepancy graph"
             };
 
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = $"{mode} coordinate [m]" });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Discrepancy" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = $"{mode} coordinate, m" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Discrepancy, %" });
 
             var line1 = new OxyPlot.Series.LineSeries()
             {
@@ -91,8 +91,8 @@ namespace Inverse_solver.ViewModel
                 Title = $"Magnetic Induction graph"
             };
 
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = $"{mode} coordinate [m]" });
-            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Discrepancy" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Bottom, Title = $"{mode} coordinate, m" });
+            model.Axes.Add(new LinearAxis { Position = AxisPosition.Left, Title = "Magnetic Induction, T" });
 
             var line1 = new OxyPlot.Series.LineSeries()
             {
