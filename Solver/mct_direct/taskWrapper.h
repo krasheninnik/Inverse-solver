@@ -61,3 +61,5 @@ extern "C" INVERSESOLVERLIB void getDiscrepancyByY(Task* task, int yLayerIndex, 
 extern "C" INVERSESOLVERLIB void getDiscrepancyByX(Task* task, int xLayerIndex, Point* residual);
 extern "C" INVERSESOLVERLIB void getMagneticInductionByY(Task* task, int yLayerIndex, Point* magneticInduction);
 extern "C" INVERSESOLVERLIB void getMagneticInductionByX(Task* task, int xLayerIndex, Point* magneticInduction);
+
+extern "C" INVERSESOLVERLIB void changeAlpha(Task * task, double alpha);

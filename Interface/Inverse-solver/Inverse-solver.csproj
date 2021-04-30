@@ -106,6 +106,7 @@
     <Compile Include="Model\Value.cs" />
     <Compile Include="ViewModel\Commands\AsyncCommandBase.cs" />
     <Compile Include="ViewModel\Commands\CalculateTaskCommand.cs" />
+    <Compile Include="ViewModel\Commands\ChangeAlphaCommand.cs" />
     <Compile Include="ViewModel\Commands\OpenMagneticInductionViewCommand.cs" />
     <Compile Include="ViewModel\Commands\SaveInitParametersToFileCommand.cs" />
     <Compile Include="ViewModel\Commands\SetInitParametersFromFileCommand.cs" />

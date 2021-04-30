@@ -37,6 +37,7 @@ namespace Inverse_solver.ViewModel
             DiscrepancyComponentToShow = DiscrepancyComponentsToShowList[0];
 
             // Commands:
+            this.ChangeAlphaCommand = new ChangeAlphaCommand(this);
             this.OpenSettingsFormCommand = new OpenSettingsFormCommand(this);
             this.OpenDiscrepancyViewCommand = new OpenDiscrepancyViewCommand(this);
             this.OpenMagneticInductionViewCommand = new OpenMagneticInductionViewCommand(this);
@@ -99,6 +100,7 @@ namespace Inverse_solver.ViewModel
         private InverseTask InverseTask { get; set; }
 
         #region CommandsDefinition
+        public ChangeAlphaCommand ChangeAlphaCommand { get; private set; }
         public CalculateTaskCommand CalculateTaskCommand { get; private set; }
         public OpenSettingsFormCommand OpenSettingsFormCommand { get; private set; }
         public OpenMagneticInductionViewCommand OpenMagneticInductionViewCommand { get; private set; }
@@ -110,6 +112,11 @@ namespace Inverse_solver.ViewModel
         #endregion
 
         #region CommandsFunctions
+        public void ChangeAlpha()
+        {
+            InverseTask.ChangeAlpha(initParameters.Alpha);
+        }
+
         public void OpenSettingsForm()
         {
             CommandManager.InvalidateRequerySuggested();

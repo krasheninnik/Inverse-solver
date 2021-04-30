@@ -138,10 +138,15 @@
                         Margin="20" Width="200" Height="30">
                     </Button>
 
-                    
+
                     <Button  
                      Content = "Init task" Command="{Binding InitTaskCommand}"
                      CommandParameter="{Binding ElementName=SettingsFormWindow}"
+                     Margin="20" Width="200" Height="30">
+                    </Button>
+
+                    <Button  
+                     Content = "Change alpha" Command="{Binding ChangeAlphaCommand}"
                      Margin="20" Width="200" Height="30">
                     </Button>
                 </StackPanel>

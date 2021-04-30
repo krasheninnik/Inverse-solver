@@ -57,6 +57,8 @@ namespace Inverse_solver.Model
         static extern public IntPtr getMagneticInductionByY(IntPtr task, int yLayer, [Out] Value[] values);
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
         static extern public IntPtr getMagneticInductionByX(IntPtr task, int xLayer, [Out] Value[] values);
+        [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
+        static extern public IntPtr changeAlpha(IntPtr task, double alpha);
         #endregion
 
         #region PublicFunctionsForVM
@@ -117,6 +119,10 @@ namespace Inverse_solver.Model
         }
         #endregion
 
+        public void ChangeAlpha(double alpha)
+        {
+            changeAlpha(task, alpha);
+        }
         public int YResultLayerIndex { get; set; }
         public List<List<Value>> ResultsValues
         {

@@ -88,7 +88,7 @@ public:
 	void getDiscrepancyByX(int x, std::vector<Point>& fx);
 	void getMagneticInductionByY(int y, std::vector<Point>& magneticInduction);
 	void getMagneticInductionByX(int x, std::vector<Point>& magneticInduction);
-
+	void changeAlpha(double alpha);
 
 private:
 	double alpha;

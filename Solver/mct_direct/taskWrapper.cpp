@@ -94,3 +94,7 @@ void getMagneticInductionByX(Task* task, int xLayerIndex, Point* magneticInducti
     // Convert vectors to C-style arrays
     for (int i = 0; i < fxVec.size(); i++) magneticInduction[i] = fxVec[i];
 }
+
+void changeAlpha(Task* task, double alpha) {
+    task->changeAlpha(alpha);
+}

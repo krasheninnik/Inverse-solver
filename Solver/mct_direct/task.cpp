@@ -72,6 +72,9 @@ void Task::init() {
 //}
 
 
+void Task::changeAlpha(double _alpha) {
+	alpha = _alpha;
+}
 
 void Task::getGridInformation(GridInformation& _gridInfo) {
 	_gridInfo = gridInfo;
