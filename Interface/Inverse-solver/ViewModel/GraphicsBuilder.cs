@@ -61,7 +61,7 @@ namespace Inverse_solver.ViewModel
             var colorAxis = new LinearColorAxis
             {
                 Position = AxisPosition.Right,
-                Palette = OxyPalettes.Hot(200),
+                Palette = OxyPalettes.Gray(200),
                 Minimum = min,
                 Maximum = max
             };
