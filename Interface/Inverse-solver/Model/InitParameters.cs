@@ -12,6 +12,8 @@ namespace Inverse_solver.Model
     // Class for read JSON file and init task from it
     public class InitParameters: IDataErrorInfo, INotifyPropertyChanged
     {
+        private bool RPCfromPmin = false;
+        private bool RPCfromPmax = false;
         private bool RPCfromNx = false;
         private bool RPCfromNy = false;
         private bool RPCfromMeasuredValues = false;
@@ -50,6 +52,19 @@ namespace Inverse_solver.Model
                 string errorString = string.Empty;
                 switch (columnName)
                 {
+                    // alpha fitting parameters:
+                    case "Pmin":
+                        if (this.Pmin >= this.Pmax) errorString = "Pmin must be less that Pmax.";
+                        updateCoupledVariable(ref RPCfromPmax, ref RPCfromPmin, "Pmax");
+                        break;
+                    case "Pmax":
+                        if (this.Pmin >= this.Pmax) errorString = "Pmin must be less that Pmax.";
+                        updateCoupledVariable(ref RPCfromPmin, ref RPCfromPmax, "Pmin");
+                        break;
+
+                    case "AlphaStep": if (this.AlphaStep <= 0) errorString = "Hx must be positive double."; break;
+                    case "FittingProcentThreshold": if (this.FittingProcentThreshold <= 0 || this.FittingProcentThreshold > 100) errorString = "FittingProcentThreshold must be positive double: less or equal 100"; break;
+
                     case "Hx": if (this.Hx <= 0) errorString = "Hx must be positive double."; break;
                     case "Hy": if (this.Hy <= 0) errorString = "Hy must be positive double."; break;
 
@@ -135,6 +150,13 @@ namespace Inverse_solver.Model
         public double Zstart { get; set; }
         public double Zend { get; set; }
         public int ZstepsAmount { get; set; }
+
+        // alpha fitting parameters:
+        public double Pmin { get; set; }
+        public double Pmax { get; set; }
+        public double AlphaStep { get; set; }
+        public double FittingProcentThreshold { get; set; }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
