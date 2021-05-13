@@ -41,8 +41,8 @@ public:
 extern "C" INVERSESOLVERLIB Task* createTask();
 
 extern "C" INVERSESOLVERLIB void buildMatrix(Task*);
-extern "C" INVERSESOLVERLIB void solveWithAlphaSetted(Task*, FiniteElemProxy*);
-extern "C" INVERSESOLVERLIB void solveWithAlphaFitting(Task*, FiniteElemProxy*, double*);
+extern "C" INVERSESOLVERLIB void solveWithAlphaSetted(Task*, FiniteElemProxy*, double*);
+extern "C" INVERSESOLVERLIB void solveWithAlphaFitting(Task*, FiniteElemProxy*, double*, double*);
 
 extern "C" INVERSESOLVERLIB void deleteTask(Task * task);
 

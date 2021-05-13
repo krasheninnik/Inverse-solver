@@ -39,18 +39,18 @@ void buildMatrix(Task* task) {
     task->buildMatrix();
 }
 
-void solveWithAlphaSetted(Task* task, FiniteElemProxy* felemsProxy) {
+void solveWithAlphaSetted(Task* task, FiniteElemProxy* felemsProxy, double* functionalVal) {
     std::vector<FiniteElem> felems;
-    task->solveWithAlphaSetted(felems);
+    task->solveWithAlphaSetted(felems, functionalVal);
 
     for (int i = 0; i < felems.size(); i++) {
         auto& el = felems[i];
         felemsProxy[i] = FiniteElemProxy(el.nodes[0], el.nodes[1], el.nodes[2], el.nodes[3], el.nodes[4], el.nodes[5], el.nodes[6], el.nodes[7], el.p);
     }
 }
-void solveWithAlphaFitting(Task* task, FiniteElemProxy* felemsProxy, double* alpha) {
+void solveWithAlphaFitting(Task* task, FiniteElemProxy* felemsProxy, double* alpha, double* functionalVal) {
     std::vector<FiniteElem> felems;
-    task->solveWithAlphaFitting(felems, alpha);
+    task->solveWithAlphaFitting(felems, alpha, functionalVal);
 
     for (int i = 0; i < felems.size(); i++) {
         auto& el = felems[i];

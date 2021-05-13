@@ -27,7 +27,7 @@ namespace Inverse_solver.ViewModel
             this.InitParameters = new InitParameters();
 
             // Startup init:
-            ResultComponentsToShowList = new List<string>{ "X", "Y", "Z" };
+            ResultComponentsToShowList = new List<string> { "X", "Y", "Z" };
             ResultComponentToShow = ResultComponentsToShowList[0];
 
             MagneticInductionComponentsToShowList = new List<string> { "X", "Y", "Z" };
@@ -225,6 +225,7 @@ namespace Inverse_solver.ViewModel
                 InverseTask.SolveWithAlphaSetted();
             });
 
+            OnPropertyChanged("FunctionalValue");
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
             this.IsSolvedWithAlphaSetted = true;
             this.IsSolvedWithAlphaFitting = false;
@@ -240,6 +241,7 @@ namespace Inverse_solver.ViewModel
                 InverseTask.SolveWithAlphaFitting();
             });
 
+            OnPropertyChanged("FunctionalValue");
             this.HeatmapModel = GraphicsBuilder.buildHeatmap(InverseTask.GridInfo, InverseTask.ResultsValues, ResultComponentToShow);
             this.IsSolvedWithAlphaFitting = true;
             this.IsSolvedWithAlphaSetted = false;
@@ -427,6 +429,11 @@ namespace Inverse_solver.ViewModel
         public double FittedAlpha
         {
             get { return InverseTask.FittedAlpha; }
+        }
+
+        public string FunctionalValue
+        {
+            get { return InverseTask.FunctionalVal.ToString("E3"); }
         }
 
         private InitParameters initParameters;

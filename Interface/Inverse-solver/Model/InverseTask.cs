@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Inverse_solver.Model
 {
-    public class InverseTask
+    public class InverseTask 
     {
         // ptr on the Task class, allocated in C++ code
         private readonly IntPtr task;
@@ -61,10 +61,10 @@ namespace Inverse_solver.Model
         static extern public IntPtr buildMatrix(IntPtr task);
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr solveWithAlphaSetted(IntPtr task, [Out] FiniteElem[] elems);
+        static extern public IntPtr solveWithAlphaSetted(IntPtr task, [Out] FiniteElem[] elems, out double functionalVal);
 
         [DllImport("mct_direct.dll", CallingConvention = CallingConvention.Cdecl)]
-        static extern public IntPtr solveWithAlphaFitting(IntPtr task, [Out] FiniteElem[] elems, out double alpha);
+        static extern public IntPtr solveWithAlphaFitting(IntPtr task, [Out] FiniteElem[] elems, out double alpha, out double functionalVal);
 
         #endregion
 
@@ -111,14 +111,15 @@ namespace Inverse_solver.Model
 
         public void SolveWithAlphaSetted()
         {
-            solveWithAlphaSetted(task, FiniteElems);
+            solveWithAlphaSetted(task, FiniteElems, out double functionalVal);
+            FunctionalVal = functionalVal;
         }
 
         public void SolveWithAlphaFitting()
         {
-
-            solveWithAlphaFitting(task, FiniteElems, out double fittedAlpha);
+            solveWithAlphaFitting(task, FiniteElems, out double fittedAlpha, out double functionalVal);
             FittedAlpha = fittedAlpha;
+            FunctionalVal = functionalVal;
         }
 
         public void GetDiscrepancyByY(int yLayer)
@@ -168,6 +169,7 @@ namespace Inverse_solver.Model
         public GridInformation GridInfo { get => gridInfo; }
 
         public double FittedAlpha { get; set; }
+        public double FunctionalVal { get; set; }
 
         public double[] YResultGridLayers { get; set; }
 

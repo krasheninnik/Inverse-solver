@@ -79,8 +79,8 @@ public:
 		double firstAlpha, double alphaStep, double fittingProcentThreshold);
 	void init();
 	void buildMatrix();
-	void solveWithAlphaSetted(std::vector<FiniteElem>& _elems);
-	void solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha);
+	void solveWithAlphaSetted(std::vector<FiniteElem>& _elems, double* functionalVal);
+	void solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha, double* functionalVal);
 
 	void reset();
 	void getB(std::vector<Point> parameters, std::vector<Point>& B);

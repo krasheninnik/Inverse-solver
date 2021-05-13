@@ -475,7 +475,7 @@ void Task::restoreMatrixAndSolve() {
 	}
 }
 
-void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems) {
+void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems, double* functionalVal) {
 
 	restoreMatrixAndSolve();
 	// save elems for output
@@ -492,12 +492,23 @@ void Task::solveWithAlphaSetted(std::vector<FiniteElem>& _elems) {
 
 	getB(parameters, calculatedB);
 
-	// calculate residual:
+
+	double functionalCur = 0;
 	for (int i = 0; i < residualValues.size(); i++) {
+		double xResidual = abs(measures[i].B.x - calculatedB[i].x);
+		double yResidual = abs(measures[i].B.y - calculatedB[i].y);
+		double zResidual = abs(measures[i].B.z - calculatedB[i].z);
+
+		// calculate functional:
+		functionalCur += xResidual * xResidual + yResidual * yResidual + zResidual * zResidual;
+
+		// calculate residual:
 		residualValues[i] = Point(abs(measures[i].B.x - calculatedB[i].x) / abs(measures[i].B.x) * 100,
 			abs(measures[i].B.y - calculatedB[i].y) / abs(measures[i].B.y) * 100,
 			abs(measures[i].B.z - calculatedB[i].z) / abs(measures[i].B.z) * 100);
 	}
+	// save functional to output
+	*functionalVal = functionalCur;
 
 	// calculate magnetic induction:
 	for (int i = 0; i < magneticInductionValues.size(); i++) {
@@ -520,7 +531,7 @@ bool Task::isFindedParametersInTheRange() {
 	return inTheRange;
 }
 
-void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha) {
+void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha, double* functionalVal) {
 	// store setted alpha
 	double settedAlpha = alpha;
 
@@ -620,6 +631,8 @@ void Task::solveWithAlphaFitting(std::vector<FiniteElem>& _elems, double* _alpha
 
 	// save elems for output
 	_elems = elems;
+	// save functionalVal for output
+	*functionalVal = functionalCur;
 
 	// restore setted alpha
 	alpha = settedAlpha;
